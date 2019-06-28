@@ -20,6 +20,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class AccessConfigurationTester {
 
 	@Autowired
+	private JedisConnectionFactory jedisConnectionFactory;
+	
+	@Autowired
 	private StringRedisTemplate stringRedisTemplate;
 	
 	@Test
@@ -36,6 +39,14 @@ public class AccessConfigurationTester {
 				.getConnectionFactory()).getPort());			
 	}
 	
-	
+	@Test
+	public void with_default_config_should_return_a_valid_jedisConnectionFactory() {
+
+		int expectedPort = 6379;
+
+		assertEquals("localhost", this.jedisConnectionFactory.getHostName());
+		
+		assertEquals(expectedPort, this.jedisConnectionFactory.getPort());			
+	}
 	
 }
