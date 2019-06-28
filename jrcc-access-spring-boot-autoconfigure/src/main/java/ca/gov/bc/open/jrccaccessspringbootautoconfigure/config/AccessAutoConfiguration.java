@@ -20,7 +20,7 @@ public class AccessAutoConfiguration {
 	 * Configure the JedisConnectionFactory
 	 * @param properties The redis properties
 	 * @return a JedisConnectionFactory
-	 * @throws OperationNotSupportedException 
+	 * @throws OperationNotSupportedException if mode is set to sentinel, this mode is not supported yet. 
 	 */
 	@Bean
 	@ConditionalOnMissingBean(JedisConnectionFactory.class)
