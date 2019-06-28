@@ -1,6 +1,7 @@
 package ca.gov.bc.open.jrccaccessspringbootautoconfigure.config;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Set;
 
@@ -107,6 +108,45 @@ public class RedisPropertiesTester {
 		RedisProperties sut = new RedisProperties();
 		
 		assertEquals("localhost", sut.getHost());
+	}
+	
+	@Test
+	public void with_cluster_mode_should_return_cluster_mode() {
+		
+		
+		RedisProperties sut = new RedisProperties();
+		
+		sut.setMode("cluster");
+		
+		assertEquals(RedisMode.CLUSTER, sut.getMode());
+		
+	}
+	
+	@Test
+	public void with_cluster_mode_not_set_should_return_standalone_mode() {
+		
+		RedisProperties sut = new RedisProperties();
+		
+		assertEquals(RedisMode.STANDALONE, sut.getMode());
+		
+	}
+	
+	@Test
+	public void with_valid_string_collection_should_return_collection() {
+		
+		RedisProperties sut = new RedisProperties();
+		
+		sut.setClusterHostAndPort("127.0.0.0:22679,127.0.0.0:22680");
+		
+		assertEquals(2, sut.getClusterHostAndPort().size());
+	}
+	
+	@Test
+	public void with_valid_string_collection_not_set_should_return_null() {
+		
+		RedisProperties sut = new RedisProperties();
+		
+		assertNull(sut.getClusterHostAndPort());
 	}
 
 

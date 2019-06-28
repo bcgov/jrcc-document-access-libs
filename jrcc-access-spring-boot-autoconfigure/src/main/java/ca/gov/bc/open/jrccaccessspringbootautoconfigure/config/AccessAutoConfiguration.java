@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -20,9 +21,15 @@ public class AccessAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(JedisConnectionFactory.class)
 	public JedisConnectionFactory jedisConnectionFactory(RedisProperties properties) {
-		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(properties.getHost(), properties.getPort());
-		JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration);
-		return jedisConnectionFactory;
+		
+		switch (properties.getMode()) {
+		case CLUSTER:
+			RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration(properties.getClusterHostAndPort());
+			return new JedisConnectionFactory(redisClusterConfiguration);
+		default:
+			RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(properties.getHost(), properties.getPort());
+			return new JedisConnectionFactory(redisStandaloneConfiguration);
+		}
 	}
 	
 	/**
