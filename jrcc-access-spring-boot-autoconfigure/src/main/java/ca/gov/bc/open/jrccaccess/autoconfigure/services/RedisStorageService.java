@@ -24,9 +24,6 @@ import ca.gov.bc.open.jrccaccess.libs.StorageService;
 @Service
 public class RedisStorageService implements StorageService {
 
-
-	StringRedisTemplate stringRedisTemplate;
-	
 	CacheManager cacheManager;
 	
 	/**

@@ -9,7 +9,6 @@ import javax.naming.OperationNotSupportedException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Sentinel;
-import org.springframework.boot.autoconfigure.security.reactive.ReactiveUserDetailsServiceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -17,18 +16,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.cache.RedisCacheManager.RedisCacheManagerBuilder;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisNode;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 
-import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration
+@EnableConfigurationProperties(AccessProperties.class)
 @ComponentScan("ca.gov.bc.open.jrccaccess.autoconfigure.services")
 public class AccessAutoConfiguration {
 
@@ -86,11 +82,11 @@ public class AccessAutoConfiguration {
 	
 	@Bean(name = "Document")
 	@ConditionalOnMissingBean(CacheManager.class)
-    public CacheManager cacheManager(JedisConnectionFactory jedisConnectionFactory) {
+    public CacheManager cacheManager(JedisConnectionFactory jedisConnectionFactory, AccessProperties accessProperties) {
 
 		RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
 	            .disableCachingNullValues()
-	            .entryTtl(Duration.ofHours(1));
+	            .entryTtl(Duration.ofHours(accessProperties.getTtl()));
 	    redisCacheConfiguration.usePrefix();
 
 	   return RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(jedisConnectionFactory)
