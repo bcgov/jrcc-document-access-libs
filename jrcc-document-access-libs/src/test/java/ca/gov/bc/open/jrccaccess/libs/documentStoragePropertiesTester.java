@@ -36,5 +36,11 @@ public class documentStoragePropertiesTester {
 		DocumentStorageProperties sut = new DocumentStorageProperties("my key", null);		
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void with_not_hex_MD5_should_throw_illegalArgumentException() {
+		DocumentStorageProperties sut = new DocumentStorageProperties("my key", "not hexadecimal");		
+	}
+	
+	
 	
 }

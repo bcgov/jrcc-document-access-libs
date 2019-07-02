@@ -28,6 +28,7 @@ public class DocumentStorageProperties {
 		
 		if(key == null || key.isEmpty()) throw new IllegalArgumentException("key");
 		if(MD5 == null || MD5.isEmpty()) throw new IllegalArgumentException("MD5");
+		if(!MD5.matches("-?[0-9a-fA-F]+")) throw new IllegalArgumentException("MD5 must be an hexadecimal string only");
 		
 		this.key = key;
 		this.MD5 = MD5;
