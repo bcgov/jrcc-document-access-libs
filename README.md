@@ -1,5 +1,40 @@
 # jrcc-document-access-libs
 
+## jrcc document access spring boot starter
+
+This provide a spring boot starter for the document access lib using [redis](https://redis.io/)
+
+### Usage
+
+Add `jrcc-access-spring-boot-starter` to your project
+
+```xml
+<dependency>
+    <groupId>ca.gov.bc.open</groupId>
+    <artifactId>jrcc-access-spring-boot-starter</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependency>
+```
+
+Add settings into `application.settings` file
+
+```properties
+
+# common spring boot settings
+
+spring.redis.database=
+spring.redis.host=
+spring.redis.port=
+spring.redis.password=
+spring.redis.ssl=
+spring.redis.timeout=
+spring.redis.cluster.nodes=
+spring.redis.sentinel.master=
+spring.redis.sentinel.nodes=
+
+```
+
+
 ## Sample App
 
 The sample app is a demo that shows the usage of `jrcc-access-spring-boot-starter`

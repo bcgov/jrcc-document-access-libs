@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,14 @@ public class RedisStorageService implements StorageService {
 
 	StringRedisTemplate stringRedisTemplate;
 	
+	CacheManager cacheManager;
+	
 	/**
 	 * Default constructor
 	 * @param stringRedisTemplate a string redis template
 	 */
-	public RedisStorageService(StringRedisTemplate stringRedisTemplate) {
-		this.stringRedisTemplate = stringRedisTemplate;
+	public RedisStorageService(CacheManager cacheManager) {
+		this.cacheManager = cacheManager;
 	}
 	
 	
@@ -43,10 +46,8 @@ public class RedisStorageService implements StorageService {
 
 		String key = UUID.randomUUID().toString();
 		String md5Hash = computeMd5(content);
-
-		ValueOperations<String, String> valueOperations = this.stringRedisTemplate.opsForValue();
-
-		valueOperations.set(key, content);
+		
+		this.cacheManager.getCache("Document").put(key, content);
 
 		return new DocumentStorageProperties(key, md5Hash);
 

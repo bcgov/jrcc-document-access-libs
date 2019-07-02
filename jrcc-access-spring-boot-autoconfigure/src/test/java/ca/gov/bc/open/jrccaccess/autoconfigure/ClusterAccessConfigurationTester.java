@@ -17,8 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(
         classes = AccessApplication.class,
         properties = {
-        		"bcgov.access.redis.mode=cluster",
-        		"bcgov.access.redis.cluster-host-and-port=127.0.0.1:5000,127.0.0.1:5001"
+        		"spring.redis.cluster.nodes=127.0.0.1:5000,127.0.0.1:5001"
         })
 @ContextConfiguration
 public class ClusterAccessConfigurationTester {
