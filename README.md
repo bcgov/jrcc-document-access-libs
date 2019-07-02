@@ -1,5 +1,11 @@
 # jrcc-document-access-libs
 
+This library provides a service to store documents using [redis](https://redis.io/) cache.
+
+## Road Map
+
+* [] Retrieve document from storage
+
 ## jrcc document access spring boot starter
 
 This provide a spring boot starter for the document access lib using [redis](https://redis.io/)
@@ -31,6 +37,10 @@ spring.redis.timeout=
 spring.redis.cluster.nodes=
 spring.redis.sentinel.master=
 spring.redis.sentinel.nodes=
+
+# bc gov settings
+
+bcgov.access.ttl= <-- cache time to live expressed in hours (default = 1)
 
 ```
 
@@ -77,7 +87,7 @@ mvn spring-boot:run
 
 You should get a similar output
 
-```
+```console
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
 ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
