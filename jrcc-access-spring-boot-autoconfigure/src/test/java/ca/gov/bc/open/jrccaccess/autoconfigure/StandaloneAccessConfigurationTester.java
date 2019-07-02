@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccessspringbootautoconfigure.config;
+package ca.gov.bc.open.jrccaccess.autoconfigure;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -14,14 +14,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(
-        classes = AccessApplication.class,
-        properties = {
-        		"bcgov.access.redis.mode=cluster",
-        		"bcgov.access.redis.cluster-host-and-port=127.0.0.1:5000,127.0.0.1:5001"
-        })
+@SpringBootTest(classes = AccessApplication.class)
 @ContextConfiguration
-public class ClusterAccessConfigurationTester {
+public class StandaloneAccessConfigurationTester {
 
 	@Autowired
 	private JedisConnectionFactory jedisConnectionFactory;
@@ -32,27 +27,25 @@ public class ClusterAccessConfigurationTester {
 	@Test
 	public void with_default_config_should_return_a_valid_stringRedisTemplate() {
 
-		assertEquals(2, ((JedisConnectionFactory)this
-				.stringRedisTemplate
-				.getConnectionFactory())
-				.getClusterConfiguration()
-				.getClusterNodes().size());	
-		
-		
+		int expectedPort = 6379;
 
+		assertEquals("localhost", ((JedisConnectionFactory)this
+				.stringRedisTemplate
+				.getConnectionFactory()).getHostName());
+		
+		assertEquals(expectedPort, ((JedisConnectionFactory)this
+				.stringRedisTemplate
+				.getConnectionFactory()).getPort());			
 	}
 	
 	@Test
 	public void with_default_config_should_return_a_valid_jedisConnectionFactory() {
 
-		assertEquals(2, this.jedisConnectionFactory
-				.getClusterConfiguration()
-				.getClusterNodes().size());		
+		int expectedPort = 6379;
+
+		assertEquals("localhost", this.jedisConnectionFactory.getHostName());
 		
-		this.jedisConnectionFactory
-				.getClusterConfiguration()
-				.getClusterNodes()
-				.forEach(redisNode -> assertEquals("127.0.0.1",redisNode.getHost()));		
+		assertEquals(expectedPort, this.jedisConnectionFactory.getPort());			
 	}
 	
 }

@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccessspringbootautoconfigure.config;
+package ca.gov.bc.open.jrccaccess.autoconfigure;
 
 
 import java.util.Arrays;

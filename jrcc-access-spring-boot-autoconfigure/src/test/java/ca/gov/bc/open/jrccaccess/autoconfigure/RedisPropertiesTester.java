@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccessspringbootautoconfigure.config;
+package ca.gov.bc.open.jrccaccess.autoconfigure;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -126,6 +126,19 @@ public class RedisPropertiesTester {
 	public void with_cluster_mode_not_set_should_return_standalone_mode() {
 		
 		RedisProperties sut = new RedisProperties();
+		
+		assertEquals(RedisMode.STANDALONE, sut.getMode());
+		
+	}
+	
+	
+	@Test
+	public void with_cluster_mode_should_return_standalone_mode() {
+		
+		
+		RedisProperties sut = new RedisProperties();
+		
+		sut.setMode("invalid");
 		
 		assertEquals(RedisMode.STANDALONE, sut.getMode());
 		
