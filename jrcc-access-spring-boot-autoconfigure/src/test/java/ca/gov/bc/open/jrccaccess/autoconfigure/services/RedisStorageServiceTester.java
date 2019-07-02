@@ -21,6 +21,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.connection.BitFieldSubCommands;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -31,41 +33,41 @@ import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 public class RedisStorageServiceTester {
 
 	@Mock
-	private StringRedisTemplate stringRedisTemplateMock;
+	private CacheManager cacheManager;
 	
 	@Mock
-	private ValueOperations<String, String> valueOperations;
-	
+	private Cache cache;
+
 	
 	private RedisStorageService sut;
 	
 	@Before
 	public void Init() {
 		
-//		MockitoAnnotations.initMocks(this);
-//	    Mockito.when(stringRedisTemplateMock.opsForValue()).thenReturn(valueOperations);
-//	    Mockito.doNothing().when(valueOperations).set(Mockito.anyString(), Mockito.anyString());	
-//		this.sut = new RedisStorageService(this.stringRedisTemplateMock);	
+		MockitoAnnotations.initMocks(this);
+	    Mockito.when(cacheManager.getCache(Mockito.anyString())).thenReturn(this.cache);
+	    Mockito.doNothing().when(this.cache).put(Mockito.anyString(), Mockito.anyString());
+		this.sut = new RedisStorageService(this.cacheManager);	
 	}
 	
 	
 	@Test
 	public void with_valid_content_should_return_document_properties() {
 		
-//		String content = "my content";
-//		String myHash = "F2BFA7FC155C4F42CB91404198DDA01F";
-//		
-//		DocumentStorageProperties result = sut.putString(content);
-//		
-//		assertNotNull(result.getKey());
-//		assertEquals(myHash, result.getMD5());
-//		
-//		// validation of uuid
-//		try {
-//			UUID.fromString(result.getKey());
-//		} catch (IllegalArgumentException e) {
-//			fail("key is not a valid uuid");
-//		}
+		String content = "my content";
+		String myHash = "F2BFA7FC155C4F42CB91404198DDA01F";
+		
+		DocumentStorageProperties result = sut.putString(content);
+		
+		assertNotNull(result.getKey());
+		assertEquals(myHash, result.getMD5());
+		
+		// validation of uuid
+		try {
+			UUID.fromString(result.getKey());
+		} catch (IllegalArgumentException e) {
+			fail("key is not a valid uuid");
+		}
 		
 		
 	}
