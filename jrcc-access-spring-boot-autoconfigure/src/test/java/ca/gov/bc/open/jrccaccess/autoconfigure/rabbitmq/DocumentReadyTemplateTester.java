@@ -30,7 +30,7 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 @ContextConfiguration
 public class DocumentReadyTemplateTester {
 
-	@Qualifier("documentReadyTemplate")
+	@Qualifier("documentReadyTopicTemplate")
 	@Autowired
 	private RabbitTemplate sut;
 	

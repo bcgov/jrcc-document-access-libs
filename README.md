@@ -4,7 +4,10 @@ This library provides a service to store documents using [redis](https://redis.i
 
 ## Road Map
 
-* [] Retrieve document from storage
+* [X] Store a document in redis cache
+* [ ] Retrieve document from redis cache
+* [X] Publish a document ready message to rabbitMq
+* [ ] Subscribe when a document is ready from rabbitMq
 
 ## jrcc document access spring boot starter
 
@@ -18,7 +21,7 @@ Add `jrcc-access-spring-boot-starter` to your project
 <dependency>
     <groupId>ca.gov.bc.open</groupId>
     <artifactId>jrcc-access-spring-boot-starter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -54,7 +57,12 @@ Run the application (using [docker](https://www.docker.com/))
 Create a redis container
 
 ```bash
-docker run --name my-redis-container -p 6379:6379 -d redis
+docker run --name some-redis -p 6379:6379 -d redis
+```
+Create a rabit container
+
+```bash
+docker run -d --hostname some-rabbit --name some-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
 ```
 
 Install jrcc-access-libs
@@ -96,14 +104,22 @@ You should get a similar output
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v2.1.6.RELEASE)
 
-2019-07-02 09:27:36.154  INFO 7744 --- [           main] JrccAccessSpringBootSampleAppApplication : Starting JrccAccessSpringBootSampleAppApplication on CAVICSR7LNQKC2 with PID 7744 (C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-sample-app\target\classes started by 177226 in C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-sample-app)
-2019-07-02 09:27:36.164  INFO 7744 --- [           main] JrccAccessSpringBootSampleAppApplication : No active profile set, falling back to default profiles: default
-2019-07-02 09:27:36.813  INFO 7744 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2019-07-02 09:27:36.817  INFO 7744 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
-2019-07-02 09:27:36.865  INFO 7744 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 29ms. Found 0 repository interfaces.
-2019-07-02 09:27:37.590  INFO 7744 --- [           main] JrccAccessSpringBootSampleAppApplication : Started JrccAccessSpringBootSampleAppApplication in 2.219 seconds (JVM running for 14.481)
-2019-07-02 09:27:37.592  INFO 7744 --- [           main] eAppApplication$ApplicationStartupRunner : Starting access sample app
-2019-07-02 09:27:37.669  INFO 7744 --- [           main] eAppApplication$ApplicationStartupRunner : content successfully stored in redis
-2019-07-02 09:27:37.670  INFO 7744 --- [           main] eAppApplication$ApplicationStartupRunner : key: 1057ea9e-9a3e-4741-ba2d-fd13e2c6bf9d
-2019-07-02 09:27:37.671  INFO 7744 --- [           main] eAppApplication$ApplicationStartupRunner : MD5: 9CE2CBC8011718E747A86947FAB93F75
+2019-07-03 14:11:20.318  INFO 22912 --- [           main] JrccAccessSpringBootSampleAppApplication : Starting JrccAccessSpringBootSampleAppApplication on CAVICSR7LNQKC2 with PID 22912 (C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-sample-app\target\classes started by 177226 in C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-sample-app)
+2019-07-03 14:11:20.324  INFO 22912 --- [           main] JrccAccessSpringBootSampleAppApplication : No active profile set, falling back to default profiles: default
+2019-07-03 14:11:21.230  INFO 22912 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-07-03 14:11:21.238  INFO 22912 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-07-03 14:11:21.294  INFO 22912 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 32ms. Found 0 repository interfaces.
+2019-07-03 14:11:23.064  INFO 22912 --- [           main] JrccAccessSpringBootSampleAppApplication : Started JrccAccessSpringBootSampleAppApplication in 4.662 seconds (JVM running for 11.668)
+2019-07-03 14:11:23.066  INFO 22912 --- [           main] eAppApplication$ApplicationStartupRunner : Starting access sample app
+2019-07-03 14:11:23.133  INFO 22912 --- [           main] eAppApplication$ApplicationStartupRunner : content successfully stored in redis
+2019-07-03 14:11:23.136  INFO 22912 --- [           main] eAppApplication$ApplicationStartupRunner : key: 9036f266-22b6-4136-8049-55ab33ab82c0
+2019-07-03 14:11:23.137  INFO 22912 --- [           main] eAppApplication$ApplicationStartupRunner : MD5: 9CE2CBC8011718E747A86947FAB93F75
+2019-07-03 14:11:23.219  INFO 22912 --- [           main] o.s.a.r.c.CachingConnectionFactory       : Attempting to connect to: localhost:5672
+2019-07-03 14:11:23.346  INFO 22912 --- [           main] o.s.a.r.c.CachingConnectionFactory       : Created new connection: connectionFactory#556f0972:0/SimpleConnection@62569a6 [delegate=amqp://guest@127.0.0.1:5672/, localPort= 53343]
+2019-07-03 14:11:23.394  INFO 22912 --- [           main] eAppApplication$ApplicationStartupRunner : Document Message Ready for Transaction with [jrcc-access-sample] on document type [test-doc], stored
+with key [9036f266-22b6-4136-8049-55ab33ab82c0] successfully published
 ```
+
+To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
+
+![binding](docs/document.ready.bind.png)

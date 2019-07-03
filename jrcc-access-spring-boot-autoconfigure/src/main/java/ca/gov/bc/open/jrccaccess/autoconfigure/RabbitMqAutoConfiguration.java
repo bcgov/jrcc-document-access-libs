@@ -66,7 +66,7 @@ public class RabbitMqAutoConfiguration {
 	 * @return The documentReadyTemplate for publishing document to topic ready exchange
 	 */
 	@Bean
-	public RabbitTemplate documentReadyTemplate(RabbitProperties rabbitProperties, AccessProperties accessProperties) {
+	public RabbitTemplate documentReadyTopicTemplate(RabbitProperties rabbitProperties, AccessProperties accessProperties) {
 		
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(this.connectionFactory(rabbitProperties));
 		rabbitTemplate.setExchange(this.documentReadyTopic().getName());

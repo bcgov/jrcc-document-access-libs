@@ -1,4 +1,6 @@
 C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\main\java\ca\gov\bc\open\jrccaccess\autoconfigure\AccessAutoConfiguration.java
+C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\main\java\ca\gov\bc\open\jrccaccess\autoconfigure\AccessConfigParam.java
 C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\main\java\ca\gov\bc\open\jrccaccess\autoconfigure\AccessProperties.java
 C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\main\java\ca\gov\bc\open\jrccaccess\autoconfigure\services\RedisStorageService.java
+C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\main\java\ca\gov\bc\open\jrccaccess\autoconfigure\services\RabbitMqDocumentReadyService.java
 C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\main\java\ca\gov\bc\open\jrccaccess\autoconfigure\RabbitMqAutoConfiguration.java

@@ -1,5 +1,9 @@
 C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\test\java\ca\gov\bc\open\jrccaccess\autoconfigure\ClusterAccessConfigurationTester.java
+C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\test\java\ca\gov\bc\open\jrccaccess\autoconfigure\rabbitmq\ConnectionFactoryTester.java
 C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\test\java\ca\gov\bc\open\jrccaccess\autoconfigure\AccessPropertiesTester.java
 C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\test\java\ca\gov\bc\open\jrccaccess\autoconfigure\services\RedisStorageServiceTester.java
 C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\test\java\ca\gov\bc\open\jrccaccess\autoconfigure\AccessApplication.java
+C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\test\java\ca\gov\bc\open\jrccaccess\autoconfigure\rabbitmq\MessageConverterTester.java
+C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\test\java\ca\gov\bc\open\jrccaccess\autoconfigure\rabbitmq\TopicExchangeTester.java
 C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\test\java\ca\gov\bc\open\jrccaccess\autoconfigure\StandaloneAccessConfigurationTester.java
+C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-autoconfigure\src\test\java\ca\gov\bc\open\jrccaccess\autoconfigure\rabbitmq\DocumentReadyTemplateTester.java
