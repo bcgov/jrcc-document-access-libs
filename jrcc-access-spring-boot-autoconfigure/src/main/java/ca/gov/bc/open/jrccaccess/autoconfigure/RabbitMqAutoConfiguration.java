@@ -13,6 +13,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * Rabbit mq autoconfiguration class
@@ -50,13 +55,23 @@ public class RabbitMqAutoConfiguration {
 		return new TopicExchange(AccessConfigParam.DOCUMENT_READY_TOPIC, true, false);
 	}
 	
+	
+	@Bean
+	@Primary
+	public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {	
+		ObjectMapper objectMapper = builder.build();
+	    objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+	    return objectMapper;
+	}
+	
 	/**
 	 * MessageConverter bean
 	 * @return A JsonMessageConverter
 	 */
 	@Bean
-    public MessageConverter jsonMessageConverter(){
-        return new Jackson2JsonMessageConverter();
+    public MessageConverter jsonMessageConverter(ObjectMapper objectMapper){
+        Jackson2JsonMessageConverter converter  = new Jackson2JsonMessageConverter(objectMapper);
+		return converter;
     }
 	
 	/**
@@ -66,12 +81,12 @@ public class RabbitMqAutoConfiguration {
 	 * @return The documentReadyTemplate for publishing document to topic ready exchange
 	 */
 	@Bean
-	public RabbitTemplate documentReadyTopicTemplate(RabbitProperties rabbitProperties, AccessProperties accessProperties) {
+	public RabbitTemplate documentReadyTopicTemplate(RabbitProperties rabbitProperties, AccessProperties accessProperties, ObjectMapper objectMapper) {
 		
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(this.connectionFactory(rabbitProperties));
 		rabbitTemplate.setExchange(this.documentReadyTopic().getName());
 		rabbitTemplate.setRoutingKey(accessProperties.getPublish().getDocumentType());
-		rabbitTemplate.setMessageConverter(this.jsonMessageConverter());
+		rabbitTemplate.setMessageConverter(this.jsonMessageConverter(objectMapper));
 		return rabbitTemplate;
 		
 	}
