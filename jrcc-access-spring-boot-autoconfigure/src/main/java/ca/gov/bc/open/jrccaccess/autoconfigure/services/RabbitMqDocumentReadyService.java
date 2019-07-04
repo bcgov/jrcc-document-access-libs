@@ -17,10 +17,6 @@ public class RabbitMqDocumentReadyService implements DocumentReadyService {
 	@Autowired
 	private RabbitTemplate documentReadyTopicTemplate;
 	
-	public RabbitMqDocumentReadyService() {
-		
-	}
-	
 	@Override
 	public void Publish(DocumentReadyMessage message) throws ServiceUnavailableException {
 		documentReadyTopicTemplate.convertAndSend(message);
