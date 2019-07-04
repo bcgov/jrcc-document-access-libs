@@ -21,7 +21,7 @@ Add `jrcc-access-spring-boot-starter` to your project
 <dependency>
     <groupId>ca.gov.bc.open</groupId>
     <artifactId>jrcc-access-spring-boot-starter</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
@@ -52,6 +52,33 @@ spring.rabbitmq.password=
 
 bcgov.access.ttl= <-- cache time to live expressed in hours (default = 1)
 
+```
+
+### Use the RabbitMqDocumentOutput
+
+```java
+@Component
+public class MyComponent {
+  
+
+  // Autowired the documentoutput interface
+  @Autowired
+  private DocumentOutput documentOutput; 
+  
+  @Override
+  public void doSomethig(String content) {
+    
+    // Creates a new transaction
+    TransactionInfo transactionInfo = new TransactionInfo("testfile.txt", "jrcc-access-sample", LocalDateTime.now());
+    
+    try {
+      // Send the content to redis and rabbit
+      this.documentOutput.send(content, transactionInfo); 
+    } catch(ServiceUnavailableException e) {
+      // If one of the requested service is unavailable, handle it by catching the custom ServiceUnavailableException
+    }
+  }
+}
 ```
 
 ## References
@@ -115,20 +142,19 @@ You should get a similar output
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v2.1.6.RELEASE)
 
-2019-07-03 14:11:20.318  INFO 22912 --- [           main] JrccAccessSpringBootSampleAppApplication : Starting JrccAccessSpringBootSampleAppApplication on CAVICSR7LNQKC2 with PID 22912 (C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-sample-app\target\classes started by 177226 in C:\github\jrcc-document-access-libs\jrcc-access-spring-boot-sample-app)
-2019-07-03 14:11:20.324  INFO 22912 --- [           main] JrccAccessSpringBootSampleAppApplication : No active profile set, falling back to default profiles: default
-2019-07-03 14:11:21.230  INFO 22912 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2019-07-03 14:11:21.238  INFO 22912 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
-2019-07-03 14:11:21.294  INFO 22912 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 32ms. Found 0 repository interfaces.
-2019-07-03 14:11:23.064  INFO 22912 --- [           main] JrccAccessSpringBootSampleAppApplication : Started JrccAccessSpringBootSampleAppApplication in 4.662 seconds (JVM running for 11.668)
-2019-07-03 14:11:23.066  INFO 22912 --- [           main] eAppApplication$ApplicationStartupRunner : Starting access sample app
-2019-07-03 14:11:23.133  INFO 22912 --- [           main] eAppApplication$ApplicationStartupRunner : content successfully stored in redis
-2019-07-03 14:11:23.136  INFO 22912 --- [           main] eAppApplication$ApplicationStartupRunner : key: 9036f266-22b6-4136-8049-55ab33ab82c0
-2019-07-03 14:11:23.137  INFO 22912 --- [           main] eAppApplication$ApplicationStartupRunner : MD5: 9CE2CBC8011718E747A86947FAB93F75
-2019-07-03 14:11:23.219  INFO 22912 --- [           main] o.s.a.r.c.CachingConnectionFactory       : Attempting to connect to: localhost:5672
-2019-07-03 14:11:23.346  INFO 22912 --- [           main] o.s.a.r.c.CachingConnectionFactory       : Created new connection: connectionFactory#556f0972:0/SimpleConnection@62569a6 [delegate=amqp://guest@127.0.0.1:5672/, localPort= 53343]
-2019-07-03 14:11:23.394  INFO 22912 --- [           main] eAppApplication$ApplicationStartupRunner : Document Message Ready for Transaction with [jrcc-access-sample] on document type [test-doc], stored
-with key [9036f266-22b6-4136-8049-55ab33ab82c0] successfully published
+2019-07-04 10:39:25.297  INFO 13440 --- [           main] JrccAccessSpringBootSampleAppApplication : Starting JrccAccessSpringBootSampleAppApplication on CAVICSR7LNQKC2 with PID 13440
+2019-07-04 10:39:25.300  INFO 13440 --- [           main] JrccAccessSpringBootSampleAppApplication : No active profile set, falling back to default profiles: default
+2019-07-04 10:39:25.919  INFO 13440 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-07-04 10:39:25.922  INFO 13440 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-07-04 10:39:25.958  INFO 13440 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17ms. Found 0 repository interfaces.
+2019-07-04 10:39:27.257  INFO 13440 --- [           main] JrccAccessSpringBootSampleAppApplication : Started JrccAccessSpringBootSampleAppApplication in 2.347 seconds (JVM running for 4.044)
+2019-07-04 10:39:27.259  INFO 13440 --- [           main] eAppApplication$ApplicationStartupRunner : Starting access sample app
+2019-07-04 10:39:27.279  INFO 13440 --- [           main] c.g.b.o.j.a.s.RabbitMqDocumentOutput     : Attempting to publish [document type: test-doc].
+2019-07-04 10:39:27.345  INFO 13440 --- [           main] c.g.b.o.j.a.s.RabbitMqDocumentOutput     : [document type: test-doc] successfully stored to redis key [c7ce3298-3bf9-435c-96e5-4d1f698ff9f0].
+2019-07-04 10:39:27.440  INFO 13440 --- [           main] o.s.a.r.c.CachingConnectionFactory       : Attempting to connect to: localhost:5672
+2019-07-04 10:39:27.509  INFO 13440 --- [           main] o.s.a.r.c.CachingConnectionFactory       : Created new connection: connectionFactory#4264b240:0/SimpleConnection@1bd81830 [delegate=amqp://guest@127.0.0.1:5672/, localPort= 51847]
+2019-07-04 10:39:27.554  INFO 13440 --- [           main] c.g.b.o.j.a.s.RabbitMqDocumentOutput     : [document type: test-doc] successfully published to [document.ready] with [test-doc] routing key
+2019-07-04 10:39:27.558  INFO 13440 --- [           main] eAppApplication$ApplicationStartupRunner : Successfully store and send message
 ```
 
 To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
