@@ -20,6 +20,7 @@ import ca.gov.bc.open.jrccaccess.libs.DocumentReadyService;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.StorageService;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
+import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 
 @SpringBootApplication
@@ -46,8 +47,14 @@ public class JrccAccessSpringBootSampleAppApplication {
 			// Creates a new transaction
 			TransactionInfo transactionInfo = new TransactionInfo("testfile.txt", "jrcc-access-sample", LocalDateTime.now());
 			
-			// Send the content to redis and rabbit
-			this.documentOutput.send(content, transactionInfo);
+			try {
+				// Send the content to redis and rabbit
+				this.documentOutput.send(content, transactionInfo); 
+				logger.info("Successfully store and send message");
+			
+			} catch(ServiceUnavailableException e) {
+				logger.error(e.getMessage());
+			}
 
 		}
 	}
