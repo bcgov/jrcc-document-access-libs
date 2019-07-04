@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyService;
+import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 @Service
 public class RabbitMqDocumentReadyService implements DocumentReadyService {
@@ -21,10 +22,8 @@ public class RabbitMqDocumentReadyService implements DocumentReadyService {
 	}
 	
 	@Override
-	public void Publish(DocumentReadyMessage message) {
-		
+	public void Publish(DocumentReadyMessage message) throws ServiceUnavailableException {
 		documentReadyTopicTemplate.convertAndSend(message);
-		
 	}
 
 }

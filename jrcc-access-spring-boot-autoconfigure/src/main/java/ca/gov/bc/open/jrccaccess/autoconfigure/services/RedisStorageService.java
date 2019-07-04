@@ -3,17 +3,20 @@ package ca.gov.bc.open.jrccaccess.autoconfigure.services;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.MessageFormat;
 import java.util.UUID;
 
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.cache.CacheManager;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.StorageService;
+import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 /**
  * Redis implementation of storage service
@@ -39,14 +42,17 @@ public class RedisStorageService implements StorageService {
 	 * Store the content in redis cache using a new guid as key
 	 */
 	@Override
-	public DocumentStorageProperties putString(String content) {
+	public DocumentStorageProperties putString(String content) throws ServiceUnavailableException {
 
 		String key = UUID.randomUUID().toString();
 		String md5Hash = computeMd5(content);
 		
-		this.cacheManager.getCache("Document").put(key, content);
-
-		return new DocumentStorageProperties(key, md5Hash);
+		try {
+			this.cacheManager.getCache("Document").put(key, content);
+			return new DocumentStorageProperties(key, md5Hash);
+		} catch (RedisConnectionFailureException e) {
+			throw new ServiceUnavailableException("redis service unavailable", e.getCause());
+		}
 
 	}
 
