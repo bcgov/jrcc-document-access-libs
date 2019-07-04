@@ -29,7 +29,7 @@ Add settings into `application.settings` file
 
 ```properties
 
-# common spring boot settings
+# common spring boot settings (redis)
 
 spring.redis.database=
 spring.redis.host=
@@ -41,12 +41,23 @@ spring.redis.cluster.nodes=
 spring.redis.sentinel.master=
 spring.redis.sentinel.nodes=
 
+# common spring boot settings (amqp)
+
+spring.rabbitmq.host=
+spring.rabbitmq.port=
+spring.rabbitmq.username=
+spring.rabbitmq.password=
+
 # bc gov settings
 
 bcgov.access.ttl= <-- cache time to live expressed in hours (default = 1)
 
 ```
 
+## References
+
+* [Spring Boot Autoconfiguration for Spring AMQP (RabbitMQ)](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-messaging.html#boot-features-amqp)
+* [Spring Data Redis](https://docs.spring.io/spring-data/data-redis/docs/current/reference/html/)
 
 ## Sample App
 
