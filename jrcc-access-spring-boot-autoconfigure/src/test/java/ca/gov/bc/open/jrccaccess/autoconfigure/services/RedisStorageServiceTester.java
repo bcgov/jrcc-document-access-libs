@@ -4,33 +4,26 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import javax.xml.bind.DatatypeConverter;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.data.redis.connection.BitFieldSubCommands;
-import org.springframework.data.redis.core.RedisOperations;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.RedisConnectionFailureException;
 
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 public class RedisStorageServiceTester {
+
+	
+	private static final String REDIS_CONNECTION_FAILURE_EXCEPTION = "RedisConnectionFailureException";
+
+	private static final String VALID = "valid";
 
 	@Mock
 	private CacheManager cacheManager;
@@ -46,16 +39,17 @@ public class RedisStorageServiceTester {
 		
 		MockitoAnnotations.initMocks(this);
 	    Mockito.when(cacheManager.getCache(Mockito.anyString())).thenReturn(this.cache);
-	    Mockito.doNothing().when(this.cache).put(Mockito.anyString(), Mockito.anyString());
-		this.sut = new RedisStorageService(this.cacheManager);	
+	    Mockito.doNothing().when(this.cache).put(Mockito.anyString(), Mockito.eq(VALID));
+	    Mockito.doThrow(RedisConnectionFailureException.class).when(this.cache).put(Mockito.anyString(), Mockito.eq(REDIS_CONNECTION_FAILURE_EXCEPTION));
+	    this.sut = new RedisStorageService(cacheManager);
 	}
 	
 	
 	@Test
 	public void with_valid_content_should_return_document_properties() {
 		
-		String content = "my content";
-		String myHash = "F2BFA7FC155C4F42CB91404198DDA01F";
+		String content = VALID;
+		String myHash = "9F7D0EE82B6A6CA7DDEAE841F3253059";
 		
 		DocumentStorageProperties result = sut.putString(content);
 		
@@ -73,7 +67,15 @@ public class RedisStorageServiceTester {
 	}
 	
 	
+	@Test(expected = ServiceUnavailableException.class)
+	public void with_RedisConnectionFailureException_should_throw_ServiceUnavailableException() {
+		
+		String content = REDIS_CONNECTION_FAILURE_EXCEPTION;
+		
+		@SuppressWarnings("unused")
+		DocumentStorageProperties result = sut.putString(content);
+		
+	}
 	
-	
-	
+
 }

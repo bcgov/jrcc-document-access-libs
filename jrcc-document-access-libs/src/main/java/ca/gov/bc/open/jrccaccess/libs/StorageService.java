@@ -1,5 +1,7 @@
 package ca.gov.bc.open.jrccaccess.libs;
 
+import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+
 public interface StorageService {
 	
 	/**
@@ -7,6 +9,6 @@ public interface StorageService {
 	 * @param content Content to be stored
 	 * @return The document storage properties
 	 */
-	DocumentStorageProperties putString(String content);	
+	DocumentStorageProperties putString(String content) throws ServiceUnavailableException;	
 
 }

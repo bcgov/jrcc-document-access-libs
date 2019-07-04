@@ -18,26 +18,31 @@ public class documentStoragePropertiesTester {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void with_empty_key_should_throw_illegalArgumentException() {
+		@SuppressWarnings("unused")
 		DocumentStorageProperties sut = new DocumentStorageProperties("", "A123B1");		
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void with_null_key_should_throw_illegalArgumentException() {
+		@SuppressWarnings("unused")
 		DocumentStorageProperties sut = new DocumentStorageProperties(null, "A123B1");		
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void with_empty_MD5_should_throw_illegalArgumentException() {
+		@SuppressWarnings("unused")
 		DocumentStorageProperties sut = new DocumentStorageProperties("my key", "");		
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void with_null_MD5_should_throw_illegalArgumentException() {
+		@SuppressWarnings("unused")
 		DocumentStorageProperties sut = new DocumentStorageProperties("my key", null);		
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void with_not_hex_MD5_should_throw_illegalArgumentException() {
+		@SuppressWarnings("unused")
 		DocumentStorageProperties sut = new DocumentStorageProperties("my key", "not hexadecimal");		
 	}
 	

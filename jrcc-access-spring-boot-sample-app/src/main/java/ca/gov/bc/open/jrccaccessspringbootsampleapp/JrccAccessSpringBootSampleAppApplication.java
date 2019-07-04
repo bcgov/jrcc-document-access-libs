@@ -1,5 +1,8 @@
 package ca.gov.bc.open.jrccaccessspringbootsampleapp;
 
+import java.text.MessageFormat;
+import java.time.LocalDateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +11,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 
+import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
+import ca.gov.bc.open.jrccaccess.autoconfigure.services.RabbitMqDocumentOutput;
+import ca.gov.bc.open.jrccaccess.libs.DocumentInfo;
+import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
+import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
+import ca.gov.bc.open.jrccaccess.libs.DocumentReadyService;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.StorageService;
+import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
+import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 
 @SpringBootApplication
@@ -25,8 +36,7 @@ public class JrccAccessSpringBootSampleAppApplication {
 		protected final Logger logger = LoggerFactory.getLogger(ApplicationStartupRunner.class);
 	
 		@Autowired
-		private StorageService storageService;
-		
+		private DocumentOutput documentOutput;
 		
 		@Override
 		public void run(String... args) throws Exception {
@@ -34,14 +44,18 @@ public class JrccAccessSpringBootSampleAppApplication {
 			
 			String content = "My awesome content";
 			
-			DocumentStorageProperties props = storageService.putString(content);
+			// Creates a new transaction
+			TransactionInfo transactionInfo = new TransactionInfo("testfile.txt", "jrcc-access-sample", LocalDateTime.now());
 			
-			logger.info("content successfully stored in redis");
+			try {
+				// Send the content to redis and rabbit
+				this.documentOutput.send(content, transactionInfo); 
+				logger.info("Successfully store and send message");
 			
-			logger.info("key: " + props.getKey());
-			logger.info("MD5: " + props.getMD5());
-			
-			
+			} catch(ServiceUnavailableException e) {
+				logger.error(e.getMessage());
+			}
+
 		}
 	}
 
