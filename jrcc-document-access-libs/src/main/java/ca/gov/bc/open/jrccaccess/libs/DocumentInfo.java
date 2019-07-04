@@ -1,9 +1,11 @@
 package ca.gov.bc.open.jrccaccess.libs;
 
+import java.text.MessageFormat;
+
 /**
- * Represenst information about the document
+ * Represent information about the document
  * @author alexjoybc
- *
+ * @since 0.1.0
  */
 public class DocumentInfo {
 
@@ -22,4 +24,10 @@ public class DocumentInfo {
 		return type;
 	}
 	
+	
+	@Override
+	public String toString()
+	{
+		return MessageFormat.format("document type: {0}", this.getType());
+	}
 }

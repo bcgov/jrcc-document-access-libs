@@ -1,5 +1,7 @@
 package ca.gov.bc.open.jrccaccess.libs;
 
+import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+
 /**
  * Represents a service to manipulate document ready message
  * 
@@ -14,6 +16,6 @@ public interface DocumentReadyService {
 	 * 
 	 * @param message
 	 */
-	public void Publish(DocumentReadyMessage message);
+	public void Publish(DocumentReadyMessage message)  throws ServiceUnavailableException;
 
 }

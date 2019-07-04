@@ -12,12 +12,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
+import ca.gov.bc.open.jrccaccess.autoconfigure.services.RabbitMqDocumentOutput;
 import ca.gov.bc.open.jrccaccess.libs.DocumentInfo;
+import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyService;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.StorageService;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
+import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 
 @SpringBootApplication
@@ -33,13 +36,7 @@ public class JrccAccessSpringBootSampleAppApplication {
 		protected final Logger logger = LoggerFactory.getLogger(ApplicationStartupRunner.class);
 	
 		@Autowired
-		private StorageService storageService;
-		
-		@Autowired
-		private AccessProperties accessProperties;
-		
-		@Autowired
-		private DocumentReadyService documentReadyService;
+		private DocumentOutput documentOutput;
 		
 		@Override
 		public void run(String... args) throws Exception {
@@ -47,23 +44,18 @@ public class JrccAccessSpringBootSampleAppApplication {
 			
 			String content = "My awesome content";
 			
-			//stores document to redis
-			DocumentStorageProperties props = storageService.putString(content);
+			// Creates a new transaction
+			TransactionInfo transactionInfo = new TransactionInfo("testfile.txt", "jrcc-access-sample", LocalDateTime.now());
 			
-			logger.info("content successfully stored in redis");
+			try {
+				// Send the content to redis and rabbit
+				this.documentOutput.send(content, transactionInfo); 
+				logger.info("Successfully store and send message");
 			
-			logger.info("key: " + props.getKey());
-			logger.info("MD5: " + props.getMD5());
-			
-			DocumentReadyMessage message = new DocumentReadyMessage(
-					new TransactionInfo("testfile.txt", "jrcc-access-sample", LocalDateTime.now()), 
-					new DocumentInfo(accessProperties.getPublish().getDocumentType()),
-					props);
-			
-			//Sends document to the document ready topic
-			documentReadyService.Publish(message);
-			
-			logger.info(MessageFormat.format("{0} successfully published", message));
+			} catch(ServiceUnavailableException e) {
+				logger.error(e.getMessage());
+			}
+
 		}
 	}
 
