@@ -135,31 +135,15 @@ cd jrcc-access-spring-boot-sample-app
 mvn spring-boot:run
 ```
 
-You should get a similar output
+This app is configure to receive document using the http plugin.
 
-```console
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::        (v2.1.6.RELEASE)
+you can use this [Postman collection](jrcc-access-api/jrcc-document-api.postman_collection.json) to interact with the server.
 
-2019-07-04 10:39:25.297  INFO 13440 --- [           main] JrccAccessSpringBootSampleAppApplication : Starting JrccAccessSpringBootSampleAppApplication on CAVICSR7LNQKC2 with PID 13440
-2019-07-04 10:39:25.300  INFO 13440 --- [           main] JrccAccessSpringBootSampleAppApplication : No active profile set, falling back to default profiles: default
-2019-07-04 10:39:25.919  INFO 13440 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2019-07-04 10:39:25.922  INFO 13440 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
-2019-07-04 10:39:25.958  INFO 13440 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17ms. Found 0 repository interfaces.
-2019-07-04 10:39:27.257  INFO 13440 --- [           main] JrccAccessSpringBootSampleAppApplication : Started JrccAccessSpringBootSampleAppApplication in 2.347 seconds (JVM running for 4.044)
-2019-07-04 10:39:27.259  INFO 13440 --- [           main] eAppApplication$ApplicationStartupRunner : Starting access sample app
-2019-07-04 10:39:27.279  INFO 13440 --- [           main] c.g.b.o.j.a.s.RabbitMqDocumentOutput     : Attempting to publish [document type: test-doc].
-2019-07-04 10:39:27.345  INFO 13440 --- [           main] c.g.b.o.j.a.s.RabbitMqDocumentOutput     : [document type: test-doc] successfully stored to redis key [c7ce3298-3bf9-435c-96e5-4d1f698ff9f0].
-2019-07-04 10:39:27.440  INFO 13440 --- [           main] o.s.a.r.c.CachingConnectionFactory       : Attempting to connect to: localhost:5672
-2019-07-04 10:39:27.509  INFO 13440 --- [           main] o.s.a.r.c.CachingConnectionFactory       : Created new connection: connectionFactory#4264b240:0/SimpleConnection@1bd81830 [delegate=amqp://guest@127.0.0.1:5672/, localPort= 51847]
-2019-07-04 10:39:27.554  INFO 13440 --- [           main] c.g.b.o.j.a.s.RabbitMqDocumentOutput     : [document type: test-doc] successfully published to [document.ready] with [test-doc] routing key
-2019-07-04 10:39:27.558  INFO 13440 --- [           main] eAppApplication$ApplicationStartupRunner : Successfully store and send message
-```
+For body, select binary and click select file
+set the http header to `Content-Type:application/octet-stream`
+
+![Postman config](docs\postman.body.png)
+
 
 To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
 
