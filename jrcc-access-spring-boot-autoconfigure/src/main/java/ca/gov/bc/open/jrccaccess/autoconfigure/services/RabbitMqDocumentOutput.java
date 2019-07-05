@@ -3,6 +3,7 @@ package ca.gov.bc.open.jrccaccess.autoconfigure.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessConfigParam;
@@ -20,6 +21,10 @@ import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
  * @since 0.1.0
  */
 @Service
+@ConditionalOnProperty(
+		value="bcgov.access.output",
+		havingValue = "rabbitmq"
+	)
 public class RabbitMqDocumentOutput implements DocumentOutput {
 
 	private Logger logger = LoggerFactory.getLogger(RabbitMqDocumentOutput.class);

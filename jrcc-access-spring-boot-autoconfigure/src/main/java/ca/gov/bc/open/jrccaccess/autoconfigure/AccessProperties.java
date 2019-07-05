@@ -15,6 +15,10 @@ public class AccessProperties {
 	@Min(0)
 	private Integer ttl;
 	
+	private String input;
+	
+	private String output;
+	
 	/**
 	 * the public details
 	 * @author alexjoybc
@@ -37,6 +41,22 @@ public class AccessProperties {
 
 	public void setPublish(Publish publish) {
 		this.publish = publish;
+	}
+
+	public String getInput() {
+		return input;
+	}
+
+	public void setInput(String input) {
+		this.input = input;
+	}
+
+	public String getOutput() {
+		return output;
+	}
+
+	public void setOutput(String output) {
+		this.output = output;
 	}
 
 	/**
