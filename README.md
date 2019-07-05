@@ -51,35 +51,37 @@ spring.rabbitmq.password=
 # bc gov settings
 
 bcgov.access.ttl= <-- cache time to live expressed in hours (default = 1)
+bcgov-access-ttl=[int] <-- the time to live for document in the temp storage 
+bcgov-access-publish-document-type: <-- the type of document to publish
+bcgov-access-input: [http] <-- the input plugin
+bcgov-access-output: [console,rabbitmq] <-- the ouput plugin
 
 ```
 
-### Use the RabbitMqDocumentOutput
+## Configuration
 
-```java
-@Component
-public class MyComponent {
-  
+### Input
 
-  // Autowired the documentoutput interface
-  @Autowired
-  private DocumentOutput documentOutput; 
-  
-  @Override
-  public void doSomethig(String content) {
-    
-    // Creates a new transaction
-    TransactionInfo transactionInfo = new TransactionInfo("testfile.txt", "jrcc-access-sample", LocalDateTime.now());
-    
-    try {
-      // Send the content to redis and rabbit
-      this.documentOutput.send(content, transactionInfo); 
-    } catch(ServiceUnavailableException e) {
-      // If one of the requested service is unavailable, handle it by catching the custom ServiceUnavailableException
-    }
-  }
-}
-```
+You can configure the document input using `bcgov.access.input` property.
+
+> bcgov.access.input=http
+
+when set to `http` jrcc access exposes the [document API](jrcc-access-api/jrcc.swagger.yml).
+You can configure the webserver using standard spring configuration.
+Document sent to the api are handle with the default documentReadyHandler.
+
+### Output
+
+You can configure the document output using `bcgov.access.output` property. the default configuration is `console`.
+
+> bcgov.access.ouput=console
+
+when set to `console` the transaction details and the payload are printed to standard output.
+
+> bcgov.access.output=rabbitmq
+
+when set to `rabbitmq` a document ready message is send to rabbitmq and the document is stored to reddis cache. this configuration implies that you have a running instance of reddis and rabbitmq
+You can configure reddis and rabbitmq using the standard spring boot configuration.
 
 ## References
 
