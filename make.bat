@@ -10,5 +10,4 @@ cd ..
 cd jrcc-access-spring-boot-sample-app\
 call mvn clean install -U
 
-call mvn spring-boot:run
 
