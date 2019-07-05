@@ -105,6 +105,8 @@ docker run -d --hostname some-rabbit --name some-rabbit -p 15672:15672 -p 5672:5
 
 Install jrcc-access-libs
 
+Run the make.bat file or run commands manually below:
+
 ```bash
 cd jrcc-document-access-libs
 mvn install
