@@ -17,61 +17,54 @@ import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
 
 /**
  * A handler wich in invoked to process incoming documents
+ * 
  * @author alexjoybc
  * @since 0.2.0
  *
  */
 @Component
-public class DocumentReadyHandler {	
+public class DocumentReadyHandler {
 
 	private Logger logger = LoggerFactory.getLogger(DocumentReadyHandler.class);
-	
+
 	private DocumentOutput documentOutput;
-	
-	private DocumentReadyHandler(DocumentOutput documentOutput) {
+
+	public DocumentReadyHandler(DocumentOutput documentOutput) {
 		this.documentOutput = documentOutput;
 	}
-	
+
 	/**
 	 * Handles a give document as inputStream and call the document output
+	 * 
 	 * @param inputStream
 	 * @param sender
 	 */
-	public void Handle(InputStream inputStream, String sender) {
-		
+	public void Handle(InputStream inputStream, String sender) throws IOException {
+
 		logger.debug("New document in {}", this.getClass().getName());
-		
+
 		logger.debug("Attempting to create a new transaction");
 		TransactionInfo transactionInfo = new TransactionInfo("filename.txt", sender, LocalDateTime.now());
-		
+
 		String content = getContent(inputStream);
-		
+
 		this.documentOutput.send(content, transactionInfo);
-		
+
 	}
-	
-	
-	private String getContent(InputStream inputStream) {
+
+	private String getContent(InputStream inputStream) throws IOException {
 
 		StringBuilder stringBuilder = new StringBuilder();
+		String line = null;
 
-		try {
-
-			String line = null;
-
-			try (BufferedReader bufferedReader = new BufferedReader(
-					new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-				while ((line = bufferedReader.readLine()) != null) {
-					stringBuilder.append(line);
-				}
+		try (BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+			while ((line = bufferedReader.readLine()) != null) {
+				stringBuilder.append(line);
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 		return stringBuilder.toString();
 	}
 
-	
 }
