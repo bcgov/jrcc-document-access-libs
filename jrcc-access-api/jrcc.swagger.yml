@@ -1,0 +1,117 @@
+openapi: 3.0.0
+info:
+  version: 0.3.0
+  title: jrcc-access-api
+  description: JRCC ACCESS API enables document to be submited of HTTP REST API.
+servers:
+  - url: 'http://localhost/8080'
+tags: 
+  - name: document
+    description: Document API
+paths:
+  /document:
+    post:
+      summary: Post a document to the receiver
+      operationId: PostDocument
+      tags:
+        - document
+      parameters:
+        - $ref: '#/components/parameters/X-Request-ID'
+        - $ref: '#/components/parameters/X-B3-TraceId'
+        - $ref: '#/components/parameters/X-B3-ParentSpanId'
+        - $ref: '#/components/parameters/X-B3-SpanId'
+        - $ref: '#/components/parameters/X-B3-Sampled'
+        - name: sender
+          in: query
+          description: Entity that sends the file
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: File successfully received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentReceivedResponse'
+        '503':
+          description: service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  parameters:
+    X-Request-ID:
+      in: header
+      name: X-Request-ID
+      schema:
+        type: string
+        format: uuid
+      required: false
+    X-B3-TraceId:
+      in: header
+      name: X-B3-TraceId
+      description: The TraceId is 64 or 128-bit in length and indicates the overall ID of the trace. Every span in a trace shares this ID.
+      schema:
+        type: string
+        format: uuid
+      required: false
+    X-B3-ParentSpanId:
+      in: header
+      name: X-B3-ParentSpanId
+      description: The ParentSpanId is 64-bit in length and indicates the position of the parent operation in the trace tree. When the span is the root of the trace tree, there is no ParentSpanId.
+      schema:
+        type: string
+        format: uuid
+      required: false
+    X-B3-SpanId:
+      in: header
+      name: X-B3-SpanId
+      description: The SpanId is 64-bit in length and indicates the position of the current operation in the trace tree. The value should not be interpreted, it may or may not be derived from the value of the TraceId.
+      schema:
+        type: string
+        format: uuid
+      required: false
+    X-B3-Sampled:
+      in: header
+      name: X-B3-Sampled
+      description: Sampling is a mechanism to reduce the volume of data that ends up in the tracing system. In B3, sampling applies consistently per-trace, once the sampling decision is made, the same value should be consistently sent downstream. This means you will see all spans sharing a trace ID or none.
+      schema:
+        type: string
+        enum:
+          - Defer
+          - Deny
+          - Accept
+          - Debug
+      required: false
+  schemas:
+    DocumentReceivedResponse:
+      description: Represents the response when a document is submited
+      required:
+        - acknowledge
+      properties:
+        acknowledge:
+          type: boolean
+          description: true if received
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
