@@ -21,7 +21,7 @@ Add `jrcc-access-spring-boot-starter` to your project
 <dependency>
     <groupId>ca.gov.bc.open</groupId>
     <artifactId>jrcc-access-spring-boot-starter</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
@@ -51,35 +51,37 @@ spring.rabbitmq.password=
 # bc gov settings
 
 bcgov.access.ttl= <-- cache time to live expressed in hours (default = 1)
+bcgov-access-ttl=[int] <-- the time to live for document in the temp storage 
+bcgov-access-publish-document-type: <-- the type of document to publish
+bcgov-access-input: [http] <-- the input plugin
+bcgov-access-output: [console,rabbitmq] <-- the ouput plugin
 
 ```
 
-### Use the RabbitMqDocumentOutput
+## Configuration
 
-```java
-@Component
-public class MyComponent {
-  
+### Input
 
-  // Autowired the documentoutput interface
-  @Autowired
-  private DocumentOutput documentOutput; 
-  
-  @Override
-  public void doSomethig(String content) {
-    
-    // Creates a new transaction
-    TransactionInfo transactionInfo = new TransactionInfo("testfile.txt", "jrcc-access-sample", LocalDateTime.now());
-    
-    try {
-      // Send the content to redis and rabbit
-      this.documentOutput.send(content, transactionInfo); 
-    } catch(ServiceUnavailableException e) {
-      // If one of the requested service is unavailable, handle it by catching the custom ServiceUnavailableException
-    }
-  }
-}
-```
+You can configure the document input using `bcgov.access.input` property.
+
+> bcgov.access.input=http
+
+when set to `http` jrcc access exposes the [document API](jrcc-access-api/jrcc.swagger.yml).
+You can configure the webserver using standard spring configuration.
+Document sent to the api are handle with the default documentReadyHandler.
+
+### Output
+
+You can configure the document output using `bcgov.access.output` property. the default configuration is `console`.
+
+> bcgov.access.ouput=console
+
+when set to `console` the transaction details and the payload are printed to standard output.
+
+> bcgov.access.output=rabbitmq
+
+when set to `rabbitmq` a document ready message is send to rabbitmq and the document is stored to reddis cache. this configuration implies that you have a running instance of reddis and rabbitmq
+You can configure reddis and rabbitmq using the standard spring boot configuration.
 
 ## References
 
@@ -104,6 +106,8 @@ docker run -d --hostname some-rabbit --name some-rabbit -p 15672:15672 -p 5672:5
 ```
 
 Install jrcc-access-libs
+
+Run the make.bat file or run commands manually below:
 
 ```bash
 cd jrcc-document-access-libs
@@ -131,31 +135,15 @@ cd jrcc-access-spring-boot-sample-app
 mvn spring-boot:run
 ```
 
-You should get a similar output
+This app is configure to receive document using the http plugin.
 
-```console
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::        (v2.1.6.RELEASE)
+you can use this [Postman collection](jrcc-access-api/jrcc-document-api.postman_collection.json) to interact with the server.
 
-2019-07-04 10:39:25.297  INFO 13440 --- [           main] JrccAccessSpringBootSampleAppApplication : Starting JrccAccessSpringBootSampleAppApplication on CAVICSR7LNQKC2 with PID 13440
-2019-07-04 10:39:25.300  INFO 13440 --- [           main] JrccAccessSpringBootSampleAppApplication : No active profile set, falling back to default profiles: default
-2019-07-04 10:39:25.919  INFO 13440 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2019-07-04 10:39:25.922  INFO 13440 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
-2019-07-04 10:39:25.958  INFO 13440 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17ms. Found 0 repository interfaces.
-2019-07-04 10:39:27.257  INFO 13440 --- [           main] JrccAccessSpringBootSampleAppApplication : Started JrccAccessSpringBootSampleAppApplication in 2.347 seconds (JVM running for 4.044)
-2019-07-04 10:39:27.259  INFO 13440 --- [           main] eAppApplication$ApplicationStartupRunner : Starting access sample app
-2019-07-04 10:39:27.279  INFO 13440 --- [           main] c.g.b.o.j.a.s.RabbitMqDocumentOutput     : Attempting to publish [document type: test-doc].
-2019-07-04 10:39:27.345  INFO 13440 --- [           main] c.g.b.o.j.a.s.RabbitMqDocumentOutput     : [document type: test-doc] successfully stored to redis key [c7ce3298-3bf9-435c-96e5-4d1f698ff9f0].
-2019-07-04 10:39:27.440  INFO 13440 --- [           main] o.s.a.r.c.CachingConnectionFactory       : Attempting to connect to: localhost:5672
-2019-07-04 10:39:27.509  INFO 13440 --- [           main] o.s.a.r.c.CachingConnectionFactory       : Created new connection: connectionFactory#4264b240:0/SimpleConnection@1bd81830 [delegate=amqp://guest@127.0.0.1:5672/, localPort= 51847]
-2019-07-04 10:39:27.554  INFO 13440 --- [           main] c.g.b.o.j.a.s.RabbitMqDocumentOutput     : [document type: test-doc] successfully published to [document.ready] with [test-doc] routing key
-2019-07-04 10:39:27.558  INFO 13440 --- [           main] eAppApplication$ApplicationStartupRunner : Successfully store and send message
-```
+For body, select binary and click select file
+set the http header to `Content-Type:application/octet-stream`
+
+![Postman config](docs\postman.body.png)
+
 
 To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
 

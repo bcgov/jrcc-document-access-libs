@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "9e3e698a-721f-463d-b53f-353510e0d80c",
+		"name": "jrcc-document-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post document",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/octet-stream",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/document?sender=bcgov",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"document"
+					],
+					"query": [
+						{
+							"key": "sender",
+							"value": "bcgov"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

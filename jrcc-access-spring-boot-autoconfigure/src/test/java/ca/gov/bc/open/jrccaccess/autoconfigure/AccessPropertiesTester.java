@@ -53,6 +53,28 @@ public class AccessPropertiesTester {
 		assertEquals("must be greater than or equal to 0", constraintViolations.iterator().next().getMessage());
 	}
 	
-	
+	@Test
+	public void set_get_input_should_return_valid() {
+
+		String input = "console";
+
+		AccessProperties sut = new AccessProperties();
+
+		sut.setInput(input);
+		
+		assertEquals(input, sut.getInput());
+	}
+
+	@Test
+	public void set_get_output_should_return_valid() {
+
+		String output = "console";
+
+		AccessProperties sut = new AccessProperties();
+
+		sut.setOutput(output);
+		
+		assertEquals(output, sut.getOutput());
+	}
 	
 }
