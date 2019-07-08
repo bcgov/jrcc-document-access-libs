@@ -1,0 +1,12 @@
+bcgov:
+  access:
+    ttl: 12
+    publish:
+      document-type: test-doc
+    input: http
+    output: rabbitmq
+logging:
+  level:
+    ca:
+      gov:
+        bc: DEBUG

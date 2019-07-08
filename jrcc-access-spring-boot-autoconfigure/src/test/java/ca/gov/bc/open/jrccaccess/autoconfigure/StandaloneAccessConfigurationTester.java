@@ -15,31 +15,35 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AccessApplication.class)
+@SpringBootTest(
+        classes = AccessApplication.class,
+        properties = {
+        		"bcgov.access.input=http",
+        		"bcgov.access.output=rabbitmq"
+        })
 @ContextConfiguration
 public class StandaloneAccessConfigurationTester {
 
 	@Autowired
 	private JedisConnectionFactory jedisConnectionFactory;
-	
+
 	@Autowired
 	private CacheManager cacheManager;
-	
-	
+
 	@Test
 	public void with_default_config_should_return_a_valid_stringRedisTemplate() {
 
-		assertNotNull(cacheManager);		
+		assertNotNull(cacheManager);
 	}
-	
+
 	@Test
 	public void with_default_config_should_return_a_valid_jedisConnectionFactory() {
 
 		int expectedPort = 6379;
 
 		assertEquals("localhost", this.jedisConnectionFactory.getHostName());
-		
-		assertEquals(expectedPort, this.jedisConnectionFactory.getPort());			
+
+		assertEquals(expectedPort, this.jedisConnectionFactory.getPort());
 	}
-	
+
 }
