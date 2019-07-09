@@ -103,19 +103,6 @@ You can configure reddis and rabbitmq using the standard spring boot configurati
 
 The sample app is a demo that shows the usage of `jrcc-access-spring-boot-starter`
 
-Run the application (using [docker](https://www.docker.com/))
-
-Create a redis container
-
-```bash
-docker run --name some-redis -p 6379:6379 -d redis
-```
-Create a rabit container
-
-```bash
-docker run -d --hostname some-rabbit --name some-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
-```
-
 Install jrcc-access-libs
 
 Run the `make.bat` file
@@ -135,6 +122,37 @@ set the http header to `Content-Type:application/octet-stream`
 
 ![Postman config](docs\postman.body.png)
 
+
+if you want to run the sample app using redis and rabbitmq do the following
+
+Create a redis container
+
+```bash
+docker run --name some-redis -p 6379:6379 -d redis
+```
+Create a rabit container
+
+```bash
+docker run -d --hostname some-rabbit --name some-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
+```
+
+update the [application.yml](jrcc-access-spring-boot-sample-app/src/main/resources/application.yml)
+
+```properties
+bcgov:
+  access:
+    input: http
+    output:
+      document-type: test-doc
+      plugin: rabbitmq
+      rabbitmq:
+         ttl: 1
+logging:
+  level:
+    ca:
+      gov:
+        bc: DEBUG
+```
 
 To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
 
