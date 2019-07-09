@@ -15,9 +15,8 @@ import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
  */
 @Service
 @ConditionalOnProperty(
-		value="bcgov.access.output",
-		havingValue = "console",
-		matchIfMissing = true
+		value="bcgov.access.output.console",
+		havingValue="true"
 	)
 public class ConsoleOutput implements DocumentOutput {
 

@@ -19,7 +19,7 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 @SpringBootTest(
 		classes = AccessApplication.class,
 		properties = {
-				"bcgov.access.output=rabbitmq"
+				"bcgov.access.output.plugin=rabbitmq"
 		})
 @ContextConfiguration
 public class MessageConverterTester {

@@ -1,84 +1,84 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure;
 
-import javax.validation.constraints.Min;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Represents the custom configuration for the document flow lib
- * @author 177226
+ * @author alexjoybc
+ * @since 0.1.0
  *
  */
 @ConfigurationProperties(prefix = "bcgov.access")
 public class AccessProperties {
+
 	
-	@Min(0)
-	private Integer ttl;
+	// Represent the global output config
+	private Output output;
 	
-	private String input;
-	
-	private String output;
 	
 	/**
-	 * the public details
+	 * Represents the globla output
 	 * @author alexjoybc
+	 * @since 0.3.0
 	 */
-	private Publish publish;
-	
-	public Integer getTtl() {
-		return this.ttl == null ? 1 : this.ttl;
-	}
-
-	public void setTtl(String ttl) {
-		this.ttl = Integer.decode(ttl);
-	}
-
-	
-	public Publish getPublish() {
-		if(publish == null)  this.publish = new Publish();
-		return publish;
-	}
-
-	public void setPublish(Publish publish) {
-		this.publish = publish;
-	}
-
-	public String getInput() {
-		return input;
-	}
-
-	public void setInput(String input) {
-		this.input = input;
-	}
-
-	public String getOutput() {
-		return output;
-	}
-
-	public void setOutput(String output) {
-		this.output = output;
-	}
-
-	/**
-	 * Represents the publish details
-	 * @author alexjoybc
-	 *
-	 */
-	public static  class Publish {
+	public static class Output {
 		
-		private String documentType;
+		public String documentType;
+		
+		public String plugin;
+		
+		/**
+		 * Gets the plugin type
+		 * @return
+		 */
+		public String getPlugin() {
+			return plugin;
+		}
 
+		/**
+		 * Sets the plugin type
+		 * @param plugin
+		 */
+		public void setPlugin(String plugin) {
+			this.plugin = plugin;
+		}
+
+		/**
+		 * Sets the document type
+		 * @return
+		 */
 		public String getDocumentType() {
-			if (documentType == null || documentType.isEmpty()) return "unknown";
 			return documentType;
 		}
 
+		/**
+		 * Gets the document type
+		 * @param documentType
+		 */
 		public void setDocumentType(String documentType) {
 			this.documentType = documentType;
 		}
+		
+	}
 
+
+	/**
+	 * Gets the output configuration
+	 * @return
+	 */
+	public Output getOutput() {
+		return output;
+	}
+
+
+	/**
+	 * Sets the documentation output
+	 * @param output
+	 */
+	public void setOutput(Output output) {
+		this.output = output;
 	}
 	
-
+	
 	
 }

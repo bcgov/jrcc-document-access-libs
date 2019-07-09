@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import ca.gov.bc.open.jrccaccess.autoconfigure.AccessConfigParam;
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.gov.bc.open.jrccaccess.libs.DocumentInfo;
 import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
@@ -21,10 +20,7 @@ import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
  * @since 0.1.0
  */
 @Service
-@ConditionalOnProperty(
-		value="bcgov.access.output",
-		havingValue = "rabbitmq"
-	)
+@ConditionalOnProperty(name="bcgov.access.output.plugin", havingValue = "rabbitmq")
 public class RabbitMqDocumentOutput implements DocumentOutput {
 
 	private Logger logger = LoggerFactory.getLogger(RabbitMqDocumentOutput.class);
@@ -50,7 +46,7 @@ public class RabbitMqDocumentOutput implements DocumentOutput {
 	@Override
 	public void send(String content, TransactionInfo transactionInfo) throws ServiceUnavailableException {
 		
-		DocumentInfo documentInfo = new DocumentInfo(accessProperties.getPublish().getDocumentType());
+		DocumentInfo documentInfo = new DocumentInfo(accessProperties.getOutput().getDocumentType());
 		
 		logger.info("Attempting to publish [{}].", documentInfo);
 
@@ -61,9 +57,9 @@ public class RabbitMqDocumentOutput implements DocumentOutput {
 		logger.debug("Creating new document ready message.");
 		DocumentReadyMessage documentReadyMessage = new DocumentReadyMessage(transactionInfo, documentInfo, documentStorageProperties);
 		
-		logger.debug("Attempting to publish [{}] ready message to [{}] topic.", documentInfo, AccessConfigParam.DOCUMENT_READY_TOPIC);
+		logger.debug("Attempting to publish [{}] ready message to [{}] topic.", documentInfo, RabbitMqParam.DOCUMENT_READY_TOPIC);
 		this.rabbitMqDocumentReadyService.Publish(documentReadyMessage);
-		logger.info("[{}] successfully published to [{}] with [{}] routing key", documentInfo, AccessConfigParam.DOCUMENT_READY_TOPIC, accessProperties.getPublish().getDocumentType());
+		logger.info("[{}] successfully published to [{}] with [{}] routing key", documentInfo, RabbitMqParam.DOCUMENT_READY_TOPIC, accessProperties.getOutput().getDocumentType());
 
 	}
 

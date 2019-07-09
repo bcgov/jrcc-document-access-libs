@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
         properties = {
         		"spring.redis.cluster.nodes=127.0.0.1:5000,127.0.0.1:5001",
         		"bcgov.access.input=http",
-        		"bcgov.access.output=rabbitmq"
+        		"bcgov.access.output.plugin=rabbitmq"
         })
 @ContextConfiguration
 public class ClusterAccessConfigurationTester {

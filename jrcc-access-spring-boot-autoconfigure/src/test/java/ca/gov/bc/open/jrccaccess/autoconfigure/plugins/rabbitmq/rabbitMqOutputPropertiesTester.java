@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,10 +12,8 @@ import javax.validation.ValidatorFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class AccessPropertiesTester {
+public class rabbitMqOutputPropertiesTester {
 
-	
-	
 	private static Validator validator;
 
 	@BeforeClass
@@ -29,7 +27,7 @@ public class AccessPropertiesTester {
 	public void with_valid_ttl_should_set_ttl() {
 		String ttl = "2";
 
-		AccessProperties sut = new AccessProperties();
+		RabbitMqOutputProperties sut = new RabbitMqOutputProperties();
 
 		sut.setTtl(ttl);
 
@@ -42,39 +40,15 @@ public class AccessPropertiesTester {
 
 		String ttl = "-10";
 
-		AccessProperties sut = new AccessProperties();
+		RabbitMqOutputProperties sut = new RabbitMqOutputProperties();
 
 		sut.setTtl(ttl);
 		
-		Set<ConstraintViolation<AccessProperties>> constraintViolations = validator.validate(sut);
+		Set<ConstraintViolation<RabbitMqOutputProperties>> constraintViolations = validator.validate(sut);
 
 		assertEquals(1, constraintViolations.size());
 
 		assertEquals("must be greater than or equal to 0", constraintViolations.iterator().next().getMessage());
 	}
-	
-	@Test
-	public void set_get_input_should_return_valid() {
 
-		String input = "console";
-
-		AccessProperties sut = new AccessProperties();
-
-		sut.setInput(input);
-		
-		assertEquals(input, sut.getInput());
-	}
-
-	@Test
-	public void set_get_output_should_return_valid() {
-
-		String output = "console";
-
-		AccessProperties sut = new AccessProperties();
-
-		sut.setOutput(output);
-		
-		assertEquals(output, sut.getOutput());
-	}
-	
 }

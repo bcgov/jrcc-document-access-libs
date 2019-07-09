@@ -26,7 +26,10 @@ import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        classes = AccessApplication.class)
+        classes = AccessApplication.class,
+        properties = {
+        		"bcgov.access.output.plugin=rabbitmq"
+        })
 @ContextConfiguration
 public class RabbitMqDocumentReadyServiceTester {
 

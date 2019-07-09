@@ -19,10 +19,7 @@ import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
  *
  */
 @Service
-@ConditionalOnProperty(
-		value="bcgov.access.output",
-		havingValue = "rabbitmq"
-	)
+@ConditionalOnProperty(name="bcgov.access.output.plugin", havingValue = "rabbitmq")
 public class RabbitMqDocumentReadyService implements DocumentReadyService {
 
 	@Qualifier("documentReadyTopicTemplate")

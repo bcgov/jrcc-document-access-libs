@@ -20,8 +20,8 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import ca.gov.bc.open.jrccaccess.autoconfigure.AccessConfigParam;
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
+
 
 /**
  * The RabbitMqAutoConfiguration configures rabbitMq plugin
@@ -29,11 +29,9 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
  * @since 0.2.0
  */
 @Configuration
-@EnableConfigurationProperties(AccessProperties.class)
+@EnableConfigurationProperties(RabbitMqOutputProperties.class)
 @ComponentScan
-@ConditionalOnProperty(
-		name="bcgov.access.output",
-		havingValue = "rabbitmq")
+@ConditionalOnProperty(name="bcgov.access.output.plugin", havingValue = "rabbitmq")
 public class AutoConfiguration {
 
 	/**
@@ -59,7 +57,7 @@ public class AutoConfiguration {
 	 */
 	@Bean
 	public TopicExchange documentReadyTopic() {
-		return new TopicExchange(AccessConfigParam.DOCUMENT_READY_TOPIC, true, false);
+		return new TopicExchange(RabbitMqParam.DOCUMENT_READY_TOPIC, true, false);
 	}
 	
 	
@@ -88,15 +86,14 @@ public class AutoConfiguration {
 	 * @return The documentReadyTemplate for publishing document to topic ready exchange
 	 */
 	@Bean
-	public RabbitTemplate documentReadyTopicTemplate(RabbitProperties rabbitProperties, AccessProperties accessProperties, ObjectMapper objectMapper) {
+	public RabbitTemplate documentReadyTopicTemplate(RabbitMqOutputProperties rabbitMqOutputProperties, RabbitProperties rabbitProperties, AccessProperties accessProperties, ObjectMapper objectMapper) {
 		
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(this.connectionFactory(rabbitProperties));
 		rabbitTemplate.setExchange(this.documentReadyTopic().getName());
-		rabbitTemplate.setRoutingKey(accessProperties.getPublish().getDocumentType());
+		rabbitTemplate.setRoutingKey(accessProperties.getOutput().getDocumentType());
 		rabbitTemplate.setMessageConverter(this.jsonMessageConverter(objectMapper));
 		return rabbitTemplate;
 		
 	}
-	
 	
 }
