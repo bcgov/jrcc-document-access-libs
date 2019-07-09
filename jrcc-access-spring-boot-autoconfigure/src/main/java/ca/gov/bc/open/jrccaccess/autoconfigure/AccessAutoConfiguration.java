@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Sentinel;
@@ -34,6 +36,17 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqOutputPr
 @ComponentScan("ca.gov.bc.open.jrccaccess.autoconfigure.services")
 public class AccessAutoConfiguration {
 
+	private AccessProperties accessProperties;
+	private Logger logger = LoggerFactory.getLogger(AccessAutoConfiguration.class);
+	
+	
+	public AccessAutoConfiguration(AccessProperties accessProperties) {
+		this.accessProperties = accessProperties;
+		logger.info("Bootstraping Access Library", accessProperties.getOutput().getPlugin());
+		logger.info("Output plugin: {}", accessProperties.getOutput().getPlugin());
+	}
+	
+	
 	/**
 	 * Configure the JedisConnectionFactory
 	 * @param properties The redis properties
