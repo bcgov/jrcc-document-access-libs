@@ -93,7 +93,4 @@ public class AccessAutoConfiguration {
 	                    .cacheDefaults(redisCacheConfiguration).build();
     }
 	
-	
-	
-	
 }

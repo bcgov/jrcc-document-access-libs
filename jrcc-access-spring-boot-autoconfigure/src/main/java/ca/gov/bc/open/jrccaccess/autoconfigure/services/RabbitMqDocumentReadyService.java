@@ -1,7 +1,6 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure.services;
 
 import org.springframework.amqp.AmqpConnectException;
-import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.AmqpIOException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

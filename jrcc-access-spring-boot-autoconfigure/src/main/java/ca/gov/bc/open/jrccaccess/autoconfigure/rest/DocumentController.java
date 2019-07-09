@@ -34,6 +34,7 @@ public class DocumentController implements DocumentApi {
 	}
 	
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ResponseEntity<DocumentReceivedResponse> postDocument(@NotNull @Valid String sender, UUID xRequestID,
 			UUID xB3TraceId, UUID xB3ParentSpanId, UUID xB3SpanId, String xB3Sampled, @Valid Resource body) {
