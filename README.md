@@ -110,6 +110,7 @@ Run the `make.bat` file
 Run the sample
 
 ```bash
+mvn clean install -P sample-app
 mvn spring-boot:run -f jrcc-access-spring-boot-sample-app\pom.xml
 ```
 
