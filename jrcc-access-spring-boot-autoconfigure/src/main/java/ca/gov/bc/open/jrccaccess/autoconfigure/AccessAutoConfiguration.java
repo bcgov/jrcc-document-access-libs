@@ -30,7 +30,7 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqOutputPr
  * @since 0.0.1
  */
 @Configuration
-@EnableConfigurationProperties(RabbitMqOutputProperties.class)
+@EnableConfigurationProperties({ RabbitMqOutputProperties.class, AccessProperties.class })
 @ComponentScan("ca.gov.bc.open.jrccaccess.autoconfigure.services")
 public class AccessAutoConfiguration {
 

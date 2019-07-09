@@ -21,6 +21,8 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
+
 
 /**
  * The RabbitMqAutoConfiguration configures rabbitMq plugin
@@ -30,7 +32,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Configuration
 @EnableConfigurationProperties(RabbitMqOutputProperties.class)
 @ComponentScan
-@ConditionalOnProperty(name="bcgov.access.output.rabbitmq.document-type")
+@ConditionalOnProperty(name="bcgov.access.output.plugin", havingValue = "rabbitmq")
 public class AutoConfiguration {
 
 	/**
@@ -85,11 +87,11 @@ public class AutoConfiguration {
 	 * @return The documentReadyTemplate for publishing document to topic ready exchange
 	 */
 	@Bean
-	public RabbitTemplate documentReadyTopicTemplate(RabbitMqOutputProperties rabbitMqOutputProperties, RabbitProperties rabbitProperties, ObjectMapper objectMapper) {
+	public RabbitTemplate documentReadyTopicTemplate(RabbitMqOutputProperties rabbitMqOutputProperties, RabbitProperties rabbitProperties, AccessProperties accessProperties, ObjectMapper objectMapper) {
 		
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(this.connectionFactory(rabbitProperties));
 		rabbitTemplate.setExchange(this.documentReadyTopic().getName());
-		rabbitTemplate.setRoutingKey(rabbitMqOutputProperties.getDocumentType());
+		rabbitTemplate.setRoutingKey(accessProperties.getOutput().getDocumentType());
 		rabbitTemplate.setMessageConverter(this.jsonMessageConverter(objectMapper));
 		return rabbitTemplate;
 		

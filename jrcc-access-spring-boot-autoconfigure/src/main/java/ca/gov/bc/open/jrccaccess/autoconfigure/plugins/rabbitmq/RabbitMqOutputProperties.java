@@ -16,8 +16,6 @@ public class RabbitMqOutputProperties {
 	@Min(0)
 	private Integer ttl;
 	
-	private String documentType;
-	
 	/**
 	 * 
 	 * @return the Time to live set for the temporary storage.
@@ -34,23 +32,7 @@ public class RabbitMqOutputProperties {
 		this.ttl = Integer.decode(ttl);
 	}
 	
-	/**
-	 * Sets the document type to publish
-	 * @param documentType
-	 */
-	public void setDocumentType(String documentType) {
-		this.documentType = documentType;
-	}
 
-	/**
-	 * Gets the document type to publish
-	 * @return
-	 */
-	public String getDocumentType() {
-		return documentType;
-	}
-
-	
 	
 	
 }

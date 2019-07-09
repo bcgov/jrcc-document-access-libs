@@ -72,16 +72,27 @@ Document sent to the api are handle with the default documentReadyHandler.
 
 ### Output
 
+#### Console
+
 You can configure the document output using `bcgov.access.output` property. the default configuration is `console`.
 
-> bcgov.access.ouput=console
+> bcgov.access.ouput.plugin=console
 
 when set to `console` the transaction details and the payload are printed to standard output.
 
-> bcgov.access.output=rabbitmq
+
+#### RabbitMq
+
+> bcgov.access.ouput.plugin=rabbitmq
 
 when set to `rabbitmq` a document ready message is send to rabbitmq and the document is stored to reddis cache. this configuration implies that you have a running instance of reddis and rabbitmq
 You can configure reddis and rabbitmq using the standard spring boot configuration.
+
+##### Configuration
+
+| name | definition |
+| --- | --- |
+| bcgov.access.input.http.output.rabbitmq.ttl | the time to live for the document in storage expressed in hour |
 
 ## References
 
@@ -107,32 +118,12 @@ docker run -d --hostname some-rabbit --name some-rabbit -p 15672:15672 -p 5672:5
 
 Install jrcc-access-libs
 
-Run the make.bat file or run commands manually below:
+Run the `make.bat` file
+
+Ru the sample
 
 ```bash
-cd jrcc-document-access-libs
-mvn install
-```
-
-Install jrcc-access-spring-boot-autoconfigure
-
-```bash
-cd jrcc-access-spring-boot-autoconfigure
-mvn install
-```
-
-Install jrcc-access-spring-boot-starter
-
-```bash
-cd jrcc-access-spring-boot-starter
-mvn install
-```
-
-Run the sample app
-
-```bash
-cd jrcc-access-spring-boot-sample-app
-mvn spring-boot:run
+mvn spring-boot:run -f jrcc-access-spring-boot-sample-app\pom.xml
 ```
 
 This app is configure to receive document using the http plugin.

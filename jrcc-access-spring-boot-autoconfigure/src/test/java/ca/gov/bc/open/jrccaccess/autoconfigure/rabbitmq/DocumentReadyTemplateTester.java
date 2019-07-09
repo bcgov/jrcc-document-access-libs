@@ -22,7 +22,8 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 		properties = {
         		"spring.rabbitmq.host=rabbit",
         		"spring.rabbitmq.port=1234",
-    			"bcgov.access.output.rabbitmq.document-type=test-doc"
+    			"bcgov.access.output.plugin=rabbitmq",
+        		"bcgov.access.output.document-type=test-doc"
         })
 @ContextConfiguration
 public class DocumentReadyTemplateTester {

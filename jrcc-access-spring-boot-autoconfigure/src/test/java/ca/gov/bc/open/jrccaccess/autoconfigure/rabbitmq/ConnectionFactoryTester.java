@@ -16,7 +16,7 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 @SpringBootTest(
         classes = AccessApplication.class,
         properties = {
-        		"bcgov.access.output.rabbitmq.document-type=test-doc"
+        		"bcgov.access.output.plugin=rabbitmq"
         })
 @ContextConfiguration
 public class ConnectionFactoryTester {
