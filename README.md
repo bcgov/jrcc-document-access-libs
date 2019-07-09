@@ -21,7 +21,7 @@ Add `jrcc-access-spring-boot-starter` to your project
 <dependency>
     <groupId>ca.gov.bc.open</groupId>
     <artifactId>jrcc-access-spring-boot-starter</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.3</version>
 </dependency>
 ```
 
@@ -111,7 +111,7 @@ Run the sample
 
 ```bash
 mvn clean install -P sample-app
-mvn spring-boot:run -f jrcc-access-spring-boot-sample-app\pom.xml
+mvn spring-boot:run -f jrcc-access-spring-boot-sample-app/pom.xml
 ```
 
 This app is configure to receive document using the http plugin.
