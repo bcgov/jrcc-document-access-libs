@@ -120,7 +120,7 @@ Install jrcc-access-libs
 
 Run the `make.bat` file
 
-Ru the sample
+Run the sample
 
 ```bash
 mvn spring-boot:run -f jrcc-access-spring-boot-sample-app\pom.xml
