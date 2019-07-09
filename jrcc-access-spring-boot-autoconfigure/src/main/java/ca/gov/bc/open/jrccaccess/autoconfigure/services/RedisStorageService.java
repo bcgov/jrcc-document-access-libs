@@ -16,9 +16,10 @@ import ca.gov.bc.open.jrccaccess.libs.StorageService;
 import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 /**
- * Redis implementation of storage service
+ * The redisStorageService provides services to interact with Redis cache.
  * 
  * @author ajoyeux
+ * @since 0.1.0
  *
  */
 @Service

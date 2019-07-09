@@ -11,6 +11,12 @@ import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyService;
 import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
+/**
+ * The RabbitMqDocumentReadyService provides services to interact with rabbitMq
+ * @author alexjoybc
+ * @since 0.2.0
+ *
+ */
 @Service
 public class RabbitMqDocumentReadyService implements DocumentReadyService {
 
@@ -18,9 +24,12 @@ public class RabbitMqDocumentReadyService implements DocumentReadyService {
 	@Autowired
 	private RabbitTemplate documentReadyTopicTemplate;
 
+	/**
+	 * Publishes a document ready message to the desired Queue
+	 */
 	@Override
 	public void Publish(DocumentReadyMessage message) throws ServiceUnavailableException {
-
+		
 		try {
 
 			documentReadyTopicTemplate.convertAndSend(message);

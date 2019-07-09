@@ -15,7 +15,8 @@ import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
 import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 /**
- * RabbitMQ Document Output service.
+ * The rabbitMqDocumentOutput provides service to send document ready message 
+ * to the desired Queue.
  * @author alexjoybc
  * @since 0.1.0
  */

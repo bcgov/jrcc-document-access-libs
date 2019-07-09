@@ -22,7 +22,11 @@ import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 
-
+/**
+ * The AccessAutoConfiguration is the default configuration for the access library
+ * @author alexjoybc
+ * @since 0.0.1
+ */
 @Configuration
 @EnableConfigurationProperties(AccessProperties.class)
 @ComponentScan("ca.gov.bc.open.jrccaccess.autoconfigure.services")
@@ -80,6 +84,12 @@ public class AccessAutoConfiguration {
         return nodes;
      }
 	
+	/**
+	 * Configures the cache manager
+	 * @param jedisConnectionFactory A jedisConnectionFactory
+	 * @param accessProperties Custom access properties
+	 * @return
+	 */
 	@Bean(name = "Document")
 	@ConditionalOnMissingBean(CacheManager.class)
     public CacheManager cacheManager(JedisConnectionFactory jedisConnectionFactory, AccessProperties accessProperties) {
