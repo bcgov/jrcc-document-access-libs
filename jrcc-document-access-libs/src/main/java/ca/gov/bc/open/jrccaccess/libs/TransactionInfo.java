@@ -3,7 +3,6 @@ package ca.gov.bc.open.jrccaccess.libs;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 /**
  * Represents the transaction information

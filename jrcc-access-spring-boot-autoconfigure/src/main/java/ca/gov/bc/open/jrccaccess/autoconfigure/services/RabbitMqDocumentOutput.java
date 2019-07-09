@@ -2,7 +2,6 @@ package ca.gov.bc.open.jrccaccess.autoconfigure.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,8 @@ import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
 import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 /**
- * RabbitMQ Document Output service.
+ * The rabbitMqDocumentOutput provides service to send document ready message 
+ * to the desired Queue.
  * @author alexjoybc
  * @since 0.1.0
  */

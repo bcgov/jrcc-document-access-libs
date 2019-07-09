@@ -3,15 +3,12 @@ package ca.gov.bc.open.jrccaccess.autoconfigure.services;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.MessageFormat;
 import java.util.UUID;
 
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.RedisConnectionFailureException;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
@@ -19,9 +16,10 @@ import ca.gov.bc.open.jrccaccess.libs.StorageService;
 import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 /**
- * Redis implementation of storage service
+ * The redisStorageService provides services to interact with Redis cache.
  * 
  * @author ajoyeux
+ * @since 0.1.0
  *
  */
 @Service

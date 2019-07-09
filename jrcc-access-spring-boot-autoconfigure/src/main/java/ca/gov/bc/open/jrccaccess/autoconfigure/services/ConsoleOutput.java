@@ -9,7 +9,7 @@ import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
 
 /**
- * The document console output.
+ * The console output prints document properties to the standard output
  * @author alexjoybc
  * @since 0.2.0
  */

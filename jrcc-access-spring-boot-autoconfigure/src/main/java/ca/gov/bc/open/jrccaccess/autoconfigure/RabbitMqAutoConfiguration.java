@@ -20,9 +20,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
- * Rabbit mq autoconfiguration class
+ * The RabbitMqAutoConfiguration configures rabbitMq plugin
  * @author alexjoybc
- *
+ * @since 0.2.0
  */
 @Configuration
 @EnableConfigurationProperties(AccessProperties.class)
