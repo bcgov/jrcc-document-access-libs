@@ -20,7 +20,7 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 @SpringBootTest(
 		classes = AccessApplication.class,
 		properties = {
-				"bcgov.access.output=rabbitmq"
+				"bcgov.access.output.rabbitmq.document-type=test-doc"
 		})
 @ContextConfiguration
 public class TopicExchangeTester {

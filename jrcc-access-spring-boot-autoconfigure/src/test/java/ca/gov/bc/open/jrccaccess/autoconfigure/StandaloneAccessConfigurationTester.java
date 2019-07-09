@@ -16,8 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(
         classes = AccessApplication.class,
         properties = {
-        		"bcgov.access.input=http",
-        		"bcgov.access.output=rabbitmq"
+        		"bcgov.access.output.rabbitmq.document-type=test-doc"
         })
 @ContextConfiguration
 public class StandaloneAccessConfigurationTester {

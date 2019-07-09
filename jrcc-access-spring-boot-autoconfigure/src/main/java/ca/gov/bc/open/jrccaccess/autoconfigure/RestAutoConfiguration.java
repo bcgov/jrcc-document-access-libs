@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
  * @since 0.2.0
  */
 @Configuration
-@EnableConfigurationProperties(AccessProperties.class)
 @ComponentScan("ca.gov.bc.open.jrccaccess.autoconfigure.rest")
 public class RestAutoConfiguration {
 

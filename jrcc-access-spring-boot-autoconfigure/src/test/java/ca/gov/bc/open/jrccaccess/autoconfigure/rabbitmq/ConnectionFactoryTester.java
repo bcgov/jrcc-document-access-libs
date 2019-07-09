@@ -13,7 +13,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AccessApplication.class)
+@SpringBootTest(
+        classes = AccessApplication.class,
+        properties = {
+        		"bcgov.access.output.rabbitmq.document-type=test-doc"
+        })
 @ContextConfiguration
 public class ConnectionFactoryTester {
 

@@ -24,10 +24,7 @@ import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
  *
  */
 @Service
-@ConditionalOnProperty(
-		value="bcgov.access.output",
-		havingValue = "rabbitmq"
-	)
+@ConditionalOnProperty(name="bcgov.access.output.rabbitmq.document-type")
 public class RedisStorageService implements StorageService {
 
 	CacheManager cacheManager;

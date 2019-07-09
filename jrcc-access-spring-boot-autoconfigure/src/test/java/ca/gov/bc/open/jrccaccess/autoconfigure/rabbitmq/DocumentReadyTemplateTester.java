@@ -20,10 +20,9 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 @SpringBootTest(
 		classes = AccessApplication.class,
 		properties = {
-        		"bcgov.access.publish.document-type=test-doc",
         		"spring.rabbitmq.host=rabbit",
         		"spring.rabbitmq.port=1234",
-    			"bcgov.access.output=rabbitmq"
+    			"bcgov.access.output.rabbitmq.document-type=test-doc"
         })
 @ContextConfiguration
 public class DocumentReadyTemplateTester {

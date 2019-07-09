@@ -22,13 +22,15 @@ import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 
+import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqOutputProperties;
+
 /**
  * The AccessAutoConfiguration is the default configuration for the access library
  * @author alexjoybc
  * @since 0.0.1
  */
 @Configuration
-@EnableConfigurationProperties(AccessProperties.class)
+@EnableConfigurationProperties(RabbitMqOutputProperties.class)
 @ComponentScan("ca.gov.bc.open.jrccaccess.autoconfigure.services")
 public class AccessAutoConfiguration {
 
@@ -92,11 +94,11 @@ public class AccessAutoConfiguration {
 	 */
 	@Bean(name = "Document")
 	@ConditionalOnMissingBean(CacheManager.class)
-    public CacheManager cacheManager(JedisConnectionFactory jedisConnectionFactory, AccessProperties accessProperties) {
+    public CacheManager cacheManager(JedisConnectionFactory jedisConnectionFactory, RabbitMqOutputProperties rabbitMqOutputProperties) {
 
 		RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
 	            .disableCachingNullValues()
-	            .entryTtl(Duration.ofHours(accessProperties.getTtl()));
+	            .entryTtl(Duration.ofHours(rabbitMqOutputProperties.getTtl()));
 	    redisCacheConfiguration.usePrefix();
 
 	   return RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(jedisConnectionFactory)
