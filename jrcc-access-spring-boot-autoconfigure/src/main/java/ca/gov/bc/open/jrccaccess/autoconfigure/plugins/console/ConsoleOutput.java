@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure.services;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.console;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,19 +9,24 @@ import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
 
 /**
- * The document console output.
+ * The console output prints document properties to the standard output
  * @author alexjoybc
  * @since 0.2.0
  */
 @Service
 @ConditionalOnProperty(
-		value="bcgov.access.output",
-		havingValue = "console",
-		matchIfMissing = true
+		value="bcgov.access.output.plugin",
+		havingValue="console"
 	)
 public class ConsoleOutput implements DocumentOutput {
 
 	private Logger logger = LoggerFactory.getLogger(ConsoleOutput.class);
+	
+	private Prettifier prettifier;
+	
+	public ConsoleOutput(Prettifier prettifier) {
+		this.prettifier = prettifier;
+	}
 	
 	/**
 	 * Sends the document to the console stdout.
@@ -29,8 +34,10 @@ public class ConsoleOutput implements DocumentOutput {
 	@Override
 	public void send(String content, TransactionInfo transactionInfo) {
 		// TODO Auto-generated method stub
-		logger.info("new message:");
-		logger.info(content);
+		logger.info("transactionInfo: {}", transactionInfo);
+		String result = this.prettifier.prettify(content);
+		System.out.println(result);
+
 	}
 
 }

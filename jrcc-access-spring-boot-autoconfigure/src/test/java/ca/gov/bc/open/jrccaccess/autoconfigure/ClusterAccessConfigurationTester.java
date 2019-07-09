@@ -8,9 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
-import org.springframework.data.redis.connection.jedis.JedisConnection;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -20,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
         properties = {
         		"spring.redis.cluster.nodes=127.0.0.1:5000,127.0.0.1:5001",
         		"bcgov.access.input=http",
-        		"bcgov.access.output=rabbitmq"
+        		"bcgov.access.output.plugin=rabbitmq"
         })
 @ContextConfiguration
 public class ClusterAccessConfigurationTester {

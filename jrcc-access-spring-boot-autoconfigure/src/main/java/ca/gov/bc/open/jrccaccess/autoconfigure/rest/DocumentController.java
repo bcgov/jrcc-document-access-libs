@@ -18,6 +18,12 @@ import ca.bc.gov.open.api.model.Error;
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
+/**
+ * The document controller provides an endpoint to submit a document.
+ * @author alexjoybc
+ * @since 0.2.0
+ *
+ */
 @RestController
 @ConditionalOnProperty(
 	value="bcgov.access.input",
@@ -27,13 +33,20 @@ public class DocumentController implements DocumentApi {
 	
 	private DocumentReadyHandler documentReadyHandler;
 	
+	/**
+	 * Creates a new document controller
+	 * @param documentReadyHandler the service that will handle the document
+	 */
 	public DocumentController(DocumentReadyHandler documentReadyHandler) {
 		
 		this.documentReadyHandler = documentReadyHandler;
 		
 	}
 	
-	
+	/**
+	 * POST /document?sender={sender}
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ResponseEntity<DocumentReceivedResponse> postDocument(@NotNull @Valid String sender, UUID xRequestID,
 			UUID xB3TraceId, UUID xB3ParentSpanId, UUID xB3SpanId, String xB3Sampled, @Valid Resource body) {

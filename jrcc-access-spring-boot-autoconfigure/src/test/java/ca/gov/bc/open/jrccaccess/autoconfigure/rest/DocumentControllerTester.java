@@ -14,16 +14,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.rabbitmq.client.RpcClient.Response;
-
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 public class DocumentControllerTester {
 
-	private static final String IO_EXCEPTION = "io_exception";
-	
+
 	private static final String SERVICE_UNAVAILABLE = "service_unavailable";
 
 	private static final String VALID = "valid";

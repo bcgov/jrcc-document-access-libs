@@ -4,16 +4,24 @@ import java.time.LocalDateTime;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.console.ConsoleOutput;
+import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.console.Prettifier;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
 
 public class ConsoleOutputTester {
 
 	private ConsoleOutput sut;
 	
+	@Mock
+	private Prettifier prettifier;
+	
 	@Before
 	public void Init() {
-		sut = new ConsoleOutput();
+		MockitoAnnotations.initMocks(this);
+		sut = new ConsoleOutput(this.prettifier);
 	}
 	
 	@Test

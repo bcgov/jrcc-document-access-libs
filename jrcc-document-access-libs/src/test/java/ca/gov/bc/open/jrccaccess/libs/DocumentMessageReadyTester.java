@@ -2,7 +2,6 @@ package ca.gov.bc.open.jrccaccess.libs;
 
 import static org.junit.Assert.assertEquals;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 

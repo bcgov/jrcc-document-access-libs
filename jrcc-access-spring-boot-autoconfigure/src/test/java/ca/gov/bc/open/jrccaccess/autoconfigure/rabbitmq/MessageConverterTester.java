@@ -1,8 +1,6 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure.rabbitmq;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 
 import org.junit.Test;
@@ -18,7 +16,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AccessApplication.class)
+@SpringBootTest(
+		classes = AccessApplication.class,
+		properties = {
+				"bcgov.access.output.plugin=rabbitmq"
+		})
 @ContextConfiguration
 public class MessageConverterTester {
 

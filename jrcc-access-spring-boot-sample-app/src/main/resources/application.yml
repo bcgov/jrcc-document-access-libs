@@ -1,10 +1,11 @@
 bcgov:
   access:
-    ttl: 12
-    publish:
-      document-type: test-doc
     input: http
-    output: rabbitmq
+    output:
+      document-type: test-doc
+      plugin: console
+      console:
+         format: xml
 logging:
   level:
     ca:

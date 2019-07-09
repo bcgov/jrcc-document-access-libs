@@ -9,14 +9,13 @@ import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
 
 /**
- * A handler wich in invoked to process incoming documents
+ * The document ready handler is the global handler for incoming documents
  * 
  * @author alexjoybc
  * @since 0.2.0
@@ -29,6 +28,10 @@ public class DocumentReadyHandler {
 
 	private DocumentOutput documentOutput;
 
+	/**
+	 * Creates a document ready handler with a given document output
+	 * @param documentOutput
+	 */
 	public DocumentReadyHandler(DocumentOutput documentOutput) {
 		this.documentOutput = documentOutput;
 	}

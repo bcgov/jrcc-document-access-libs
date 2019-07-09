@@ -21,7 +21,7 @@ Add `jrcc-access-spring-boot-starter` to your project
 <dependency>
     <groupId>ca.gov.bc.open</groupId>
     <artifactId>jrcc-access-spring-boot-starter</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.3</version>
 </dependency>
 ```
 
@@ -72,16 +72,27 @@ Document sent to the api are handle with the default documentReadyHandler.
 
 ### Output
 
+#### Console
+
 You can configure the document output using `bcgov.access.output` property. the default configuration is `console`.
 
-> bcgov.access.ouput=console
+> bcgov.access.ouput.plugin=console
 
 when set to `console` the transaction details and the payload are printed to standard output.
 
-> bcgov.access.output=rabbitmq
+
+#### RabbitMq
+
+> bcgov.access.ouput.plugin=rabbitmq
 
 when set to `rabbitmq` a document ready message is send to rabbitmq and the document is stored to reddis cache. this configuration implies that you have a running instance of reddis and rabbitmq
 You can configure reddis and rabbitmq using the standard spring boot configuration.
+
+##### Configuration
+
+| name | definition |
+| --- | --- |
+| bcgov.access.input.http.output.rabbitmq.ttl | the time to live for the document in storage expressed in hour |
 
 ## References
 
@@ -92,7 +103,28 @@ You can configure reddis and rabbitmq using the standard spring boot configurati
 
 The sample app is a demo that shows the usage of `jrcc-access-spring-boot-starter`
 
-Run the application (using [docker](https://www.docker.com/))
+Install jrcc-access-libs
+
+Run the `make.bat` file
+
+Run the sample
+
+```bash
+mvn clean install -P sample-app
+mvn spring-boot:run -f jrcc-access-spring-boot-sample-app/pom.xml
+```
+
+This app is configure to receive document using the http plugin.
+
+you can use this [Postman collection](jrcc-access-api/jrcc-document-api.postman_collection.json) to interact with the server.
+
+For body, select binary and click select file
+set the http header to `Content-Type:application/octet-stream`
+
+![Postman config](docs\postman.body.png)
+
+
+if you want to run the sample app using redis and rabbitmq do the following
 
 Create a redis container
 
@@ -105,45 +137,23 @@ Create a rabit container
 docker run -d --hostname some-rabbit --name some-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
 ```
 
-Install jrcc-access-libs
+update the [application.yml](jrcc-access-spring-boot-sample-app/src/main/resources/application.yml)
 
-Run the make.bat file or run commands manually below:
-
-```bash
-cd jrcc-document-access-libs
-mvn install
+```properties
+bcgov:
+  access:
+    input: http
+    output:
+      document-type: test-doc
+      plugin: rabbitmq
+      rabbitmq:
+         ttl: 1
+logging:
+  level:
+    ca:
+      gov:
+        bc: DEBUG
 ```
-
-Install jrcc-access-spring-boot-autoconfigure
-
-```bash
-cd jrcc-access-spring-boot-autoconfigure
-mvn install
-```
-
-Install jrcc-access-spring-boot-starter
-
-```bash
-cd jrcc-access-spring-boot-starter
-mvn install
-```
-
-Run the sample app
-
-```bash
-cd jrcc-access-spring-boot-sample-app
-mvn spring-boot:run
-```
-
-This app is configure to receive document using the http plugin.
-
-you can use this [Postman collection](jrcc-access-api/jrcc-document-api.postman_collection.json) to interact with the server.
-
-For body, select binary and click select file
-set the http header to `Content-Type:application/octet-stream`
-
-![Postman config](docs\postman.body.png)
-
 
 To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
 
