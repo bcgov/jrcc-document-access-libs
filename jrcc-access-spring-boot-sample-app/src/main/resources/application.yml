@@ -3,9 +3,9 @@ bcgov:
     input: http
     output:
       document-type: test-doc
-      plugin: rabbitmq
-      rabbitmq:
-        ttl: 12
+      plugin: console
+      console:
+         format: xml
 logging:
   level:
     ca:
