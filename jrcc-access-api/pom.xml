@@ -6,7 +6,7 @@
 
 	<groupId>ca.gov.bc.open</groupId>
 	<artifactId>jrcc-document-api</artifactId>
-	<version>0.3.1</version>
+	<version>0.3.2</version>
 	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
