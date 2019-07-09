@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,10 @@ import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
  *
  */
 @Service
+@ConditionalOnProperty(
+		value="bcgov.access.output",
+		havingValue = "rabbitmq"
+	)
 public class RedisStorageService implements StorageService {
 
 	CacheManager cacheManager;

@@ -1,16 +1,11 @@
 REM Clean and install all the maven modules
 
-cd jrcc-document-access-libs\
-call mvn clean install -U
-cd ..
-cd jrcc-access-api\
-call mvn clean install -U
-cd ..
-cd jrcc-access-spring-boot-autoconfigure\
-call mvn clean install -U
-cd ..
-cd jrcc-access-spring-boot-starter\
-call mvn clean install -U
-cd ..
-cd jrcc-access-spring-boot-sample-app\
-call mvn clean install -U
+
+call mvn clean install -U -f jrcc-document-access-libs\pom.xml
+call mvn clean install -U -f jrcc-access-api\pom.xml
+call mvn clean install -U -f jrcc-access-spring-boot-autoconfigure\pom.xml
+call mvn clean install -U -f jrcc-access-spring-boot-starter\pom.xml
+call mvn clean install -U -f jrcc-access-spring-boot-sample-app\pom.xml
+
+REM Modules successfully installed
+REM To run the sample app use [mvn spring-boot:run -f jrcc-access-spring-boot-sample-app\pom.xml]
