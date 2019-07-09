@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,6 +20,9 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import ca.gov.bc.open.jrccaccess.autoconfigure.AccessConfigParam;
+import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
+
 /**
  * The RabbitMqAutoConfiguration configures rabbitMq plugin
  * @author alexjoybc
@@ -26,8 +30,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  */
 @Configuration
 @EnableConfigurationProperties(AccessProperties.class)
-@ComponentScan("ca.gov.bc.open.jrccaccess.autoconfigure.services")
-public class RabbitMqAutoConfiguration {
+@ComponentScan
+@ConditionalOnProperty(
+		name="bcgov.access.output",
+		havingValue = "rabbitmq")
+public class AutoConfiguration {
 
 	/**
 	 * ConnectionFactory Bean

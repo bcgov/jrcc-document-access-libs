@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
+import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqDocumentReadyService;
 import ca.gov.bc.open.jrccaccess.libs.DocumentInfo;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;

@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure.services;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

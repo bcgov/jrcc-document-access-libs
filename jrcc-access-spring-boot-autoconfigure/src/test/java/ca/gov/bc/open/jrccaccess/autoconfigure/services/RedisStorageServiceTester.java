@@ -15,6 +15,7 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.RedisConnectionFailureException;
 
+import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RedisStorageService;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
