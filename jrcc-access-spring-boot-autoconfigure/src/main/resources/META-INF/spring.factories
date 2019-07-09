@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 ca.gov.bc.open.jrccaccess.autoconfigure.AccessAutoConfiguration,\
 ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.AutoConfiguration,\
+ca.gov.bc.open.jrccaccess.autoconfigure.plugins.console.AutoConfiguration,\
 ca.gov.bc.open.jrccaccess.autoconfigure.RestAutoConfiguration
