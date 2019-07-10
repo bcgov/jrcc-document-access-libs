@@ -33,8 +33,8 @@ Add settings into `application.settings` file using the following configuration 
 
 | name | definition | required |
 | --- | --- | --- |
-| (bcgov.access.input.document-type)[#bcgov.access.input.document-type] | String | No |
-| (bcgov.access.input.plugin-type)[#bcgov.access.input.plugin-type] | String | Yes |
+| [bcgov.access.input.document-type](#bcgov.access.input.document-type) | String | No |
+| [bcgov.access.input.plugin-type](#bcgov.access.input.plugin-type) | String | Yes |
 
 #### bcgov.access.input.document-type
 
