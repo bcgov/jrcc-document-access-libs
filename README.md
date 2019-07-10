@@ -53,8 +53,8 @@ Sets the plugin type
 
 You can configure the document input using `bcgov.access.input` property.
 
-* (Console)[#Console]
-* (Http)[#Http]
+* [Console](#Console)
+* [Http](#Http)
 
 ### Console
 
@@ -104,8 +104,8 @@ server.port=5050
 
 You can configure the document input using `bcgov.access.output` property.
 
-* (Console)[#Console]
-* (RabbitMq)[#RabbitMq]
+* [Console](#Console)
+* [RabbitMq](#RabbitMq)
 
 ### Console
 
