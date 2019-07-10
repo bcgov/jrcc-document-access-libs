@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure.rest;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.http;
 
 import java.io.IOException;
 import java.util.UUID;
