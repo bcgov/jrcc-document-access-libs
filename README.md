@@ -33,8 +33,8 @@ Add settings into `application.settings` file using the following configuration 
 
 | name | definition | required |
 | --- | --- | --- |
-| [bcgov.access.input.document-type](#bcgov.access.input.document-type) | String | No |
-| [bcgov.access.input.plugin-type](#bcgov.access.input.plugin-type) | String | Yes |
+| [bcgov.access.input.document-type](#bcgovaccessinputdocument-type) | String | No |
+| [bcgov.access.input.plugin-type](#bcgovaccessinputplugin-type) | String | Yes |
 
 #### bcgov.access.input.document-type
 
@@ -126,7 +126,7 @@ It support the [Common Options](#Common Options) and the following options:
 
 | name | type | required |
 | --- | --- | --- |
-| [bcgov.access.output.console.format](#bcgov.access.output.console.format) | String | No |
+| [bcgov.access.output.console.format](#bcgovaccessoutputconsoleformat) | String | No |
 
 ##### bcgov.access.output.console.format
 
@@ -159,7 +159,7 @@ It support the [Common Options](#Common Options) and the following options:
 
 | name | type | required |
 | --- | --- | --- |
-| [bcgov.access.output.rabbitmq.ttl](#bcgov.access.output.rabbitmq.ttl) | Int | No |
+| [bcgov.access.output.rabbitmq.ttl](#bcgovaccessoutputrabbitmqttl) | Int | No |
 
 ##### bcgov.access.output.rabbitmq.ttl
 
