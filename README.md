@@ -55,6 +55,7 @@ You can configure the document input using `bcgov.access.input` property.
 
 * [Console](#Console)
 * [Http](#Http)
+* [RabbitMq](#RabbitMq)
 
 ### Console
 
@@ -71,7 +72,7 @@ bcgov.access.input.plugin=console
 
 #### Input Configuration Options
 
-There are no special configuration options for this plugin, but it does support the [Common Options](#Common Options).
+There are no special configuration options for this plugin, but it does support the [Common Options](#CommonOptions).
 
 ### Http
 
@@ -91,7 +92,7 @@ Document sent to the api are handle with the default documentReadyHandler.
 
 #### Configuration Options
 
-There are no special configuration options for this plugin, but it does support the [Common Options](#Common Options) and spring standard EMBEDDED SERVER CONFIGURATION (ServerProperties).
+There are no special configuration options for this plugin, but it does support the [Common Options](#CommonOptions) and spring standard EMBEDDED SERVER CONFIGURATION (ServerProperties).
 [Common Application Properties](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html)
 
 exemple to run the service on port `5050`
@@ -99,6 +100,23 @@ exemple to run the service on port `5050`
 ```properties
 server.port=5050
 ```
+
+
+### RabbitMq
+
+#### Description
+
+Using this plugin you can receive messages from a spefied rabbitMq queue.
+
+#### Setup
+
+```properties
+bcgov.access.input.plugin=rabbitmq
+```
+
+#### Configuration Options
+
+There are no special configuration options for this plugin, but it does support the [Common Options](#CommonOptions).
 
 ## Output Plugins
 
