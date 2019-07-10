@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
+import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.http.DocumentController;
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
