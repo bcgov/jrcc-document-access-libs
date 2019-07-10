@@ -12,16 +12,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class AccessProperties {
 
 	
-	// Represent the global output config
-	private Output output;
+	// Represents the global output configuration.
+	private PluginConfig output;
+	
+	// Represents the global input configuration.
+	private PluginConfig input;
 	
 	
 	/**
-	 * Represents the globla output
+	 * Represents the plugin configuration
 	 * @author alexjoybc
 	 * @since 0.3.0
 	 */
-	public static class Output {
+	public static class PluginConfig {
 		
 		public String documentType;
 		
@@ -66,7 +69,7 @@ public class AccessProperties {
 	 * Gets the output configuration
 	 * @return
 	 */
-	public Output getOutput() {
+	public PluginConfig getOutput() {
 		return output;
 	}
 
@@ -75,10 +78,24 @@ public class AccessProperties {
 	 * Sets the documentation output
 	 * @param output
 	 */
-	public void setOutput(Output output) {
+	public void setOutput(PluginConfig output) {
 		this.output = output;
 	}
-	
-	
+
+	/**
+	 * Gets the input configuration
+	 * @return
+	 */
+	public PluginConfig getInput() {
+		return input;
+	}
+
+	/**
+	 * Sets the input configuration
+	 * @param input
+	 */
+	public void setInput(PluginConfig input) {
+		this.input = input;
+	}
 	
 }

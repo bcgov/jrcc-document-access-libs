@@ -1,6 +1,10 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.http;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -26,7 +30,7 @@ import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
  */
 @RestController
 @ConditionalOnProperty(
-	value="bcgov.access.input",
+	value="bcgov.access.input.plugin",
 	havingValue = "http"
 )
 public class DocumentController implements DocumentApi {
@@ -55,7 +59,7 @@ public class DocumentController implements DocumentApi {
 		response.setAcknowledge(true);
 		
 		try {
-			documentReadyHandler.Handle(body.getInputStream(), sender);
+			documentReadyHandler.Handle(getContent(body.getInputStream()), sender);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 		
@@ -73,6 +77,21 @@ public class DocumentController implements DocumentApi {
 		
 		return ResponseEntity.ok(response);
 		
+	}
+	
+	private String getContent(InputStream inputStream) throws IOException {
+
+		StringBuilder stringBuilder = new StringBuilder();
+		String line = null;
+
+		try (BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+			while ((line = bufferedReader.readLine()) != null) {
+				stringBuilder.append(line);
+			}
+		}
+
+		return stringBuilder.toString();
 	}
 
 }

@@ -42,32 +42,15 @@ public class DocumentReadyHandler {
 	 * @param inputStream
 	 * @param sender
 	 */
-	public void Handle(InputStream inputStream, String sender) throws IOException {
+	public void Handle(String message, String sender) {
 
 		logger.debug("New document in {}", this.getClass().getName());
 
 		logger.debug("Attempting to create a new transaction");
 		TransactionInfo transactionInfo = new TransactionInfo("filename.txt", sender, LocalDateTime.now());
 
-		String content = getContent(inputStream);
+		this.documentOutput.send(message, transactionInfo);
 
-		this.documentOutput.send(content, transactionInfo);
-
-	}
-
-	private String getContent(InputStream inputStream) throws IOException {
-
-		StringBuilder stringBuilder = new StringBuilder();
-		String line = null;
-
-		try (BufferedReader bufferedReader = new BufferedReader(
-				new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-			while ((line = bufferedReader.readLine()) != null) {
-				stringBuilder.append(line);
-			}
-		}
-
-		return stringBuilder.toString();
 	}
 
 }
