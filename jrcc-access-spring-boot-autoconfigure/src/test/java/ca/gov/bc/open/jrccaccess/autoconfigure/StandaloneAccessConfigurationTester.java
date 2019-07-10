@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(
         classes = AccessApplication.class,
         properties = {
+        		"bcgov.access.input.plugin=console",
         		"bcgov.access.output.plugin=rabbitmq"
         })
 @ContextConfiguration

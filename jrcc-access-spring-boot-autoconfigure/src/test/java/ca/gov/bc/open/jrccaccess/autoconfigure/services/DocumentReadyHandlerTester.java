@@ -36,13 +36,9 @@ public class DocumentReadyHandlerTester {
 	@Test
 	public void send_with_valid_input_should_process() {
 		
-		InputStream is = new ByteArrayInputStream("awesome content".getBytes() );
-		try {
-			sut.Handle(is, "bcgov");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		sut.Handle("awesome content", "bcgov");
+
 		
 	}
 	

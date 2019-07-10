@@ -28,6 +28,7 @@ import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 @SpringBootTest(
         classes = AccessApplication.class,
         properties = {
+        		"bcgov.access.input.plugin=console",
         		"bcgov.access.output.plugin=rabbitmq"
         })
 @ContextConfiguration

@@ -1,13 +1,13 @@
-bcgov:
-  access:
-    input: http
-    output:
-      document-type: test-doc
-      plugin: console
-      console:
-         format: xml
 logging:
   level:
     ca:
       gov:
         bc: DEBUG
+bcgov:
+  access:
+    input:
+       document-type: test-doc
+       plugin: console
+    output:
+      document-type: test-doc
+      plugin: console

@@ -43,6 +43,7 @@ public class AccessAutoConfiguration {
 	public AccessAutoConfiguration(AccessProperties accessProperties) {
 		this.accessProperties = accessProperties;
 		logger.info("Bootstraping Access Library", accessProperties.getOutput().getPlugin());
+		logger.info("Input plugin: {}", accessProperties.getInput().getPlugin());
 		logger.info("Output plugin: {}", accessProperties.getOutput().getPlugin());
 	}
 	

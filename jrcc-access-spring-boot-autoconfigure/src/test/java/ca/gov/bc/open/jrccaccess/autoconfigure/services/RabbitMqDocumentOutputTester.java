@@ -9,10 +9,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
-import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties.Output;
+import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqDocumentOutput;
 import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqDocumentReadyService;
-import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqOutputProperties;
 import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RedisStorageService;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
@@ -33,7 +32,7 @@ public class RabbitMqDocumentOutputTester {
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(this.documentReadyService).Publish(Mockito.any());
 		Mockito.when(this.storageService.putString(Mockito.anyString())).thenReturn(new DocumentStorageProperties("key", "A1"));
-		Output output = new Output();
+		PluginConfig output = new PluginConfig();
 		output.setDocumentType("mydoc");
 		AccessProperties accessProperties = new AccessProperties();
 		accessProperties.setOutput(output);
