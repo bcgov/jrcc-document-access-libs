@@ -7,9 +7,7 @@ bcgov:
   access:
     input:
        document-type: test-doc
-       plugin: http
+       plugin: console
     output:
       document-type: test-doc
       plugin: console
-      console:
-         format: xml
