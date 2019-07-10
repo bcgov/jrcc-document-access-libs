@@ -10,9 +10,7 @@ bcgov:
   access:
     input:
       document-type: test-doc
-      plugin: rabbitmq
+      plugin: console
     output:
       document-type: test-doc
       plugin: console
-      console:
-         format: xml
