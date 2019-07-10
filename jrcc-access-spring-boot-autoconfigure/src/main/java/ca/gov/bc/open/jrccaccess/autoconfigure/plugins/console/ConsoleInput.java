@@ -16,7 +16,7 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
  */
 @Component
 @ConditionalOnProperty(
-		value="bcgov.access.output.plugin",
+		value="bcgov.access.input.plugin",
 		havingValue="console"
 	)
 public class ConsoleInput implements CommandLineRunner {

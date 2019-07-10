@@ -19,7 +19,7 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 @SpringBootTest(
 		classes = AccessApplication.class,
 		properties = {
-				"bcgov.access.input.plugin=console",
+				"bcgov.access.input.plugin=http",
 				"bcgov.access.output.plugin=rabbitmq"
 		})
 @ContextConfiguration

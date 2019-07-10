@@ -1,3 +1,6 @@
+spring:
+   main:
+      web-application-type: NONE
 logging:
   level:
     ca:
@@ -6,8 +9,10 @@ logging:
 bcgov:
   access:
     input:
-       document-type: test-doc
-       plugin: console
+      document-type: test-doc
+      plugin: rabbitmq
     output:
       document-type: test-doc
       plugin: console
+      console:
+         format: xml

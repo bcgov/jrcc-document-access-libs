@@ -9,5 +9,6 @@ package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 public class RabbitMqParam {
 
 	public static final String DOCUMENT_READY_TOPIC = "document.ready";
+	public static final String DOCUMENT_READY_EXTENSION = ".q";
 	
 }

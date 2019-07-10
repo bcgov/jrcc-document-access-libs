@@ -3,13 +3,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>ca.bc.gov.open</groupId>
+		<artifactId>document-access</artifactId>
+		<version>0.3.3</version>
+	</parent>
+
+
 	<groupId>ca.gov.bc.open</groupId>
 	<artifactId>jrcc-document-access-libs</artifactId>
-	<version>0.3.3</version>
 	<packaging>jar</packaging>
 
 	<name>jrcc-document-access-libs</name>
 	<url>http://maven.apache.org</url>
+
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,6 +29,10 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
 	</dependencies>
 </project>

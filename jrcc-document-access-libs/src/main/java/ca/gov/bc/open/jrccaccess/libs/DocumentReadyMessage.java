@@ -2,6 +2,9 @@ package ca.gov.bc.open.jrccaccess.libs;
 
 import java.text.MessageFormat;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Represents a document ready message that can be publised to a topic
  * @author 177226
@@ -30,7 +33,11 @@ public class DocumentReadyMessage {
 	 * @param documentInfo A DocumentInfo
 	 * @param documentStorageProperties A DocumentStorageProperties
 	 */
-	public DocumentReadyMessage(TransactionInfo transactionInfo, DocumentInfo documentInfo, DocumentStorageProperties documentStorageProperties) {
+	@JsonCreator
+	public DocumentReadyMessage(
+			@JsonProperty("transactionInfo")TransactionInfo transactionInfo, 
+			@JsonProperty("documentInfo")DocumentInfo documentInfo, 
+			@JsonProperty("documentStorageProperties")DocumentStorageProperties documentStorageProperties) {
 		
 		
 		if(transactionInfo == null) throw new IllegalArgumentException("transactionInfo");
