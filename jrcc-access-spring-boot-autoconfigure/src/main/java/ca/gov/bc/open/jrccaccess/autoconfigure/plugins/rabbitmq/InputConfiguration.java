@@ -15,6 +15,7 @@ import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,6 +29,7 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
  */
 @Configuration
 @ConditionalOnProperty(name="bcgov.access.input.plugin", havingValue = "rabbitmq")
+@EnableConfigurationProperties(RabbitMqInputProperties.class)
 public class InputConfiguration {
 	
 
@@ -58,12 +60,11 @@ public class InputConfiguration {
 	 * @return
 	 */
 	@Bean 
-	public Queue documentReadyDeadLetterQueue(AccessProperties accessProperties) {
+	public Queue documentReadyDeadLetterQueue(AccessProperties accessProperties, RabbitMqInputProperties properties) {
 		Queue queue = QueueBuilder
 				.durable(RabbitMqParam.DOCUMENT_READY_DLQ)
 				.withArgument(RabbitMqParam.X_DEAD_LETTER_EXCHANGE_ARG, RabbitMqParam.DOCUMENT_READY_TOPIC)
-				.withArgument(RabbitMqParam.X_DEAD_LETTER_ROUTING_KEY_ARG, accessProperties.getInput().getDocumentType())
-				.withArgument(RabbitMqParam.X_MESSAGE_TTL_ARG, 5000)
+				.withArgument(RabbitMqParam.X_MESSAGE_TTL_ARG, properties.getRetryDelay())
 				.build();
 		return queue;
 	}
@@ -87,9 +88,10 @@ public class InputConfiguration {
 	@Bean
     public Binding dlqBinding(
     		ConnectionFactory connectionFactory,
-    		AccessProperties accessProperties) {
+    		AccessProperties accessProperties,
+    		RabbitMqInputProperties rabbitMqInputProperties) {
         return BindingBuilder
-        		.bind(documentReadyDeadLetterQueue(accessProperties))
+        		.bind(documentReadyDeadLetterQueue(accessProperties, rabbitMqInputProperties))
         		.to(dlxDocumentReadyExchange())
         		.with("#");
     }
