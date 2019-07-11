@@ -1,6 +1,5 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure.services;
 
-
 import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
