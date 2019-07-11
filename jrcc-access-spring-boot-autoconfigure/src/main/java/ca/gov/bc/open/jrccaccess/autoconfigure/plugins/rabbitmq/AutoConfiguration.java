@@ -48,7 +48,6 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
 @Configuration
 @EnableConfigurationProperties(RabbitMqOutputProperties.class)
 @ComponentScan
-@ConditionalOnProperty(name="bcgov.access.output.plugin", havingValue = "rabbitmq")
 public class AutoConfiguration {
 
 	/**
@@ -103,6 +102,7 @@ public class AutoConfiguration {
 	 * @return The documentReadyTemplate for publishing document to topic ready exchange
 	 */
 	@Bean
+	@ConditionalOnProperty(name="bcgov.access.output.plugin", havingValue = "rabbitmq")
 	public RabbitTemplate documentReadyTopicTemplate(RabbitMqOutputProperties rabbitMqOutputProperties, RabbitProperties rabbitProperties, AccessProperties accessProperties, ObjectMapper objectMapper) {
 		
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(this.connectionFactory(rabbitProperties));

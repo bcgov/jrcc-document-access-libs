@@ -2,6 +2,9 @@ package ca.gov.bc.open.jrccaccess.libs;
 
 import java.text.MessageFormat;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Represent information about the document
  * @author alexjoybc
@@ -13,8 +16,9 @@ public class DocumentInfo {
 	 * Represents the type of document beeing processed
 	 */
 	private String type;
-
-	public DocumentInfo(String type) {
+	
+	@JsonCreator
+	public DocumentInfo(@JsonProperty("type")String type) {
 		if(type == null || type.isEmpty()) throw new IllegalArgumentException("type");
 		this.type = type;
 	}
