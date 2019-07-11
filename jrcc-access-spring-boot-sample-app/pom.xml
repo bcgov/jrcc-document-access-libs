@@ -25,7 +25,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.9.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -36,6 +40,7 @@
 			<artifactId>jrcc-access-spring-boot-starter</artifactId>
 			<version>0.3.3</version>
 		</dependency>
+		
 	</dependencies>
 
 	<build>
