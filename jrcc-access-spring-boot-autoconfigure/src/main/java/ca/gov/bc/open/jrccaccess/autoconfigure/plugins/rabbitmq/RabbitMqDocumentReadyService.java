@@ -32,9 +32,6 @@ public class RabbitMqDocumentReadyService implements DocumentReadyService {
 	@Autowired
 	private AccessProperties accessProperties;
 
-	@Autowired
-	private RabbitMqOutputProperties rabbitMqOutputProperties;
-
 	/**
 	 * Publishes a document ready message to the desired Queue
 	 */

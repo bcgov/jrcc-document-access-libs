@@ -39,25 +39,19 @@ public class RabbitMqDocumentInput {
 	 */
 	public void receiveMessage(DocumentReadyMessage documentReadyMessage) {
 
+		logger.info("New Document Received {}", documentReadyMessage);
+		
 		try {
-
-			logger.info("New Document Received {}", documentReadyMessage);
-			
-			Integer test = 800 / 0;
 			
 			this.documentReadyHandler.Handle("not implemented yet",
 					documentReadyMessage.getTransactionInfo().getSender());
+			
 		
 		} catch (ServiceUnavailableException e) {
 			
 			logger.warn("Service unavailable exception, message will be put into the dead letter queue.");
-			throw new AmqpRejectAndDontRequeueException("blah");
+			throw new AmqpRejectAndDontRequeueException(e.getCause());
 			
-		} catch (Exception e) {
-			
-			logger.error(e.getMessage());
-			throw new AmqpRejectAndDontRequeueException("blah");
-			// TODO: move message to parking lot queue.
 		}
 	}
 
