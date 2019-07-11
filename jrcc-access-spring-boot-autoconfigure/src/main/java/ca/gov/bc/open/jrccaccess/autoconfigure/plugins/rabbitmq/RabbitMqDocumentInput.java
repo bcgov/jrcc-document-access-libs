@@ -2,6 +2,7 @@ package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.stereotype.Component;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
@@ -35,6 +36,7 @@ public class RabbitMqDocumentInput {
 	public void receiveMessage(DocumentReadyMessage documentReadyMessage) {
 		
 		logger.info("New Document Received {}", documentReadyMessage);
+	
 		
 		this.documentReadyHandler.Handle("not implemented yet", documentReadyMessage.getTransactionInfo().getSender());
 		

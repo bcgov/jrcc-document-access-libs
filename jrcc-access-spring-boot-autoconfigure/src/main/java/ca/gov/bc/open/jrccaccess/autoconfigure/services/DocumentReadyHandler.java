@@ -48,7 +48,10 @@ public class DocumentReadyHandler {
 
 		logger.debug("Attempting to create a new transaction");
 		TransactionInfo transactionInfo = new TransactionInfo("filename.txt", sender, LocalDateTime.now());
-
+		
+		// for each validation
+			// if false throw ValidationEx	
+		
 		this.documentOutput.send(message, transactionInfo);
 
 	}
