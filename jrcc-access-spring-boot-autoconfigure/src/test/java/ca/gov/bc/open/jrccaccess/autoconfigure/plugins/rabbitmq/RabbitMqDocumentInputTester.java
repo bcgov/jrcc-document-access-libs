@@ -28,12 +28,15 @@ public class RabbitMqDocumentInputTester {
 	@Mock
 	private TransactionInfo transactionInfoMock;
 	
+	@Mock 
+	private RabbitMqInputProperties rabbitMqInputProperties;
+	
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(documentReadyHandlerMock).Handle(Mockito.anyString(), Mockito.anyString());
 		Mockito.doThrow(ServiceUnavailableException.class).when(documentReadyHandlerMock).Handle(Mockito.anyString(), Mockito.eq(SERVICE_UNAVAILABLE_EXCEPTION));
-		sut = new RabbitMqDocumentInput(documentReadyHandlerMock);
+		sut = new RabbitMqDocumentInput(documentReadyHandlerMock, rabbitMqInputProperties);
 	}
 	
 	@Test
@@ -42,7 +45,7 @@ public class RabbitMqDocumentInputTester {
 		Mockito.when(this.transactionInfoMock.getSender()).thenReturn("bcgov");
 		Mockito.when(this.message.getTransactionInfo()).thenReturn(transactionInfoMock);
 		
-		sut.receiveMessage(message);
+		sut.receiveMessage(message, null);
 		
 	}
 	
@@ -52,7 +55,7 @@ public class RabbitMqDocumentInputTester {
 		Mockito.when(this.transactionInfoMock.getSender()).thenReturn(SERVICE_UNAVAILABLE_EXCEPTION);
 		Mockito.when(this.message.getTransactionInfo()).thenReturn(transactionInfoMock);
 		
-		sut.receiveMessage(message);
+		sut.receiveMessage(message, null);
 		
 	}
 	

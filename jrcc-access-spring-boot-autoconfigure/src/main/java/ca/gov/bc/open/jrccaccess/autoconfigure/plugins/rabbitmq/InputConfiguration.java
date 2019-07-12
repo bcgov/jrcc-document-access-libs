@@ -51,7 +51,6 @@ public class InputConfiguration {
 				.durable(MessageFormat.format("{0}{1}", accessProperties.getInput().getDocumentType(), RabbitMqParam.DOCUMENT_READY_EXTENSION))
 				.withArgument(RabbitMqParam.X_DEAD_LETTER_EXCHANGE_ARG, RabbitMqParam.DOCUMENT_READY_DLX)
 				.build();
-		
 		return queue;
 	}
 	

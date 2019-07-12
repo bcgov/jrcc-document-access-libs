@@ -17,6 +17,8 @@ public class RabbitMqInputProperties {
 	@Min(0)
 	private Integer retryDelay;
 	
+	@Min(0)
+	private Integer retryCount;
 
 	/**
 	 * Returns the delay between each retries
@@ -24,6 +26,14 @@ public class RabbitMqInputProperties {
 	 */
 	public Integer getRetryDelay() {
 		return this.retryDelay == null ? 0 : this.retryDelay;
+	}
+	
+	/**
+	 * Returns the total # of retries
+	 * @return
+	 */
+	public Integer getRetryCount() {
+		return retryCount == null ? 0 : this.retryCount;
 	}
 
 	/**
@@ -34,7 +44,13 @@ public class RabbitMqInputProperties {
 		this.retryDelay = Integer.decode(retryDelay);;
 	}
 	
-	
+	/**
+	 * Sets the total retries
+	 * @param retryCount
+	 */
+	public void setRetryCount(String retryCount) {
+		this.retryCount = Integer.decode(retryCount);
+	}
 
 	
 	
