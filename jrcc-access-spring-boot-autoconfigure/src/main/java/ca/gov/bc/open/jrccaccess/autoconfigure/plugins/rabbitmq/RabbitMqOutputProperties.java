@@ -5,7 +5,7 @@ import javax.validation.constraints.Min;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Represents the rabbitmq input plugin properties
+ * Represents the rabbitmq output plugin properties
  * @author alexjoybc
  * @since 0.3.0
  *
@@ -15,7 +15,7 @@ public class RabbitMqOutputProperties {
 	
 	@Min(0)
 	private Integer ttl;
-	
+
 	/**
 	 * 
 	 * @return the Time to live set for the temporary storage.
@@ -31,8 +31,5 @@ public class RabbitMqOutputProperties {
 	public void setTtl(String ttl) {
 		this.ttl = Integer.decode(ttl);
 	}
-	
-
-	
 	
 }

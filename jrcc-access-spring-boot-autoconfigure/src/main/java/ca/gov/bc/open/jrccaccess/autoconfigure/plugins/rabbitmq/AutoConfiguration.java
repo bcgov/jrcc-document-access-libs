@@ -67,6 +67,8 @@ public class AutoConfiguration {
 		return connectionFactory;
 	}
 	
+	
+
 	/**
 	 * TopicExchangeBean
 	 * @return The document Ready Topic

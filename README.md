@@ -53,11 +53,11 @@ Sets the plugin type
 
 You can configure the document input using `bcgov.access.input` property.
 
-* [Console](#Console)
-* [Http](#Http)
-* [RabbitMq](#RabbitMq)
+* [Console](#ConsoleInputPlugin)
+* [Http](#HttpInputPlugin)
+* [RabbitMq](#RabbitMqInputPlugin)
 
-### Console
+### Console Input Plugin
 
 #### Description
 
@@ -74,7 +74,7 @@ bcgov.access.input.plugin=console
 
 There are no special configuration options for this plugin, but it does support the [Common Options](#CommonOptions).
 
-### Http
+### Http Input Plugin
 
 #### Description
 
@@ -102,7 +102,7 @@ server.port=5050
 ```
 
 
-### RabbitMq
+### RabbitMq Input Plugin
 
 #### Description
 
@@ -116,16 +116,27 @@ bcgov.access.input.plugin=rabbitmq
 
 #### Configuration Options
 
-There are no special configuration options for this plugin, but it does support the [Common Options](#CommonOptions).
+It support the [Common Options](#CommonOptions) and the following options:
+
+| name | type | required |
+| --- | --- | --- |
+| [bcgov.access.input.rabbitmq.retryDelay](#cgovaccessinputrabbitmqretryDelay) | Int | No |
+
+##### bcgov.access.input.rabbitmq.retryDelay
+
+* Value type is Int
+* Default value is `0`
+
+Sets the delay between retries when the service if failing to process the message and throwing application known errors.
 
 ## Output Plugins
 
 You can configure the document input using `bcgov.access.output` property.
 
-* [Console](#Console)
-* [RabbitMq](#RabbitMq)
+* [Console](#ConsoleOutputPlugin)
+* [RabbitMq](#RabbitMqOutputPlugin)
 
-### Console
+### Console Output Plugin
 
 #### Description
 
@@ -159,7 +170,7 @@ When set to `xml` the plugins tries to prettify the xml document or return the c
 bcgov.access.output.console.format=xml
 ````
 
-### RabbitMq
+### RabbitMq Output Plugin
 
 #### Description
 

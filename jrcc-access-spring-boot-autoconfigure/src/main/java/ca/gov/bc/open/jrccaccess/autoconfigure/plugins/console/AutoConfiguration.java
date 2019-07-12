@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Configuration;
 		value="bcgov.access.output.plugin",
 		havingValue="console"
 	)
-
 @EnableConfigurationProperties(ConsoleOutputProperties.class)
 public class AutoConfiguration {
 

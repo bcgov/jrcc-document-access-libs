@@ -43,19 +43,19 @@ public class RabbitMqDocumentReadyServiceTester {
 
 	@Mock
 	private RabbitTemplate rabbitTemplateMock;
-	
 
 	@InjectMocks
 	private RabbitMqDocumentReadyService sut;
 
 	
+	
 	@Before
 	public void init() {
 		
 		MockitoAnnotations.initMocks(this);
-		Mockito.doNothing().when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_1));
-		Mockito.doThrow(AmqpConnectException.class).when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_2));
-		Mockito.doThrow(AmqpIOException.class).when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_3));
+		Mockito.doNothing().when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_1), Mockito.any());
+		Mockito.doThrow(AmqpConnectException.class).when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_2), Mockito.any());
+		Mockito.doThrow(AmqpIOException.class).when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_3), Mockito.any());
 		
 	}
 	
