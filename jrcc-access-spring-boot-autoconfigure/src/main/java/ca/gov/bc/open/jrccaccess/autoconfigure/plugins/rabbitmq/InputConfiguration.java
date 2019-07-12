@@ -7,6 +7,7 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -94,24 +95,23 @@ public class InputConfiguration {
         		.to(dlxDocumentReadyExchange())
         		.with("#");
     }
-
-
-	@Bean
-	public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
-        MessageListenerAdapter listenerAdapter, AccessProperties accessProperties) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(documentReadyQueue(accessProperties).getName());
-        container.setMessageListener(listenerAdapter);
-        return container;
-    }
 	
-	 @Bean
-	MessageListenerAdapter listenerAdapter(RabbitMqDocumentInput rabbitMqDocumentInput, @Qualifier("jsonMessageConverter")MessageConverter messageConverter) {
-		 MessageListenerAdapter adapter = new MessageListenerAdapter(rabbitMqDocumentInput, "receiveMessage");
-		 adapter.setMessageConverter(messageConverter);
-		 return adapter;
-	}
+	/**
+	 * Provides as default factory for RabbitListeners
+	 * @param connectionFactory
+	 * @param messageConverter
+	 * @return
+	 */
+	@Bean
+	 public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
+			 ConnectionFactory connectionFactory, 
+			 @Qualifier("jsonMessageConverter")MessageConverter messageConverter) {
+	     SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+	     factory.setConnectionFactory(connectionFactory);
+	     factory.setMessageConverter(messageConverter);
+	     return factory; 
+	 }
 
+	
 	
 }
