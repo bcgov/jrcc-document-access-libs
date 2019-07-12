@@ -1,6 +1,6 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.console;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +13,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan
-@ConditionalOnProperty(
-		value="bcgov.access.output.plugin",
-		havingValue="console"
-	)
+@ConditionalOnExpression("'${bcgov.access.output.plugin}' == 'console' || '${bcgov.access.input.plugin}' == 'console'")
 @EnableConfigurationProperties(ConsoleOutputProperties.class)
 public class AutoConfiguration {
 
