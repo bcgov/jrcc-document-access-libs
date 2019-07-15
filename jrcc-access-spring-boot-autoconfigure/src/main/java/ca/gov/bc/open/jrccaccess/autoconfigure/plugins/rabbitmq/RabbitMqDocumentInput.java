@@ -72,7 +72,7 @@ public class RabbitMqDocumentInput {
 		
 		try {
 			
-			this.documentReadyHandler.Handle("not implemented yet",
+			this.documentReadyHandler.handle("not implemented yet",
 					documentReadyMessage.getTransactionInfo().getSender());
 			logger.info("message successfully acknowledged");
 		
