@@ -120,7 +120,8 @@ It support the [Common Options](#CommonOptions) and the following options:
 
 | name | type | required |
 | --- | --- | --- |
-| [bcgov.access.input.rabbitmq.retryDelay](#cgovaccessinputrabbitmqretryDelay) | Int | No |
+| [bcgov.access.input.rabbitmq.retryDelay](#bcgovaccessinputrabbitmqretryDelay) | Int | No |
+| [bcgov.access.input.rabbitmq.retryCount](#bcgov.access.input.rabbitmq.retryCount) | Int | No |
 
 ##### bcgov.access.input.rabbitmq.retryDelay
 
@@ -128,6 +129,13 @@ It support the [Common Options](#CommonOptions) and the following options:
 * Default value is `0`
 
 Sets the delay between retries when the service if failing to process the message and throwing application known errors.
+
+##### bcgov.access.input.rabbitmq.retryCount
+
+* Value type is Int
+* Default value is `1`
+
+Sets the maximum attempt to reprocess a message in the queue.
 
 ## Output Plugins
 
