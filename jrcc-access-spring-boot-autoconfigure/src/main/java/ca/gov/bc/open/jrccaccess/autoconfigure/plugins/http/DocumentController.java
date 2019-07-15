@@ -20,7 +20,8 @@ import ca.bc.gov.open.api.DocumentApi;
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
 import ca.bc.gov.open.api.model.Error;
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
-import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 /**
  * The document controller provides an endpoint to submit a document.
@@ -59,20 +60,23 @@ public class DocumentController implements DocumentApi {
 		response.setAcknowledge(true);
 		
 		try {
-			documentReadyHandler.Handle(getContent(body.getInputStream()), sender);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-		
-			Error error = new Error();
-			error.setCode(Integer.toString(HttpStatus.INTERNAL_SERVER_ERROR.value()));
-			error.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-			return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			documentReadyHandler.handle(getContent(body.getInputStream()), sender);
+			
 		} catch (ServiceUnavailableException e) {
 			
 			Error error = new Error();
 			error.setCode(Integer.toString(HttpStatus.SERVICE_UNAVAILABLE.value()));
 			error.setMessage(e.getMessage());
 			return new ResponseEntity(error, HttpStatus.SERVICE_UNAVAILABLE);
+			
+		} catch (IOException | DocumentMessageException e) {
+			// TODO Auto-generated catch block
+		
+			Error error = new Error();
+			error.setCode(Integer.toString(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+			error.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+			return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+
 		}
 		
 		return ResponseEntity.ok(response);

@@ -24,7 +24,7 @@ public class DocumentReadyHandlerTester {
 	private TransactionInfo transactionInfoMock;
 	
 	@Before
-	public void init() {
+	public void init() throws Exception {
 		
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(this.documentOutput).send(Mockito.anyString(), Mockito.any());
@@ -34,10 +34,10 @@ public class DocumentReadyHandlerTester {
 	
 	
 	@Test
-	public void send_with_valid_input_should_process() {
+	public void send_with_valid_input_should_process() throws Exception {
 		
 
-		sut.Handle("awesome content", "bcgov");
+		sut.handle("awesome content", "bcgov");
 
 		
 	}

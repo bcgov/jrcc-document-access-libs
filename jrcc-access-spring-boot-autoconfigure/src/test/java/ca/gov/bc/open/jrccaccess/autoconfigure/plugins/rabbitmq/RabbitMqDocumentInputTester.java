@@ -14,7 +14,7 @@ import org.springframework.amqp.ImmediateAcknowledgeAmqpException;
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
-import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 public class RabbitMqDocumentInputTester {
 
@@ -36,10 +36,10 @@ public class RabbitMqDocumentInputTester {
 	private RabbitMqInputProperties rabbitMqInputProperties;
 	
 	@Before
-	public void init() {
+	public void init() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		Mockito.doNothing().when(documentReadyHandlerMock).Handle(Mockito.anyString(), Mockito.anyString());
-		Mockito.doThrow(ServiceUnavailableException.class).when(documentReadyHandlerMock).Handle(Mockito.anyString(), Mockito.eq(SERVICE_UNAVAILABLE_EXCEPTION));
+		Mockito.doNothing().when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.anyString());
+		Mockito.doThrow(ServiceUnavailableException.class).when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.eq(SERVICE_UNAVAILABLE_EXCEPTION));
 		Mockito.when(rabbitMqInputProperties.getRetryCount()).thenReturn(3);
 		sut = new RabbitMqDocumentInput(documentReadyHandlerMock, rabbitMqInputProperties);
 	}
