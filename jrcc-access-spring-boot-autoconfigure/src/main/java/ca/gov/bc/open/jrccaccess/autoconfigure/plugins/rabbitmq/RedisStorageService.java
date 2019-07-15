@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,27 @@ public class RedisStorageService implements StorageService {
 		try {
 			this.cacheManager.getCache("Document").put(key, content);
 			return new DocumentStorageProperties(key, md5Hash);
+		} catch (RedisConnectionFailureException e) {
+			throw new ServiceUnavailableException("redis service unavailable", e.getCause());
+		}
+
+	}
+	
+	@Override
+	public String getString(String key, String digest) throws ServiceUnavailableException {
+
+
+		try {
+			ValueWrapper valueWrapper = this.cacheManager.getCache("Document").get(key);
+			String content = (String) valueWrapper.get();
+			String digestToCompare = computeMd5(content);
+			
+			if(digestToCompare.equals(digest)) {
+				return content;
+			}
+			
+			// TODO throw an exception
+			return null;
 		} catch (RedisConnectionFailureException e) {
 			throw new ServiceUnavailableException("redis service unavailable", e.getCause());
 		}

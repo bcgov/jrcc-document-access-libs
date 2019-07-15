@@ -15,5 +15,14 @@ public interface StorageService {
 	 * @return The document storage properties
 	 */
 	DocumentStorageProperties putString(String content) throws ServiceUnavailableException;	
+	
+	/**
+	 * Gets a document from storage as a string
+	 * @param key object key to retrieve from storage
+	 * @param digest MD5 Digest
+	 * @return Content from storage
+	 */
+	public String getString(String key, String digest) throws ServiceUnavailableException;
+
 
 }
