@@ -17,7 +17,7 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RedisStorageService;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 public class RedisStorageServiceTester {
 
@@ -47,7 +47,7 @@ public class RedisStorageServiceTester {
 	
 	
 	@Test
-	public void with_valid_content_should_return_document_properties() {
+	public void with_valid_content_should_return_document_properties() throws Exception {
 		
 		String content = VALID;
 		String myHash = "9F7D0EE82B6A6CA7DDEAE841F3253059";
@@ -69,7 +69,7 @@ public class RedisStorageServiceTester {
 	
 	
 	@Test(expected = ServiceUnavailableException.class)
-	public void with_RedisConnectionFailureException_should_throw_ServiceUnavailableException() {
+	public void with_RedisConnectionFailureException_should_throw_ServiceUnavailableException() throws Exception {
 		
 		String content = REDIS_CONNECTION_FAILURE_EXCEPTION;
 		

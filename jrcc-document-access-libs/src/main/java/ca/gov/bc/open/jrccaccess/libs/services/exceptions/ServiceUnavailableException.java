@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.libs.services;
+package ca.gov.bc.open.jrccaccess.libs.services.exceptions;
 
 /**
  * The {@link RuntimeException} extension to indicate that a service (server) 
@@ -6,7 +6,7 @@ package ca.gov.bc.open.jrccaccess.libs.services;
  * @author alexjoybc
  * @since 0.1.0
  */
-public class ServiceUnavailableException extends RuntimeException {
+public class ServiceUnavailableException extends DocumentMessageException {
 
 	private static final long serialVersionUID = 1L;
 

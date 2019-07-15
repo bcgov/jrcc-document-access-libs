@@ -40,7 +40,7 @@ public class ConsoleInput implements CommandLineRunner {
 		Scanner scanner = new Scanner(System.in);
 		
 		while(scanner.hasNext()) {
-			documentReadyHandler.Handle(scanner.nextLine(), appName);
+			documentReadyHandler.handle(scanner.nextLine(), appName);
 		}	
 		
 		scanner.close();

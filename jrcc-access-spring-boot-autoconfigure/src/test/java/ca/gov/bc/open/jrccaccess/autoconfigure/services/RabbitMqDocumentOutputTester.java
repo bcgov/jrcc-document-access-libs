@@ -28,7 +28,7 @@ public class RabbitMqDocumentOutputTester {
 	private RedisStorageService storageService;
 	
 	@Before
-	public void init() {
+	public void init() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(this.documentReadyService).Publish(Mockito.any());
 		Mockito.when(this.storageService.putString(Mockito.anyString())).thenReturn(new DocumentStorageProperties("key", "A1"));
@@ -40,7 +40,7 @@ public class RabbitMqDocumentOutputTester {
 	}
 	
 	@Test
-	public void send_with_valid_input_should_store_and_publish_a_message() {
+	public void send_with_valid_input_should_store_and_publish_a_message() throws Exception {
 		String content = "my awesome content";
 		TransactionInfo transactionInfo = new TransactionInfo("testfile.txt", "me", LocalDateTime.now());
 		this.sut.send(content, transactionInfo);
