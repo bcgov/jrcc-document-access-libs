@@ -22,7 +22,7 @@ import ca.gov.bc.open.jrccaccess.libs.DocumentInfo;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
-import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -60,21 +60,21 @@ public class RabbitMqDocumentReadyServiceTester {
 	}
 	
 	@Test
-	public void publish_with_valid_input_shoud_publish() {
+	public void publish_with_valid_input_shoud_publish() throws Exception {
 		
 		sut.Publish(MESSAGE_1);
 		
 	}
 	
 	@Test(expected = ServiceUnavailableException.class)
-	public void publish_with_AmqpConnectException_shoud_throw_ServiceUnavailableException() {
+	public void publish_with_AmqpConnectException_shoud_throw_ServiceUnavailableException() throws Exception {
 		
 		sut.Publish(MESSAGE_2);
 		
 	}
 	
 	@Test(expected = ServiceUnavailableException.class)
-	public void publish_with_AmqpIOException_shoud_throw_ServiceUnavailableException() {
+	public void publish_with_AmqpIOException_shoud_throw_ServiceUnavailableException() throws Exception {
 		
 		sut.Publish(MESSAGE_3);
 		

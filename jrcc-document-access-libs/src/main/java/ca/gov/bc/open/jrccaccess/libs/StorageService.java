@@ -1,6 +1,6 @@
 package ca.gov.bc.open.jrccaccess.libs;
 
-import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 /**
  * The StorageService interface provides implementation details for the service.

@@ -23,7 +23,7 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
-import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 public class RabbitMqDocumentInputTester {
 
@@ -53,7 +53,7 @@ public class RabbitMqDocumentInputTester {
 	private RedisStorageService storageService;
 	
 	@Before
-	public void init() {
+	public void init() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(this.documentReadyService).Publish(Mockito.any());
 		Mockito.doNothing().when(documentReadyHandlerMock).Handle(Mockito.anyString(), Mockito.anyString());

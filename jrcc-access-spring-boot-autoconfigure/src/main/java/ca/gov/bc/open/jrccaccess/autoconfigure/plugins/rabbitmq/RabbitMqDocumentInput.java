@@ -13,8 +13,9 @@ import org.springframework.stereotype.Component;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 /**
  * The RabbitMqDocumentInput handles document from the rabbitMq message listener
@@ -71,23 +72,7 @@ public class RabbitMqDocumentInput {
 		
 		try {
 			
-			DocumentStorageProperties storageProperties = documentReadyMessage.getDocumentStorageProperties();
-			
-			String key = storageProperties.getKey();
-			String digest = storageProperties.getMD5();
-			
-			if(logger.isDebugEnabled()) {
-				logger.debug("Request Document: key=" + key + ", digest=" + digest);
-			}
-			
-			String content = this.redisStorageService.getString(key, digest);
-			
-			if(logger.isDebugEnabled()) {
-				logger.debug(content);
-			}
-			
-			
-			this.documentReadyHandler.Handle(content,
+			this.documentReadyHandler.Handle("not implemented yet",
 					documentReadyMessage.getTransactionInfo().getSender());
 			logger.info("message successfully acknowledged");
 		
@@ -96,6 +81,10 @@ public class RabbitMqDocumentInput {
 			logger.warn("Service unavailable exception, message will be put into the dead letter queue.");
 			throw new AmqpRejectAndDontRequeueException(e.getCause());
 		
+		} catch (DocumentMessageException e) {
+			
+			logger.warn("Service unavailable exception, message will be put into the dead letter queue.");
+			throw new AmqpRejectAndDontRequeueException(e.getCause());
 		}
 	}
 

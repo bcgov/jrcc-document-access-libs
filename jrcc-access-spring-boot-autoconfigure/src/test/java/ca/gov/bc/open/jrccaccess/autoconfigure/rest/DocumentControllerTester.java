@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
 import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.http.DocumentController;
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
-import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 public class DocumentControllerTester {
 
@@ -40,11 +40,11 @@ public class DocumentControllerTester {
 	
 	
 	@Before
-	public void init() throws IOException {
+	public void init() throws Exception {
 		
 		MockitoAnnotations.initMocks(this);
-		Mockito.doNothing().when(this.documentReadyHandler).Handle(Mockito.anyString(), Mockito.eq(VALID));
-		Mockito.doThrow(new ServiceUnavailableException(SERVICE_UNAVAILABLE)).when(this.documentReadyHandler).Handle(Mockito.anyString(), Mockito.eq(SERVICE_UNAVAILABLE));
+		Mockito.doNothing().when(this.documentReadyHandler).handle(Mockito.anyString(), Mockito.eq(VALID));
+		Mockito.doThrow(new ServiceUnavailableException(SERVICE_UNAVAILABLE)).when(this.documentReadyHandler).handle(Mockito.anyString(), Mockito.eq(SERVICE_UNAVAILABLE));
 		Mockito.when(this.resourceWithException.getInputStream()).thenThrow(IOException.class);
 		sut = new DocumentController(this.documentReadyHandler);
 	}
