@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
+import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
 
 /**
@@ -30,6 +31,9 @@ public class RabbitMqDocumentInput {
 	private DocumentReadyHandler documentReadyHandler;
 	
 	private RabbitMqInputProperties rabbitMqInputProperties;	
+	
+	private final RedisStorageService redisStorageService;
+	
 	/**
 	 * Creates a RabbitMqDocumentInput.
 	 * 
@@ -37,9 +41,10 @@ public class RabbitMqDocumentInput {
 	 */
 	public RabbitMqDocumentInput(
 			DocumentReadyHandler documentReadyHandler,
-			RabbitMqInputProperties rabbitMqInputProperties) {
+			RabbitMqInputProperties rabbitMqInputProperties, RedisStorageService redisStorageService) {
 		this.documentReadyHandler = documentReadyHandler;
-		this.rabbitMqInputProperties = rabbitMqInputProperties;		
+		this.rabbitMqInputProperties = rabbitMqInputProperties;	
+		this.redisStorageService = redisStorageService;
 	}
 
 	/**
@@ -66,9 +71,25 @@ public class RabbitMqDocumentInput {
 		
 		try {
 			
-			this.documentReadyHandler.Handle("not implemented yet",
+			DocumentStorageProperties storageProperties = documentReadyMessage.getDocumentStorageProperties();
+			
+			String key = storageProperties.getKey();
+			String digest = storageProperties.getMD5();
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("Request Document: key=" + key + ", digest=" + digest);
+			}
+			
+			String content = this.redisStorageService.getString(key, digest);
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug(content);
+			}
+			
+			
+			this.documentReadyHandler.Handle(content,
 					documentReadyMessage.getTransactionInfo().getSender());
-			logger.info("message successfully aknoledge");
+			logger.info("message successfully acknowledged");
 		
 		} catch (ServiceUnavailableException e) {
 			
