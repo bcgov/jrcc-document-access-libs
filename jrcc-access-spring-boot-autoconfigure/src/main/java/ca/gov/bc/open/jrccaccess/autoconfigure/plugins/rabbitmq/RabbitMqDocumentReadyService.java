@@ -35,7 +35,7 @@ public class RabbitMqDocumentReadyService implements DocumentReadyService {
 	 * Publishes a document ready message to the desired Queue
 	 */
 	@Override
-	public void Publish(DocumentReadyMessage message) throws ServiceUnavailableException {
+	public void publish(DocumentReadyMessage message) throws ServiceUnavailableException {
 
 		try {
 

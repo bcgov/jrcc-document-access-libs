@@ -30,7 +30,7 @@ public class RabbitMqDocumentOutputTester {
 	@Before
 	public void init() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		Mockito.doNothing().when(this.documentReadyService).Publish(Mockito.any());
+		Mockito.doNothing().when(this.documentReadyService).publish(Mockito.any());
 		Mockito.when(this.storageService.putString(Mockito.anyString())).thenReturn(new DocumentStorageProperties("key", "A1"));
 		PluginConfig output = new PluginConfig();
 		output.setDocumentType("mydoc");
