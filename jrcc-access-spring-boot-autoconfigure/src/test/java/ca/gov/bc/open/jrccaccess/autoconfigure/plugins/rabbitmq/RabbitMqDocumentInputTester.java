@@ -1,8 +1,6 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -67,7 +65,7 @@ public class RabbitMqDocumentInputTester {
 	}
 	
 	@Test
-	public void should_handle_input_document() {
+	public void should_handle_input_document() throws DocumentMessageException {
 		
 		String key = RandomHelper.makeRandomString(10);
 		String textContent = RandomHelper.makeRandomString(20);

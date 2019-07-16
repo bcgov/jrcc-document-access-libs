@@ -48,46 +48,27 @@ public class RabbitMqDocumentInput {
 	 * and send to the documentReadyHandler.
 	 * @param documentReadyMessage
 	 * @param xDeath
+	 * @throws DocumentMessageException 
 	 */
 	@RabbitListener(queues = "#{documentReadyQueue.getName()}")
-	public void receiveMessage(DocumentReadyMessage documentReadyMessage)
+	public void receiveMessage(DocumentReadyMessage documentReadyMessage) throws DocumentMessageException
 	{
 
-		logger.info("New Document Received {}", documentReadyMessage);
+		logger.info("New Document Received {}", documentReadyMessage);	
 		
-		try {
-			
 			DocumentStorageProperties storageProperties = documentReadyMessage.getDocumentStorageProperties();
-
 			String key = storageProperties.getKey();
 			String digest = storageProperties.getMD5();
-
 			if(logger.isDebugEnabled()) {
 				logger.debug("Request Document: key=" + key + ", digest=" + digest);
 			}
-
 			String content = this.redisStorageService.getString(key, digest);
-
 			if(logger.isDebugEnabled()) {
 				logger.debug(content);
 			}
-
-
 			this.documentReadyHandler.handle(content,
 					documentReadyMessage.getTransactionInfo().getSender());
-
 			logger.info("message successfully acknowledged");
 		
-		} catch (ServiceUnavailableException e) {
-			
-			logger.warn("Service unavailable exception, message will be put into the dead letter queue.");
-			throw new AmqpRejectAndDontRequeueException(e.getCause());
-		
-		} catch (DocumentMessageException e) {
-			
-			logger.warn("Service unavailable exception, message will be put into the dead letter queue.");
-			throw new AmqpRejectAndDontRequeueException(e.getCause());
-		}
 	}
-
 }
