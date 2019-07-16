@@ -51,7 +51,21 @@ public class InputConfiguration {
 				.build();
 		return queue;
 	}
-	
+
+	/**
+	 * The document ready binding, binds the document ready queue to the document exchange.
+	 * @param exchange
+	 * @param accessProperties
+	 * @param properties
+	 * @return
+	 */
+	@Bean
+	public Binding documentReadyBinding(@Qualifier("documentReadyTopic") TopicExchange exchange,
+			AccessProperties accessProperties, RabbitMqInputProperties properties) {
+		return BindingBuilder.bind(documentReadyQueue(accessProperties, properties)).to(exchange)
+				.with(accessProperties.getInput().getDocumentType());
+	}
+
 	/**
 	 * The shared dead letter queue
 	 * @return
@@ -67,7 +81,8 @@ public class InputConfiguration {
 	}
 	
 	/**
-	 * The shared dead letter topic exchange.
+	 * Sets the document ready dead letter exchange
+	 * 
 	 * @return
 	 */
 	@Bean
@@ -75,6 +90,14 @@ public class InputConfiguration {
 		return new TopicExchange(RabbitMqParam.DOCUMENT_READY_DLX, true, false);
 	}
 	
+	
+	/**
+	 * Binds the dead letter queue to the dead letter exchange.
+	 * @param connectionFactory
+	 * @param accessProperties
+	 * @param rabbitMqInputProperties
+	 * @return
+	 */
 	@Bean
     public Binding binding(@Qualifier("documentReadyTopic")TopicExchange exchange, AccessProperties accessProperties) {
         return BindingBuilder.bind(documentReadyQueue(accessProperties))

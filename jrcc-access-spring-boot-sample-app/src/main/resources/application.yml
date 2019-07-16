@@ -1,6 +1,4 @@
-spring:
-   main:
-      web-application-type: NONE
+
 logging:
   level:
     ca:
@@ -14,3 +12,5 @@ bcgov:
     output:
       document-type: test-doc
       plugin: console
+      console:
+         format: xml
