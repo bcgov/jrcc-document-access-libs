@@ -98,7 +98,7 @@ public class RabbitMqDocumentInputTester {
 		Mockito.when(this.storageService.putString(Mockito.anyString())).thenReturn(new DocumentStorageProperties(key, md5));
 		Mockito.when(this.storageService.getString(Mockito.anyString(), Mockito.anyString())).thenReturn(textContent);
 		
-		sut = new RabbitMqDocumentInput(documentReadyHandlerMock, rabbitMqInputProperties, storageService);
+		sut = new RabbitMqDocumentInput(documentReadyHandlerMock, storageService);
 		
 		sut.receiveMessage(message);
 		
@@ -122,7 +122,7 @@ public class RabbitMqDocumentInputTester {
 		
 		xDeath.put("count", 2L);
 		
-		sut.receiveMessage(message, xDeath);
+		sut.receiveMessage(message);
 		
 	}
 	
