@@ -27,7 +27,6 @@ public class RabbitMqDocumentInputTester {
 
 
 	private static final String SERVICE_UNAVAILABLE_EXCEPTION = "ServiceUnavailableException";
-	private static final String DIGEST_FAILED_EXCEPTION = "DigestFailedException";
 
 	private RabbitMqDocumentInput sut;
 	
@@ -54,7 +53,6 @@ public class RabbitMqDocumentInputTester {
 		Mockito.doNothing().when(this.documentReadyService).publish(Mockito.any());
 		Mockito.doNothing().when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.anyString());
 		Mockito.doThrow(ServiceUnavailableException.class).when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.eq(SERVICE_UNAVAILABLE_EXCEPTION));
-		Mockito.doThrow(DocumentDigestMatchFailedException.class).when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.eq(DIGEST_FAILED_EXCEPTION));
 		Mockito.when(this.storageService.putString(Mockito.anyString())).thenReturn(new DocumentStorageProperties("key", "A1"));
 		
 		PluginConfig output = new PluginConfig();
@@ -108,16 +106,16 @@ public class RabbitMqDocumentInputTester {
 		
 		String key = RandomHelper.makeRandomString(10);
 		String textContent = RandomHelper.makeRandomString(20);
-		String md5 = DigestUtils.computeMd5(textContent);
+		String md5 = DigestUtils.computeMd5(textContent + "Failed");
 		
 		DocumentStorageProperties storageProperties = new DocumentStorageProperties(key, md5);
 		
-		// we want to throw ServiceUnavailableException, which will then cause it to throw an AmqpRejectAndDontRequeueException
-		Mockito.when(this.transactionInfoMock.getSender()).thenReturn(DIGEST_FAILED_EXCEPTION);
+		// we want to throw DocumentDigestMatchFailedException, which will then cause it to throw an AmqpRejectAndDontRequeueException
+		Mockito.when(this.transactionInfoMock.getSender()).thenReturn("bcgov");
 		Mockito.when(this.message.getTransactionInfo()).thenReturn(transactionInfoMock);
 		Mockito.when(this.message.getDocumentStorageProperties()).thenReturn(storageProperties);
 		Mockito.when(this.storageService.putString(Mockito.anyString())).thenReturn(new DocumentStorageProperties(key, md5));
-		Mockito.when(this.storageService.getString(Mockito.anyString(), Mockito.anyString())).thenReturn(textContent);
+		Mockito.doThrow(DocumentDigestMatchFailedException.class).when(storageService).getString(Mockito.anyString(), Mockito.eq(md5));
 		
 		sut.receiveMessage(message);
 		
