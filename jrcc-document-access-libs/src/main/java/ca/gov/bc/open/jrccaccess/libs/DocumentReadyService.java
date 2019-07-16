@@ -16,6 +16,6 @@ public interface DocumentReadyService {
 	 * 
 	 * @param message
 	 */
-	public void Publish(DocumentReadyMessage message)  throws ServiceUnavailableException;
+	public void publish(DocumentReadyMessage message)  throws ServiceUnavailableException;
 
 }

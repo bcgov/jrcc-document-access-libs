@@ -1,6 +1,6 @@
 package ca.gov.bc.open.jrccaccess.libs;
 
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 
 /**
  * The StorageService interface provides implementation details for the service.
@@ -14,7 +14,7 @@ public interface StorageService {
 	 * @param content Content to be stored
 	 * @return The document storage properties
 	 */
-	DocumentStorageProperties putString(String content) throws ServiceUnavailableException;	
+	DocumentStorageProperties putString(String content) throws DocumentMessageException;	
 	
 	/**
 	 * Gets a document from storage as a string
@@ -22,7 +22,7 @@ public interface StorageService {
 	 * @param digest MD5 Digest
 	 * @return Content from storage
 	 */
-	public String getString(String key, String digest) throws ServiceUnavailableException;
+	public String getString(String key, String digest) throws DocumentMessageException;
 
 
 }
