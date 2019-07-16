@@ -1,15 +1,12 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
@@ -47,9 +44,10 @@ public class RabbitMqDocumentInputTester {
 	
 	@Mock
 	private RedisStorageService storageService;
-	
+
 	@Before
 	public void init() throws Exception {
+		
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(this.documentReadyService).publish(Mockito.any());
 		Mockito.doNothing().when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.anyString());
@@ -67,7 +65,7 @@ public class RabbitMqDocumentInputTester {
 	}
 	
 	@Test
-	public void should_handle_input_document() {
+	public void should_handle_input_document() throws DocumentMessageException {
 		
 		String key = RandomHelper.makeRandomString(10);
 		String textContent = RandomHelper.makeRandomString(20);
@@ -83,49 +81,9 @@ public class RabbitMqDocumentInputTester {
 		
 	}
 	
-	@Test(expected = AmqpRejectAndDontRequeueException.class)
-	public void when_ServiceUnavailableException_should_throw_AmqpRejectAndDontRequeueException() throws Exception {
-		
-		String key = RandomHelper.makeRandomString(10);
-		String textContent = RandomHelper.makeRandomString(20);
-		String md5 = DigestUtils.computeMd5(textContent);
-		
-		DocumentStorageProperties storageProperties = new DocumentStorageProperties(key, md5);
-		
-		// we want to throw ServiceUnavailableException, which will then cause it to throw an AmqpRejectAndDontRequeueException
-		Mockito.when(this.transactionInfoMock.getSender()).thenReturn(SERVICE_UNAVAILABLE_EXCEPTION);
-		Mockito.when(this.message.getTransactionInfo()).thenReturn(transactionInfoMock);
-		Mockito.when(this.message.getDocumentStorageProperties()).thenReturn(storageProperties);
-		Mockito.when(this.storageService.putString(Mockito.anyString())).thenReturn(new DocumentStorageProperties(key, md5));
-		Mockito.when(this.storageService.getString(Mockito.anyString(), Mockito.anyString())).thenReturn(textContent);
-		
-		sut.receiveMessage(message);
-		
-	}
-	
-	@Test(expected = AmqpRejectAndDontRequeueException.class)
-	public void when_DocumentDigestMatchFailedException_should_throw_AmqpRejectAndDontRequeueException() throws Exception {
-		
-		String key = RandomHelper.makeRandomString(10);
-		String textContent = RandomHelper.makeRandomString(20);
-		String md5 = DigestUtils.computeMd5(textContent);
-		
-		DocumentStorageProperties storageProperties = new DocumentStorageProperties(key, md5);
-		
-		// we want to throw ServiceUnavailableException, which will then cause it to throw an AmqpRejectAndDontRequeueException
-		Mockito.when(this.transactionInfoMock.getSender()).thenReturn(DIGEST_FAILED_EXCEPTION);
-		Mockito.when(this.message.getTransactionInfo()).thenReturn(transactionInfoMock);
-		Mockito.when(this.message.getDocumentStorageProperties()).thenReturn(storageProperties);
-		Mockito.when(this.storageService.putString(Mockito.anyString())).thenReturn(new DocumentStorageProperties(key, md5));
-		Mockito.when(this.storageService.getString(Mockito.anyString(), Mockito.anyString())).thenReturn(textContent);
-		
-		sut.receiveMessage(message);
-		
-	}
-	
 	
 	@Test
-	public void when_under_retry_limit_reach_should_process() {
+	public void when_under_retry_limit_reach_should_process() throws DocumentMessageException {
 		
 		String key = RandomHelper.makeRandomString(10);
 		String textContent = RandomHelper.makeRandomString(20);
@@ -136,17 +94,14 @@ public class RabbitMqDocumentInputTester {
 		Mockito.when(this.transactionInfoMock.getSender()).thenReturn("bcgov");
 		Mockito.when(this.message.getTransactionInfo()).thenReturn(transactionInfoMock);
 		Mockito.when(this.message.getDocumentStorageProperties()).thenReturn(storageProperties);
-		
-		Map<Object, Object> xDeath = new HashMap<Object, Object>();
-		
-		xDeath.put("count", 2L);
+	
 		
 		sut.receiveMessage(message);
 		
 	}
 	
 	@Test
-	public void testPutAndGetDocumentFromStorage() {
+	public void testPutAndGetDocumentFromStorage() throws DocumentMessageException {
 		
 		String key = RandomHelper.makeRandomString(10);
 		String textContent = RandomHelper.makeRandomString(20);
@@ -161,12 +116,9 @@ public class RabbitMqDocumentInputTester {
 
 		
 		TransactionInfo transactionInfo = new TransactionInfo("testfile.txt", "me", LocalDateTime.now());
-		try {
-			this.sutOutput.send(textContent, transactionInfo);
-		} catch (DocumentMessageException e) {
-			e.printStackTrace();
-		}
-		
+
+		this.sutOutput.send(textContent, transactionInfo);
+
 		sut.receiveMessage(message);
 		
 	}
