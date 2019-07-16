@@ -32,7 +32,7 @@ public class inputQueueConfigurationTester {
 	@Test
 	public void queue_with_default_config_should_return_queue() {
 		
-		assertEquals("test-doc.q", sut.getName());
+		assertEquals("test-doc.0.x0.q", sut.getName());
 		
 	}
 	

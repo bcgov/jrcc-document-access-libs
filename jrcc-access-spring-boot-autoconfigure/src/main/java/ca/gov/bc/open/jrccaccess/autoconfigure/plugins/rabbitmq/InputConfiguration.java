@@ -21,94 +21,113 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
 
 /**
  * RabbitMq input plugin configuration
+ * 
  * @author alexjoybc
  * @since 0.4.0
  *
  */
 @Configuration
-@ConditionalOnProperty(name="bcgov.access.input.plugin", havingValue = "rabbitmq")
+@ConditionalOnProperty(name = "bcgov.access.input.plugin", havingValue = "rabbitmq")
 @EnableConfigurationProperties(RabbitMqInputProperties.class)
 public class InputConfiguration {
-	
 
-    @Bean
-    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory)
-    {
-        return new RabbitAdmin(connectionFactory);
-    }
-	
-	
+	@Bean
+	public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
+		return new RabbitAdmin(connectionFactory);
+	}
+
 	/**
 	 * The main queue to listen to
+	 * 
 	 * @param accessProperties
 	 * @return
 	 */
 	@Bean
-	public Queue documentReadyQueue(AccessProperties accessProperties) {
+	public Queue documentReadyQueue(AccessProperties accessProperties, RabbitMqInputProperties properties) {
 		Queue queue = QueueBuilder
-				.durable(MessageFormat.format("{0}{1}", accessProperties.getInput().getDocumentType(), RabbitMqParam.DOCUMENT_READY_EXTENSION))
-				.withArgument(RabbitMqParam.X_DEAD_LETTER_EXCHANGE_ARG, RabbitMqParam.DOCUMENT_READY_DLX)
+				.durable(getNameSpace(RabbitMqParam.DOCUMENT_READY_Q_FORMAT, accessProperties, properties))
+				.withArgument(RabbitMqParam.X_DEAD_LETTER_EXCHANGE_ARG,
+						dlxDocumentReadyExchange(accessProperties, properties).getName())
 				.build();
 		return queue;
 	}
-	
+
+	/**
+	 * The document ready binding, binds the document ready queue to the document exchange.
+	 * @param exchange
+	 * @param accessProperties
+	 * @param properties
+	 * @return
+	 */
+	@Bean
+	public Binding documentReadyBinding(@Qualifier("documentReadyTopic") TopicExchange exchange,
+			AccessProperties accessProperties, RabbitMqInputProperties properties) {
+		return BindingBuilder.bind(documentReadyQueue(accessProperties, properties)).to(exchange)
+				.with(accessProperties.getInput().getDocumentType());
+	}
+
 	/**
 	 * The shared dead letter queue
+	 * 
 	 * @return
 	 */
-	@Bean 
+	@Bean
 	public Queue documentReadyDeadLetterQueue(AccessProperties accessProperties, RabbitMqInputProperties properties) {
 		Queue queue = QueueBuilder
-				.durable(RabbitMqParam.DOCUMENT_READY_DLQ)
+				.durable(getNameSpace(RabbitMqParam.DOCUMENT_READY_DLQ_FORMAT, accessProperties, properties))
 				.withArgument(RabbitMqParam.X_DEAD_LETTER_EXCHANGE_ARG, RabbitMqParam.DOCUMENT_READY_TOPIC)
-				.withArgument(RabbitMqParam.X_MESSAGE_TTL_ARG, properties.getRetryDelay())
-				.build();
+				.withArgument(RabbitMqParam.X_MESSAGE_TTL_ARG, properties.getRetryDelay()).build();
 		return queue;
 	}
-	
+
 	/**
-	 * The shared dead letter topic exchange.
+	 * Sets the document ready dead letter exchange
+	 * 
 	 * @return
 	 */
 	@Bean
-	public TopicExchange dlxDocumentReadyExchange() {
-		return new TopicExchange(RabbitMqParam.DOCUMENT_READY_DLX, true, false);
+	public TopicExchange dlxDocumentReadyExchange(AccessProperties accessProperties,
+			RabbitMqInputProperties properties) {
+		return new TopicExchange(getNameSpace(RabbitMqParam.DOCUMENT_READY_DLQ_FORMAT, accessProperties, properties),
+				true, false);
 	}
 	
-	@Bean
-    public Binding binding(@Qualifier("documentReadyTopic")TopicExchange exchange, AccessProperties accessProperties) {
-        return BindingBuilder.bind(documentReadyQueue(accessProperties))
-        		.to(exchange)
-        		.with(accessProperties.getInput().getDocumentType());
-    }
-	
-	@Bean
-    public Binding dlqBinding(
-    		ConnectionFactory connectionFactory,
-    		AccessProperties accessProperties,
-    		RabbitMqInputProperties rabbitMqInputProperties) {
-        return BindingBuilder
-        		.bind(documentReadyDeadLetterQueue(accessProperties, rabbitMqInputProperties))
-        		.to(dlxDocumentReadyExchange())
-        		.with("#");
-    }
 	
 	/**
+	 * Binds the dead letter queue to the dead letter exchange.
+	 * @param connectionFactory
+	 * @param accessProperties
+	 * @param rabbitMqInputProperties
+	 * @return
+	 */
+	@Bean
+	public Binding documentReadyDeadLetterQueueBinding(ConnectionFactory connectionFactory,
+			AccessProperties accessProperties, RabbitMqInputProperties rabbitMqInputProperties) {
+		return BindingBuilder.bind(documentReadyDeadLetterQueue(accessProperties, rabbitMqInputProperties))
+				.to(dlxDocumentReadyExchange(accessProperties, rabbitMqInputProperties)).with("#");
+	}
+
+	/**
 	 * Provides as default factory for RabbitListeners
+	 * 
 	 * @param connectionFactory
 	 * @param messageConverter
 	 * @return
 	 */
 	@Bean
-	 public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
-			 ConnectionFactory connectionFactory, 
-			 @Qualifier("jsonMessageConverter")MessageConverter messageConverter) {
-	     SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-	     factory.setConnectionFactory(connectionFactory);
-	     factory.setMessageConverter(messageConverter);
-	     return factory; 
-	 }
+	public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory,
+			@Qualifier("jsonMessageConverter") MessageConverter messageConverter) {
+		SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+		factory.setConnectionFactory(connectionFactory);
+		factory.setMessageConverter(messageConverter);
+		return factory;
+	}
 
-	
-	
+	private String getNameSpace(String pattern, AccessProperties accessProperties, RabbitMqInputProperties properties) {
+
+		return MessageFormat.format(pattern, accessProperties.getInput().getDocumentType(), properties.getRetryDelay(),
+				properties.getRetryCount());
+		
+	}
+
 }
