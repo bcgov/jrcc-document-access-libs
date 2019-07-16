@@ -56,8 +56,8 @@ public class RabbitMqDocumentInputTester {
 	public void init() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(this.documentReadyService).Publish(Mockito.any());
-		Mockito.doNothing().when(documentReadyHandlerMock).Handle(Mockito.anyString(), Mockito.anyString());
-		Mockito.doThrow(ServiceUnavailableException.class).when(documentReadyHandlerMock).Handle(Mockito.anyString(), Mockito.eq(SERVICE_UNAVAILABLE_EXCEPTION));
+		Mockito.doNothing().when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.anyString());
+		Mockito.doThrow(ServiceUnavailableException.class).when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.eq(SERVICE_UNAVAILABLE_EXCEPTION));
 		Mockito.when(this.storageService.putString(Mockito.anyString())).thenReturn(new DocumentStorageProperties("key", "A1"));
 		Mockito.when(rabbitMqInputProperties.getRetryCount()).thenReturn(3);
 		
@@ -134,7 +134,12 @@ public class RabbitMqDocumentInputTester {
 
 		
 		TransactionInfo transactionInfo = new TransactionInfo("testfile.txt", "me", LocalDateTime.now());
-		this.sutOutput.send(textContent, transactionInfo);
+		try {
+			this.sutOutput.send(textContent, transactionInfo);
+		} catch (ServiceUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		sut.receiveMessage(message, null);
 		
