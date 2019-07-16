@@ -5,17 +5,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
-import org.springframework.amqp.ImmediateAcknowledgeAmqpException;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
-import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 
 /**
  * The RabbitMqDocumentInput handles document from the rabbitMq message listener
@@ -29,9 +26,7 @@ public class RabbitMqDocumentInput {
 
 	private Logger logger = LoggerFactory.getLogger(RabbitMqDocumentInput.class);
 
-	private DocumentReadyHandler documentReadyHandler;
-	
-	private RabbitMqInputProperties rabbitMqInputProperties;	
+	private DocumentReadyHandler documentReadyHandler;	
 	
 	private final RedisStorageService redisStorageService;
 	
@@ -41,10 +36,8 @@ public class RabbitMqDocumentInput {
 	 * @param documentReadyHandler - A document ready handler.
 	 */
 	public RabbitMqDocumentInput(
-			DocumentReadyHandler documentReadyHandler,
-			RabbitMqInputProperties rabbitMqInputProperties, RedisStorageService redisStorageService) {
+			DocumentReadyHandler documentReadyHandler, RedisStorageService redisStorageService) {
 		this.documentReadyHandler = documentReadyHandler;
-		this.rabbitMqInputProperties = rabbitMqInputProperties;	
 		this.redisStorageService = redisStorageService;
 	}
 
@@ -56,19 +49,10 @@ public class RabbitMqDocumentInput {
 	 * @param xDeath
 	 */
 	@RabbitListener(queues = "#{documentReadyQueue.getName()}")
-	public void receiveMessage(DocumentReadyMessage documentReadyMessage,
-			@Header(required = false, name = "x-death") Map<?, ?> xDeath)
+	public void receiveMessage(DocumentReadyMessage documentReadyMessage)
 	{
 
 		logger.info("New Document Received {}", documentReadyMessage);
-		
-		if(xDeath != null && 
-				(xDeath.get("count") instanceof Long) && 
-				(Long)xDeath.get("count") > rabbitMqInputProperties.getRetryCount()) {	
-			
-			logger.error("Message has reach retry limit of {} retries", rabbitMqInputProperties.getRetryCount());
-			throw new ImmediateAcknowledgeAmqpException("Message has reach retry limit.");
-		}
 		
 		try {
 			

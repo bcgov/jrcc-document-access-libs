@@ -116,10 +116,11 @@ public class InputConfiguration {
 	 */
 	@Bean
 	public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory,
-			@Qualifier("jsonMessageConverter") MessageConverter messageConverter) {
+			@Qualifier("jsonMessageConverter") MessageConverter messageConverter, DocumentInputPreProcessor documentInputPreProcessor) {
 		SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
 		factory.setConnectionFactory(connectionFactory);
 		factory.setMessageConverter(messageConverter);
+		factory.setAfterReceivePostProcessors(documentInputPreProcessor);
 		return factory;
 	}
 

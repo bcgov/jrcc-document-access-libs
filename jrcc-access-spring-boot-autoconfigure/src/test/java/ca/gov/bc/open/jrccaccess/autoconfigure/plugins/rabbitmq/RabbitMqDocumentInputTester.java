@@ -46,9 +46,6 @@ public class RabbitMqDocumentInputTester {
 	@Mock
 	private TransactionInfo transactionInfoMock;
 	
-	@Mock 
-	private RabbitMqInputProperties rabbitMqInputProperties;
-	
 	@Mock
 	private RedisStorageService storageService;
 	
@@ -59,14 +56,13 @@ public class RabbitMqDocumentInputTester {
 		Mockito.doNothing().when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.anyString());
 		Mockito.doThrow(ServiceUnavailableException.class).when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.eq(SERVICE_UNAVAILABLE_EXCEPTION));
 		Mockito.when(this.storageService.putString(Mockito.anyString())).thenReturn(new DocumentStorageProperties("key", "A1"));
-		Mockito.when(rabbitMqInputProperties.getRetryCount()).thenReturn(3);
 		
 		PluginConfig output = new PluginConfig();
 		output.setDocumentType("mydoc");
 		AccessProperties accessProperties = new AccessProperties();
 		accessProperties.setOutput(output);
 		
-		sut = new RabbitMqDocumentInput(documentReadyHandlerMock, rabbitMqInputProperties, storageService);
+		sut = new RabbitMqDocumentInput(documentReadyHandlerMock, storageService);
 		sutOutput = new RabbitMqDocumentOutput(this.storageService, this.documentReadyService, accessProperties);
 	}
 	
@@ -76,7 +72,7 @@ public class RabbitMqDocumentInputTester {
 		Mockito.when(this.transactionInfoMock.getSender()).thenReturn("bcgov");
 		Mockito.when(this.message.getTransactionInfo()).thenReturn(transactionInfoMock);
 		
-		sut.receiveMessage(message, null);
+		sut.receiveMessage(message);
 		
 	}
 	
@@ -86,37 +82,12 @@ public class RabbitMqDocumentInputTester {
 		Mockito.when(this.transactionInfoMock.getSender()).thenReturn(SERVICE_UNAVAILABLE_EXCEPTION);
 		Mockito.when(this.message.getTransactionInfo()).thenReturn(transactionInfoMock);
 		
-		sut.receiveMessage(message, null);
+		sut.receiveMessage(message);
 		
 	}
 	
-	@Test(expected = ImmediateAcknowledgeAmqpException.class)
-	public void when_retry_limit_reach_should_throw_ImmediateAcknowledgeAmqpException() {
-		
-		Mockito.when(this.transactionInfoMock.getSender()).thenReturn("bcgov");
-		Mockito.when(this.message.getTransactionInfo()).thenReturn(transactionInfoMock);
-		
-		Map<Object, Object> xDeath = new HashMap<Object, Object>();
-		
-		xDeath.put("count", 4L);
-		
-		sut.receiveMessage(message, xDeath);
-		
-	}
 	
-	@Test
-	public void when_under_retry_limit_reach_should_process() {
-		
-		Mockito.when(this.transactionInfoMock.getSender()).thenReturn("bcgov");
-		Mockito.when(this.message.getTransactionInfo()).thenReturn(transactionInfoMock);
-		
-		Map<Object, Object> xDeath = new HashMap<Object, Object>();
-		
-		xDeath.put("count", 2L);
-		
-		sut.receiveMessage(message, xDeath);
-		
-	}
+
 	
 	@Test
 	public void testPutAndGetDocumentFromStorage() {
@@ -141,7 +112,7 @@ public class RabbitMqDocumentInputTester {
 			e.printStackTrace();
 		}
 		
-		sut.receiveMessage(message, null);
+		sut.receiveMessage(message);
 		
 	}
 	
