@@ -1,9 +1,5 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure.services;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
