@@ -273,3 +273,15 @@ logging:
 To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
 
 ![binding](docs/document.ready.bind.png)
+
+## Release
+
+To create a new release run on develop branch
+
+```
+mvn versions:set -DartifactId=*  -DgroupId=*
+```
+
+it will prompt you for the new version
+
+do a pull request against dev
