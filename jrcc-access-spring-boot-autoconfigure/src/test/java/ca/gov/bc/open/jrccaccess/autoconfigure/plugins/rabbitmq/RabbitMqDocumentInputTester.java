@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
@@ -79,9 +80,8 @@ public class RabbitMqDocumentInputTester {
 		
 	}
 	
-	
-	@Test(expected = AmqpRejectAndDontRequeueException.class)
-	public void when_DocumentDigestMatchFailedException_should_throw_AmqpRejectAndDontRequeueException() throws Exception {
+	@Test(expected = DocumentDigestMatchFailedException.class)
+	public void when_getString_should_throw_DocumentDigestMatchFailedException() throws Exception {
 		
 		String key = RandomHelper.makeRandomString(10);
 		String textContent = RandomHelper.makeRandomString(20);
