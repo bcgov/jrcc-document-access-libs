@@ -12,7 +12,6 @@ import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
 import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 /**
  * The rabbitMqDocumentOutput provides service to send document ready message 
