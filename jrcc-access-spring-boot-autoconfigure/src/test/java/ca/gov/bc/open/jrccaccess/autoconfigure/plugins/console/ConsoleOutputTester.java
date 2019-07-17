@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure.services;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.console;
 
 import java.time.LocalDateTime;
 

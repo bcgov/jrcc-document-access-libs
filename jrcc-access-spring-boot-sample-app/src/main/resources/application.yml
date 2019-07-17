@@ -10,10 +10,7 @@ bcgov:
   access:
     input:
       document-type: test-doc
-      plugin: rabbitmq
-      rabbitmq:
-         retry-delay: 5000
-         retry-count: 5
+      plugin: console
     output:
       document-type: test-doc
       plugin: console

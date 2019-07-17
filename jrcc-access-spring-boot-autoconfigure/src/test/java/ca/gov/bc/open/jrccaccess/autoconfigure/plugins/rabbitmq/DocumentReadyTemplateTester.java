@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure.rabbitmq;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

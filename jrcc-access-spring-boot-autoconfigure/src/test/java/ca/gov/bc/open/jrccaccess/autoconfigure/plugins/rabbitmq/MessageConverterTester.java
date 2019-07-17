@@ -1,13 +1,12 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure.rabbitmq;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,18 +23,16 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 				"bcgov.access.output.plugin=rabbitmq"
 		})
 @ContextConfiguration
-public class TopicExchangeTester {
+public class MessageConverterTester {
 
-	@Qualifier("documentReadyTopic")
+	@Qualifier("jsonMessageConverter")
 	@Autowired
-	private TopicExchange sut;
+	private MessageConverter sut;
 	
 	@Test
-	public void with_default_should_return_document_ready_topic() {
+	public void with_default_should_return_jackson_converter() {
 	
-		assertEquals("document.ready", sut.getName());
-		assertTrue(sut.isDurable());
-		assertFalse(sut.isAutoDelete());
-	
+		assertEquals(Jackson2JsonMessageConverter.class, sut.getClass());
+
 	}
 }

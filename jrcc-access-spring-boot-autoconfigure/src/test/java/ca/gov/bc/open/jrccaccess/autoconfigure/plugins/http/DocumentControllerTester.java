@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure.rest;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.http;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
