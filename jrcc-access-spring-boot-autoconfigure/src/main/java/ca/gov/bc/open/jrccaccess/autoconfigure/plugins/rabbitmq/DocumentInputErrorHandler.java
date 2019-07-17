@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.ImmediateAcknowledgeAmqpException;
-import org.springframework.amqp.rabbit.listener.ConditionalRejectingErrorHandler.DefaultExceptionStrategy;
 import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFailedException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -26,12 +25,21 @@ public class DocumentInputErrorHandler implements ErrorHandler  {
 	@Override
 	public void handleError(Throwable t) {
 		
-		if(!(t instanceof ListenerExecutionFailedException)) throw new ImmediateAcknowledgeAmqpException(t);
+		logger.debug("Handling error thrown by rabbitmq listener.");
+		
+		if(!(t instanceof ListenerExecutionFailedException)) {
+			logger.error("Error not instance of ListenerExecutionFailedException, the message will be acknowledged and discard from the queue.");
+			throw new ImmediateAcknowledgeAmqpException(t);
+		}
 		
 		ListenerExecutionFailedException actualException = (ListenerExecutionFailedException)t;
 		
-		if(actualException.getCause() instanceof ServiceUnavailableException) throw new AmqpRejectAndDontRequeueException(t);
+		if(actualException.getCause() instanceof ServiceUnavailableException) {
+			logger.warn("Service Unavailable Exception: the message will be rejected and move to the corresponding dead letter queue.");
+			throw new AmqpRejectAndDontRequeueException(t);
+		}
 		
+		logger.error("{}: the message will be acknowledged and discard from the queue.", t.getMessage());
 		throw new ImmediateAcknowledgeAmqpException(t);
 		
 	}
