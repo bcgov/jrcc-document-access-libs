@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>ca.gov.bc.open</groupId>
 	<artifactId>jrcc-access-spring-boot-autoconfigure</artifactId>
-	<version>0.3.3</version>
+	<version>0.4.0</version>
 	<name>jrcc-access-spring-boot-autoconfigure</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -68,6 +68,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
+			<version>2.9.9.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -83,12 +84,12 @@
 		<dependency>
 			<groupId>ca.gov.bc.open</groupId>
 			<artifactId>jrcc-document-access-libs</artifactId>
-			<version>0.3.3</version>
+			<version>0.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>ca.gov.bc.open</groupId>
 			<artifactId>jrcc-document-api</artifactId>
-			<version>0.3.3</version>
+			<version>0.4.0</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -6,7 +6,7 @@
 
 	<groupId>ca.gov.bc.open</groupId>
 	<artifactId>jrcc-document-api</artifactId>
-	<version>0.3.3</version>
+	<version>0.4.0</version>
 	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -53,6 +53,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
+			<version>2.9.9.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.jaxrs</groupId>

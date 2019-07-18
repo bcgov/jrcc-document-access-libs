@@ -1,9 +1,5 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure.services;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -24,7 +20,7 @@ public class DocumentReadyHandlerTester {
 	private TransactionInfo transactionInfoMock;
 	
 	@Before
-	public void init() {
+	public void init() throws Exception {
 		
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(this.documentOutput).send(Mockito.anyString(), Mockito.any());
@@ -34,15 +30,11 @@ public class DocumentReadyHandlerTester {
 	
 	
 	@Test
-	public void send_with_valid_input_should_process() {
+	public void send_with_valid_input_should_process() throws Exception {
 		
-		InputStream is = new ByteArrayInputStream("awesome content".getBytes() );
-		try {
-			sut.Handle(is, "bcgov");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		sut.handle("awesome content", "bcgov");
+
 		
 	}
 	

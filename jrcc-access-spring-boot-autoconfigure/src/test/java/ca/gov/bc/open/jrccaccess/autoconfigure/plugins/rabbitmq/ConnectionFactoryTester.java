@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure.rabbitmq;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,6 +16,7 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 @SpringBootTest(
         classes = AccessApplication.class,
         properties = {
+        		"bcgov.access.input.plugin=http",
         		"bcgov.access.output.plugin=rabbitmq"
         })
 @ContextConfiguration

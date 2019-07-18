@@ -1,6 +1,10 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure.rest;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.http;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -16,7 +20,8 @@ import ca.bc.gov.open.api.DocumentApi;
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
 import ca.bc.gov.open.api.model.Error;
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
-import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 /**
  * The document controller provides an endpoint to submit a document.
@@ -26,7 +31,7 @@ import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
  */
 @RestController
 @ConditionalOnProperty(
-	value="bcgov.access.input",
+	value="bcgov.access.input.plugin",
 	havingValue = "http"
 )
 public class DocumentController implements DocumentApi {
@@ -55,24 +60,42 @@ public class DocumentController implements DocumentApi {
 		response.setAcknowledge(true);
 		
 		try {
-			documentReadyHandler.Handle(body.getInputStream(), sender);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-		
-			Error error = new Error();
-			error.setCode(Integer.toString(HttpStatus.INTERNAL_SERVER_ERROR.value()));
-			error.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-			return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			documentReadyHandler.handle(getContent(body.getInputStream()), sender);
+			
 		} catch (ServiceUnavailableException e) {
 			
 			Error error = new Error();
 			error.setCode(Integer.toString(HttpStatus.SERVICE_UNAVAILABLE.value()));
 			error.setMessage(e.getMessage());
 			return new ResponseEntity(error, HttpStatus.SERVICE_UNAVAILABLE);
+			
+		} catch (IOException | DocumentMessageException e) {
+			// TODO Auto-generated catch block
+		
+			Error error = new Error();
+			error.setCode(Integer.toString(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+			error.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+			return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+
 		}
 		
 		return ResponseEntity.ok(response);
 		
+	}
+	
+	private String getContent(InputStream inputStream) throws IOException {
+
+		StringBuilder stringBuilder = new StringBuilder();
+		String line = null;
+
+		try (BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+			while ((line = bufferedReader.readLine()) != null) {
+				stringBuilder.append(line);
+			}
+		}
+
+		return stringBuilder.toString();
 	}
 
 }

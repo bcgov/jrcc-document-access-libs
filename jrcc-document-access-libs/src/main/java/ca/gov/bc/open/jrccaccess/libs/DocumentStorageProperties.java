@@ -1,5 +1,8 @@
 package ca.gov.bc.open.jrccaccess.libs;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Represents the document storage properties
  * @author 177226
@@ -22,9 +25,10 @@ public class DocumentStorageProperties {
 	 * @param key - The document key
 	 * @param MD5 - The document MD5 in hex format
 	 */
+	@JsonCreator
 	public DocumentStorageProperties(
-			String key,
-			String MD5) {
+			@JsonProperty("key")String key,
+			@JsonProperty("md5")String MD5) {
 		
 		if(key == null || key.isEmpty()) throw new IllegalArgumentException("key");
 		if(MD5 == null || MD5.isEmpty()) throw new IllegalArgumentException("MD5");

@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure.rabbitmq;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,6 +22,7 @@ import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
 		properties = {
         		"spring.rabbitmq.host=rabbit",
         		"spring.rabbitmq.port=1234",
+        		"bcgov.access.input.plugin=http",
     			"bcgov.access.output.plugin=rabbitmq",
         		"bcgov.access.output.document-type=test-doc"
         })

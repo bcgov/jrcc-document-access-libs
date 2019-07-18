@@ -3,8 +3,6 @@ package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.console;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import javax.validation.constraints.AssertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 

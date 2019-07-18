@@ -1,5 +1,7 @@
 package ca.gov.bc.open.jrccaccess.libs;
 
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+
 /**
  * Specification for the document output services
  * @author alexjoybc
@@ -13,7 +15,7 @@ public interface DocumentOutput {
 	 * @param documentInfo The document informations
 	 * @param transactionInfo The transaction Informations
 	 */
-	void send(String content, TransactionInfo transactionInfo);
+	void send(String content, TransactionInfo transactionInfo) throws DocumentMessageException;
 	
 	
 }

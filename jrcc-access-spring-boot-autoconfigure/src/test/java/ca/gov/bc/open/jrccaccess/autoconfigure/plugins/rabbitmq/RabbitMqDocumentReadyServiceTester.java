@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure.services;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import java.time.LocalDateTime;
 
@@ -22,12 +22,13 @@ import ca.gov.bc.open.jrccaccess.libs.DocumentInfo;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
-import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = AccessApplication.class,
         properties = {
+        		"bcgov.access.input.plugin=http",
         		"bcgov.access.output.plugin=rabbitmq"
         })
 @ContextConfiguration
@@ -42,40 +43,40 @@ public class RabbitMqDocumentReadyServiceTester {
 
 	@Mock
 	private RabbitTemplate rabbitTemplateMock;
-	
 
 	@InjectMocks
 	private RabbitMqDocumentReadyService sut;
 
 	
+	
 	@Before
 	public void init() {
 		
 		MockitoAnnotations.initMocks(this);
-		Mockito.doNothing().when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_1));
-		Mockito.doThrow(AmqpConnectException.class).when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_2));
-		Mockito.doThrow(AmqpIOException.class).when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_3));
+		Mockito.doNothing().when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_1), Mockito.any());
+		Mockito.doThrow(AmqpConnectException.class).when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_2), Mockito.any());
+		Mockito.doThrow(AmqpIOException.class).when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_3), Mockito.any());
 		
 	}
 	
 	@Test
-	public void publish_with_valid_input_shoud_publish() {
+	public void publish_with_valid_input_shoud_publish() throws Exception {
 		
-		sut.Publish(MESSAGE_1);
-		
-	}
-	
-	@Test(expected = ServiceUnavailableException.class)
-	public void publish_with_AmqpConnectException_shoud_throw_ServiceUnavailableException() {
-		
-		sut.Publish(MESSAGE_2);
+		sut.publish(MESSAGE_1);
 		
 	}
 	
 	@Test(expected = ServiceUnavailableException.class)
-	public void publish_with_AmqpIOException_shoud_throw_ServiceUnavailableException() {
+	public void publish_with_AmqpConnectException_shoud_throw_ServiceUnavailableException() throws Exception {
 		
-		sut.Publish(MESSAGE_3);
+		sut.publish(MESSAGE_2);
+		
+	}
+	
+	@Test(expected = ServiceUnavailableException.class)
+	public void publish_with_AmqpIOException_shoud_throw_ServiceUnavailableException() throws Exception {
+		
+		sut.publish(MESSAGE_3);
 		
 	}
 	

@@ -11,7 +11,7 @@ import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
 import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
-import ca.gov.bc.open.jrccaccess.libs.services.ServiceUnavailableException;
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 
 /**
  * The rabbitMqDocumentOutput provides service to send document ready message 
@@ -44,7 +44,7 @@ public class RabbitMqDocumentOutput implements DocumentOutput {
 	 * Stores the document to redis and send a document ready message to rabbitMQ
 	 */
 	@Override
-	public void send(String content, TransactionInfo transactionInfo) throws ServiceUnavailableException {
+	public void send(String content, TransactionInfo transactionInfo) throws DocumentMessageException {
 		
 		DocumentInfo documentInfo = new DocumentInfo(accessProperties.getOutput().getDocumentType());
 		
@@ -58,7 +58,7 @@ public class RabbitMqDocumentOutput implements DocumentOutput {
 		DocumentReadyMessage documentReadyMessage = new DocumentReadyMessage(transactionInfo, documentInfo, documentStorageProperties);
 		
 		logger.debug("Attempting to publish [{}] ready message to [{}] topic.", documentInfo, RabbitMqParam.DOCUMENT_READY_TOPIC);
-		this.rabbitMqDocumentReadyService.Publish(documentReadyMessage);
+		this.rabbitMqDocumentReadyService.publish(documentReadyMessage);
 		logger.info("[{}] successfully published to [{}] with [{}] routing key", documentInfo, RabbitMqParam.DOCUMENT_READY_TOPIC, accessProperties.getOutput().getDocumentType());
 
 	}

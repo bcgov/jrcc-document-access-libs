@@ -4,6 +4,9 @@ import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Represents the transaction information
  * @author alexjoybc
@@ -26,8 +29,11 @@ public class TransactionInfo {
 	 */
 	public LocalDateTime receivedOn;
 
-	
-	public TransactionInfo(String fileName, String sender, LocalDateTime receivedOn) {
+	@JsonCreator
+	public TransactionInfo(
+			@JsonProperty("fileName")String fileName, 
+			@JsonProperty("sender")String sender, 
+			@JsonProperty("receivedOn")LocalDateTime receivedOn) {
 		
 		if(sender == null || sender.isEmpty()) throw new IllegalArgumentException("sender");
 		if(fileName == null || fileName.isEmpty()) throw new IllegalArgumentException("fileName");	

@@ -1,6 +1,5 @@
-package ca.gov.bc.open.jrccaccess.autoconfigure;
+package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.http;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 0.2.0
  */
 @Configuration
-@ComponentScan("ca.gov.bc.open.jrccaccess.autoconfigure.rest")
-public class RestAutoConfiguration {
+@ComponentScan
+public class AutoConfiguration {
 
 }

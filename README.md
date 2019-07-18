@@ -25,74 +25,189 @@ Add `jrcc-access-spring-boot-starter` to your project
 </dependency>
 ```
 
-Add settings into `application.settings` file
+Add settings into `application.settings` file using the following configuration guide
 
-```properties
+## Plugins
 
-# common spring boot settings (redis)
+### Common Options
 
-spring.redis.database=
-spring.redis.host=
-spring.redis.port=
-spring.redis.password=
-spring.redis.ssl=
-spring.redis.timeout=
-spring.redis.cluster.nodes=
-spring.redis.sentinel.master=
-spring.redis.sentinel.nodes=
+| name | definition | required |
+| --- | --- | --- |
+| [bcgov.access.input.document-type](#bcgovaccessinputdocument-type) | String | No |
+| [bcgov.access.input.plugin-type](#bcgovaccessinputplugin-type) | String | Yes |
 
-# common spring boot settings (amqp)
+#### bcgov.access.input.document-type
 
-spring.rabbitmq.host=
-spring.rabbitmq.port=
-spring.rabbitmq.username=
-spring.rabbitmq.password=
+* Value type is String
+* Default value is `unknown`
 
-# bc gov settings
+Sets the document type to be manipulated
 
-bcgov.access.ttl= <-- cache time to live expressed in hours (default = 1)
-bcgov-access-ttl=[int] <-- the time to live for document in the temp storage 
-bcgov-access-publish-document-type: <-- the type of document to publish
-bcgov-access-input: [http] <-- the input plugin
-bcgov-access-output: [console,rabbitmq] <-- the ouput plugin
+#### bcgov.access.input.plugin-type
 
-```
+* Value type is String
 
-## Configuration
+Sets the plugin type
 
-### Input
+## Input Plugins
 
 You can configure the document input using `bcgov.access.input` property.
 
-> bcgov.access.input=http
+* [Console](#ConsoleInputPlugin)
+* [Http](#HttpInputPlugin)
+* [RabbitMq](#RabbitMqInputPlugin)
 
-when set to `http` jrcc access exposes the [document API](jrcc-access-api/jrcc.swagger.yml).
+### Console Input Plugin
+
+#### Description
+
+Reads document form the standard input.
+Each document is assumed to be one line
+
+#### Configuration
+
+```properties
+bcgov.access.input.plugin=console
+```
+
+#### Input Configuration Options
+
+There are no special configuration options for this plugin, but it does support the [Common Options](#CommonOptions).
+
+### Http Input Plugin
+
+#### Description
+
+Using this input you can receive a single document over http(s).
+For more details have a look at the [document API](jrcc-access-api/jrcc.swagger.yml).
+
+#### Setup
+
+```properties
+bcgov.access.input.plugin=http
+```
+
 You can configure the webserver using standard spring configuration.
 Document sent to the api are handle with the default documentReadyHandler.
 
-### Output
+#### Configuration Options
 
-#### Console
+There are no special configuration options for this plugin, but it does support the [Common Options](#CommonOptions) and spring standard EMBEDDED SERVER CONFIGURATION (ServerProperties).
+[Common Application Properties](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html)
 
-You can configure the document output using `bcgov.access.output` property. the default configuration is `console`.
+exemple to run the service on port `5050`
 
-> bcgov.access.ouput.plugin=console
+```properties
+server.port=5050
+```
 
-when set to `console` the transaction details and the payload are printed to standard output.
 
+### RabbitMq Input Plugin
 
-#### RabbitMq
+#### Description
 
-> bcgov.access.ouput.plugin=rabbitmq
+Using this plugin you can receive messages from a spefied rabbitMq queue.
 
-when set to `rabbitmq` a document ready message is send to rabbitmq and the document is stored to reddis cache. this configuration implies that you have a running instance of reddis and rabbitmq
-You can configure reddis and rabbitmq using the standard spring boot configuration.
+#### Setup
 
-##### Configuration
+```properties
+bcgov.access.input.plugin=rabbitmq
+```
 
-| name | definition |
-| --- | --- |
-| bcgov.access.input.http.output.rabbitmq.ttl | the time to live for the document in storage expressed in hour |
+#### Configuration Options
+
+It support the [Common Options](#CommonOptions) and the following options:
+
+| name | type | required |
+| --- | --- | --- |
+| [bcgov.access.input.rabbitmq.retryDelay](#bcgovaccessinputrabbitmqretryDelay) | Int | No |
+| [bcgov.access.input.rabbitmq.retryCount](#bcgov.access.input.rabbitmq.retryCount) | Int | No |
+
+##### bcgov.access.input.rabbitmq.retryDelay
+
+* Value type is Int
+* Default value is `0`
+
+Sets the delay between retries when the service if failing to process the message and throwing application known errors.
+
+##### bcgov.access.input.rabbitmq.retryCount
+
+* Value type is Int
+* Default value is `1`
+
+Sets the maximum attempt to reprocess a message in the queue.
+
+## Output Plugins
+
+You can configure the document input using `bcgov.access.output` property.
+
+* [Console](#ConsoleOutputPlugin)
+* [RabbitMq](#RabbitMqOutputPlugin)
+
+### Console Output Plugin
+
+#### Description
+
+A simple output wich pring document information to STDOUT.
+The console output is mostly used when testing the application configuration.
+
+#### Setup
+
+```properties
+bcgov.access.output.plugin=console
+```
+
+#### Configuration Options
+
+It support the [Common Options](#Common Options) and the following options:
+
+| name | type | required |
+| --- | --- | --- |
+| [bcgov.access.output.console.format](#bcgovaccessoutputconsoleformat) | String | No |
+
+##### bcgov.access.output.console.format
+
+* Value type is String
+* Default value is `default`
+* Value can be any of `default`, `xml`
+
+When set to `default` the output is truncated to 100 chars.
+When set to `xml` the plugins tries to prettify the xml document or return the content of the document
+
+````properties
+bcgov.access.output.console.format=xml
+````
+
+### RabbitMq Output Plugin
+
+#### Description
+
+Push documents to a RabbitMq exchange and store document to Redis Cache.
+
+#### Setup
+
+```properties
+bcgov.access.output.plugin=rabbitmq
+```
+
+#### Configuration Options
+
+It support the [Common Options](#Common Options) and the following options:
+
+| name | type | required |
+| --- | --- | --- |
+| [bcgov.access.output.rabbitmq.ttl](#bcgovaccessoutputrabbitmqttl) | Int | No |
+
+##### bcgov.access.output.rabbitmq.ttl
+
+* Value type is Int
+* Default value is `1`
+
+Sets the time to live for document in the temporary storage (expressed in hours)
+
+```properties
+bcgov.access.output.rabbitmq.ttl
+```
 
 ## References
 
@@ -158,3 +273,15 @@ logging:
 To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
 
 ![binding](docs/document.ready.bind.png)
+
+## Release
+
+To create a new release run on develop branch
+
+```
+mvn versions:set -DartifactId=*  -DgroupId=*
+```
+
+it will prompt you for the new version
+
+do a pull request against dev
