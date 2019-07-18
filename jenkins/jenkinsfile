@@ -1,6 +1,6 @@
 try {
            timeout(time: 20, unit: 'MINUTES') {
-              node('maven') {
+              node('nodejs') {
 
                   // INIT STAGE
                   //   stage('Initialization') {
@@ -140,4 +140,4 @@ try {
            echo "Caught: ${err}"
            currentBuild.result = 'FAILURE'
            throw err
-        }          
+        }
