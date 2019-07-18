@@ -1,0 +1,143 @@
+try {
+           timeout(time: 20, unit: 'MINUTES') {
+              node('maven') {
+
+                  // INIT STAGE
+                  //   stage('Initialization') {
+                  //     openshift.withCluster() {
+                  //       openshift.withProject() {
+                  //       }
+                  //     }
+                  //   }
+
+                  // CHECKOUT STAGE
+                  //   stage('Checkout Code') {
+                  //     openshift.withCluster() {
+                  //       openshift.withProject() {
+                  //       }
+                  //     }
+                  //   }
+
+                  // CODE SCAN STAGE
+                  //   stage('Code Scanning') {
+                  //     openshift.withCluster() {
+                  //       openshift.withProject() {
+                  //       }
+                  //     }
+                  //   }
+
+                  // BUILD STAGE
+                  stage('Build') {
+                    openshift.withCluster() {
+                      openshift.withProject() {
+                        env.NAMESPACE = openshift.project()
+                        echo "Starting Pipeline for ${APP_NAME}..."
+                        def bld = openshift.startBuild(env.APP_NAME)
+                        bld.untilEach {
+                          return (it.object().status.phase == "Complete")
+                        }
+                        bld.logs('-f')
+                      }
+                    }
+                  }
+
+                  // BUILD VERIFICATION STAGE
+                  stage ('Verify Build') {
+                      openshiftVerifyBuild(bldCfg: env.APP_NAME, namespace: env.BUILD)
+                  }
+
+                  // FUNCTIONAL TESTING
+                  //   stage('Functional Tests') {
+                  //     openshift.withCluster() {
+                  //       openshift.withProject() {
+                  //       }
+                  //     }
+                  //   }
+
+                  // END TO END TESTING
+                  //   stage('End to End Tests') {
+                  //     openshift.withCluster() {
+                  //       openshift.withProject() {
+                  //       }
+                  //     }
+                  //   }
+
+                  // ARTIFACT SCAN
+                  //   stage('Scan Artifacts') {
+                  //     openshift.withCluster() {
+                  //       openshift.withProject() {
+                  //       }
+                  //     }
+                  //   }
+
+                  // ARCHIVE ARTIFACTS
+                  //   stage('Archive Artifacts') {
+                  //     openshift.withCluster() {
+                  //       openshift.withProject() {
+                  //       }
+                  //     }
+                  //   }
+
+                  // PROMOTE TO DEV
+                  stage('Promote from Build to Dev') {
+                    openshift.withCluster() {
+                      openshift.withProject() {
+                        openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.DEV)
+                      }
+                    }
+                  }
+
+                  // VERIFY DEV PROMOTION
+                  stage ('Verify Deployment to Dev') {
+                      openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.DEV)
+                  }
+
+                  // MANUAL CHECK FOR PROMOTION TO TEST
+                  stage('Promotion gate') {
+                      script {
+                        input message: 'Promote application to Test?'
+                      }
+                  }
+
+                  // PROMOTE FROM DEV TO TEST
+                  stage('Promote from Dev to Test') {
+                      openshift.withCluster() {
+                        openshift.withProject() {
+                          openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.TEST)
+                        }
+                      }
+                  }
+
+                  // VERIFY DEPLOYMENT TO TEST
+                  stage ('Verify Deployment to Test') {
+                      openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.TEST)
+                  }
+
+                  // MANUAL CHECK FOR PROMOTION TO PRODUCTION
+                  stage('Promotion gate') {
+                      script {
+                        input message: 'Promote application to Production?'
+                      }
+                  }
+
+                  // PROMOTE TO PRODUCTION
+                  stage('Promote from Stage to Prod') {
+                      openshift.withCluster() {
+                        openshift.withProject() {
+                          openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.PROD)
+                        }
+                      }
+                  }
+
+                  // MANUAL CHECK FOR PROMOTION TO PRODUCTION
+                  stage ('Verify Deployment to Prod') {
+                      openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.PROD)
+                  }
+                }
+           }
+        } catch (err) {
+           echo "in catch block"
+           echo "Caught: ${err}"
+           currentBuild.result = 'FAILURE'
+           throw err
+        }          
