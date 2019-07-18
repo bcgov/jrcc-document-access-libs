@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
+import ca.gov.bc.open.jrccaccess.libs.processing.DocumentProcessor;
 import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 
 /**
@@ -24,12 +26,17 @@ public class DocumentReadyHandler {
 
 	private DocumentOutput documentOutput;
 
+	private DocumentProcessor processor;
+
 	/**
 	 * Creates a document ready handler with a given document output
+	 * 
 	 * @param documentOutput
+	 * @param processors
 	 */
-	public DocumentReadyHandler(DocumentOutput documentOutput) {
+	public DocumentReadyHandler(DocumentOutput documentOutput, @Value("#{null}")DocumentProcessor processor) {
 		this.documentOutput = documentOutput;
+		this.processor = processor;
 	}
 
 	/**
@@ -44,12 +51,26 @@ public class DocumentReadyHandler {
 
 		logger.debug("Attempting to create a new transaction");
 		TransactionInfo transactionInfo = new TransactionInfo("filename.txt", sender, LocalDateTime.now());
-		
-		// for each validation
-			// if false throw ValidationEx	
-		
-		this.documentOutput.send(message, transactionInfo);
 
+		String processedMessage = this.ExecuteProcessor(message, transactionInfo);
+		logger.info("document {} successfully processed.", transactionInfo);
+
+		// for each validation
+		// if false throw ValidationEx
+
+		logger.debug("Attempting to deliver the document.");
+		this.documentOutput.send(processedMessage, transactionInfo);
+		logger.info("document {} successfully delivered.", transactionInfo);
+
+	}
+
+	private String ExecuteProcessor(String content, TransactionInfo transactionInfo) {
+		
+		if(processor == null) return content;
+		
+		logger.debug("Attempting to process the document.");
+		return this.processor.processDocument(content, transactionInfo);
+		
 	}
 
 }
