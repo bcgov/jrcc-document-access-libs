@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "Running Assemble Script!"
 # restore build artifacts
 if [ "$(ls /tmp/s2i/artifacts/ 2>/dev/null)" ]; then
     mv /tmp/s2i/artifacts/* $HOME/.
