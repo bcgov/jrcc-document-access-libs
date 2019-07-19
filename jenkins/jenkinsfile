@@ -1,45 +1,40 @@
 try {
            timeout(time: 20, unit: 'MINUTES') {
+             node {
+               stage("Initialize") {
+                 project = env.BUILD
+               }
+             }
+
               node('maven') {
 
-                  // INIT STAGE
-                  //   stage('Initialization') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
 
-                  // CHECKOUT STAGE
-                  //   stage('Checkout Code') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
-
-                  // CODE SCAN STAGE
-                  //   stage('Code Scanning') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
-
-                  // BUILD STAGE
-                  stage('Build') {
-                    openshift.withCluster() {
-                      openshift.withProject() {
-                        env.NAMESPACE = openshift.project()
-                        echo "Starting Pipeline for ${APP_NAME}..."
-                        def bld = openshift.startBuild(env.APP_NAME)
-                        bld.untilEach {
-                          return (it.object().status.phase == "Complete")
-                        }
-                        bld.logs('-f')
-                      }
-                    }
+                  stage("Checkout") {
+                    git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
                   }
+
+                  stage("Build WAR") {
+                    sh "mvn clean package -Psample-app"
+                    stash name:"jar", includes:"target/ROOT.jar"
+                  }
+
+                  stage('Build Image With JAR'){
+                    unstash name:"jar"
+                    sh "oc start-build ${APP_NAME} --from-file=target/ROOT.jar -n ${project}"
+                    timeout(time: 20, unit: 'MINUTES') {
+                      openshift.withCluster() {
+                        openshift.withProject() {
+                          echo "Starting Pipeline for ${APP_NAME}..."
+                          def bld = openshift.startBuild(env.APP_NAME)
+                          bld.untilEach {
+                            return (it.object().status.phase == "Complete")
+                          }
+                          bld.logs('-f')
+                        }
+                      }
+                  }
+
+
 
                   // BUILD VERIFICATION STAGE
                   stage ('Verify Build') {
