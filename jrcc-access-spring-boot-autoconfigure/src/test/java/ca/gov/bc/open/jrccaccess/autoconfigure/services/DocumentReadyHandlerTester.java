@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 
 import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
 import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
+import ca.gov.bc.open.jrccaccess.libs.processing.DocumentProcessor;
 
 public class DocumentReadyHandlerTester {
 
@@ -17,25 +18,35 @@ public class DocumentReadyHandlerTester {
 	private DocumentOutput documentOutput;
 	
 	@Mock
+	private DocumentProcessor documentProcessor;
+	
+	@Mock
 	private TransactionInfo transactionInfoMock;
+	
+	
 	
 	@Before
 	public void init() throws Exception {
 		
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(this.documentOutput).send(Mockito.anyString(), Mockito.any());
-		sut = new DocumentReadyHandler(documentOutput);
-		
+		Mockito.when(documentProcessor.processDocument(Mockito.anyString(), Mockito.any())).thenReturn("processed");
+
 	}
 	
 	
 	@Test
-	public void send_with_valid_input_should_process() throws Exception {
-		
-
+	public void wend_with_valid_input_no_processor_should_process() throws Exception {
+	
+		sut = new DocumentReadyHandler(documentOutput, null);
 		sut.handle("awesome content", "bcgov");
-
-		
+	}
+	
+	@Test
+	public void wend_with_valid_input_and_processor_should_process() throws Exception {
+	
+		sut = new DocumentReadyHandler(documentOutput, documentProcessor);
+		sut.handle("awesome content", "bcgov");
 	}
 	
 	

@@ -209,6 +209,27 @@ Sets the time to live for document in the temporary storage (expressed in hours)
 bcgov.access.output.rabbitmq.ttl
 ```
 
+## Processor
+
+you can register a processor to transform the content of the message.
+
+To register a processor do the following
+
+Create a new spring component that implements [ca.gov.bc.open.jrccaccess.libs.processing.DocumentProcessor](jrcc-document-access-libs/src/main/java/ca/gov/bc/open/jrccaccess/libs/processing/DocumentProcessor.java)
+
+```java
+@Component
+public class UpperCaseProcessor implements DocumentProcessor {
+
+	@Override
+	public String processDocument(String content, TransactionInfo transactionInfo) {
+		return content.toUpperCase(Locale.CANADA);
+	}
+}
+```
+
+Where register, the processor will act on the input document content.
+
 ## References
 
 * [Spring Boot Autoconfiguration for Spring AMQP (RabbitMQ)](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-messaging.html#boot-features-amqp)
