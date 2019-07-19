@@ -1,138 +1,136 @@
 try {
-           timeout(time: 20, unit: 'MINUTES') {
-             node {
-               stage("Initialize") {
-                 project = env.BUILD
-               }
-             }
+   timeout(time: 20, unit: 'MINUTES') {
 
-              node('maven') {
+     node {
+       stage("Initialize") {
+         project = env.BUILD
+       }
+     }
 
+     node('maven') {
 
-                  stage("Checkout") {
-                    git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
-                  }
-
-                  stage("Build WAR") {
-                    sh "mvn clean package -Psample-app"
-                    stash name:"jar", includes:"target/ROOT.jar"
-                  }
-
-                  stage('Build Image With JAR'){
-                    unstash name:"jar"
-                    sh "oc start-build ${APP_NAME} --from-file=target/ROOT.jar -n ${project}"
-                    timeout(time: 20, unit: 'MINUTES') {
-                      openshift.withCluster() {
-                        openshift.withProject() {
-                          echo "Starting Pipeline for ${APP_NAME}..."
-                          def bld = openshift.startBuild(env.APP_NAME)
-                          bld.untilEach {
-                            return (it.object().status.phase == "Complete")
-                          }
-                          bld.logs('-f')
-                        }
-                      }
-                  }
-
-
-
-                  // BUILD VERIFICATION STAGE
-                  stage ('Verify Build') {
-                      openshiftVerifyBuild(bldCfg: env.APP_NAME, namespace: env.BUILD)
-                  }
-
-                  // FUNCTIONAL TESTING
-                  //   stage('Functional Tests') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
-
-                  // END TO END TESTING
-                  //   stage('End to End Tests') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
-
-                  // ARTIFACT SCAN
-                  //   stage('Scan Artifacts') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
-
-                  // ARCHIVE ARTIFACTS
-                  //   stage('Archive Artifacts') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
-
-                  // PROMOTE TO DEV
-                  stage('Promote from Build to Dev') {
-                    openshift.withCluster() {
-                      openshift.withProject() {
-                        openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.DEV)
-                      }
-                    }
-                  }
-
-                  // VERIFY DEV PROMOTION
-                  stage ('Verify Deployment to Dev') {
-                      openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.DEV)
-                  }
-
-                  // MANUAL CHECK FOR PROMOTION TO TEST
-                  stage('Promotion gate') {
-                      script {
-                        input message: 'Promote application to Test?'
-                      }
-                  }
-
-                  // PROMOTE FROM DEV TO TEST
-                  stage('Promote from Dev to Test') {
-                      openshift.withCluster() {
-                        openshift.withProject() {
-                          openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.TEST)
-                        }
-                      }
-                  }
-
-                  // VERIFY DEPLOYMENT TO TEST
-                  stage ('Verify Deployment to Test') {
-                      openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.TEST)
-                  }
-
-                  // MANUAL CHECK FOR PROMOTION TO PRODUCTION
-                  stage('Promotion gate') {
-                      script {
-                        input message: 'Promote application to Production?'
-                      }
-                  }
-
-                  // PROMOTE TO PRODUCTION
-                  stage('Promote from Stage to Prod') {
-                      openshift.withCluster() {
-                        openshift.withProject() {
-                          openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.PROD)
-                        }
-                      }
-                  }
-
-                  // MANUAL CHECK FOR PROMOTION TO PRODUCTION
-                  stage ('Verify Deployment to Prod') {
-                      openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.PROD)
-                  }
-                }
-           }
-        } catch (err) {
-           echo "in catch block"
-           echo "Caught: ${err}"
-           currentBuild.result = 'FAILURE'
-           throw err
+        stage("Checkout") {
+          git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
         }
+
+        stage("Build WAR") {
+          sh "mvn clean package -Psample-app"
+          stash name:"jar", includes:"target/ROOT.jar"
+        }
+
+        stage('Build Image With JAR'){
+          unstash name:"jar"
+          sh "oc start-build ${APP_NAME} --from-file=target/ROOT.jar -n ${project}"
+            openshift.withCluster() {
+              openshift.withProject() {
+                echo "Starting Pipeline for ${APP_NAME}..."
+                def bld = openshift.startBuild(env.APP_NAME)
+                bld.untilEach {
+                  return (it.object().status.phase == "Complete")
+                }
+                bld.logs('-f')
+              }
+            }
+        }
+
+
+        // BUILD VERIFICATION STAGE
+        stage ('Verify Build') {
+            openshiftVerifyBuild(bldCfg: env.APP_NAME, namespace: env.BUILD)
+        }
+
+        // FUNCTIONAL TESTING
+        //   stage('Functional Tests') {
+        //     openshift.withCluster() {
+        //       openshift.withProject() {
+        //       }
+        //     }
+        //   }
+
+        // END TO END TESTING
+        //   stage('End to End Tests') {
+        //     openshift.withCluster() {
+        //       openshift.withProject() {
+        //       }
+        //     }
+        //   }
+
+        // ARTIFACT SCAN
+        //   stage('Scan Artifacts') {
+        //     openshift.withCluster() {
+        //       openshift.withProject() {
+        //       }
+        //     }
+        //   }
+
+        // ARCHIVE ARTIFACTS
+        //   stage('Archive Artifacts') {
+        //     openshift.withCluster() {
+        //       openshift.withProject() {
+        //       }
+        //     }
+        //   }
+
+        // PROMOTE TO DEV
+        stage('Promote from Build to Dev') {
+          openshift.withCluster() {
+            openshift.withProject() {
+              openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.DEV)
+            }
+          }
+        }
+
+        // VERIFY DEV PROMOTION
+        stage ('Verify Deployment to Dev') {
+            openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.DEV)
+        }
+
+        // MANUAL CHECK FOR PROMOTION TO TEST
+        stage('Promotion gate') {
+            script {
+              input message: 'Promote application to Test?'
+            }
+        }
+
+        // PROMOTE FROM DEV TO TEST
+        stage('Promote from Dev to Test') {
+            openshift.withCluster() {
+              openshift.withProject() {
+                openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.TEST)
+              }
+            }
+        }
+
+        // VERIFY DEPLOYMENT TO TEST
+        stage ('Verify Deployment to Test') {
+            openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.TEST)
+        }
+
+        // MANUAL CHECK FOR PROMOTION TO PRODUCTION
+        stage('Promotion gate') {
+            script {
+              input message: 'Promote application to Production?'
+            }
+        }
+
+        // PROMOTE TO PRODUCTION
+        stage('Promote from Stage to Prod') {
+            openshift.withCluster() {
+              openshift.withProject() {
+                openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.PROD)
+              }
+            }
+        }
+
+        // MANUAL CHECK FOR PROMOTION TO PRODUCTION
+        stage ('Verify Deployment to Prod') {
+            openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.PROD)
+        }
+      }
+   }
+} catch (err) {
+   echo "in catch block"
+   echo "Caught: ${err}"
+   currentBuild.result = 'FAILURE'
+   throw err
+}
