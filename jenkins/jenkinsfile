@@ -13,8 +13,8 @@ try {
           git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
         }
 
-        stage("Build WAR") {
-          sh "mvn clean package -Psample-app"
+        stage("Build WAR") {          
+          sh "mvn clean package -Psample-app -Dmaven.test.skip=true"
           stash name:"jar", includes:"target/ROOT.jar"
         }
 
