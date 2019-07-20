@@ -13,14 +13,15 @@ try {
           git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
         }
 
-        stage("Build WAR") {          
+        stage("Build WAR") {
           sh "mvn clean package -Psample-app -Dmaven.test.skip=true"
-          stash name:"jar", includes:"target/ROOT.jar"
+          sh "ls"
+          stash name:"jars", includes:"target/*.jar"
         }
 
         stage('Build Image With JAR'){
-          unstash name:"jar"
-          sh "oc start-build ${APP_NAME} --from-file=target/ROOT.jar -n ${project}"
+          unstash name:"jasr"
+          sh "oc start-build ${APP_NAME} --from-file=target/*.jar -n ${project}"
             openshift.withCluster() {
               openshift.withProject() {
                 echo "Starting Pipeline for ${APP_NAME}..."
