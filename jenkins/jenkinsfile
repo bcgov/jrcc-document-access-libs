@@ -52,7 +52,8 @@ try {
                 // Assign to a boolean response verifying If the artifact name exists
                 artifactExists = fileExists artifactPath;
                 if(artifactExists) {
-                    pomPath = it.path.replace("target/{$it.name}", "pom.xml")
+                    pomPath = it.path.replace("target/${it.name}", "pom.xml")
+                    //propertiesPath = it.path.replace("")
                     artifactPom = readMavenPom file: pomPath;
                     echo "*** File: ${artifactPath}, group: ${artifactPom.groupId}, packaging: ${artifactPom.packaging}, version ${artifactPom.version}";
                     nexusArtifactUploader(
