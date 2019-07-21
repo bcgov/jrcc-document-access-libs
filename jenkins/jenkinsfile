@@ -10,7 +10,7 @@ try {
          // This can be http or https
          env.NEXUS_PROTOCOL = "http"
          // Where your Nexus is running
-         env.NEXUS_URL = "http://nexus-9wbi3f-tools.pathfinder.gov.bc.ca/"
+         env.NEXUS_URL = "http://nexus-9wbi3f-tools.pathfinder.gov.bc.ca/nexus"
          // Repository where we will upload snapshots
          env.NEXUS_SNAPSHOT_REPOSITORY = "jrcc-snapshots"
          // Repository where we will upload releases
