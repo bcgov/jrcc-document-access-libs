@@ -6,7 +6,7 @@ try {
          project = env.BUILD
          // @todo: Inject via config
          // This can be nexus3 or nexus2
-         env.NEXUS_VERSION = "nexus3"
+         env.NEXUS_VERSION = "nexus2"
          // This can be http or https
          env.NEXUS_PROTOCOL = "http"
          // Where your Nexus is running
