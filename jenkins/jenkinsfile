@@ -9,6 +9,21 @@ try {
 
      node('maven') {
 
+         environment {
+             // This can be nexus3 or nexus2
+             NEXUS_VERSION = "nexus3"
+             // This can be http or https
+             NEXUS_PROTOCOL = "http"
+             // Where your Nexus is running
+             NEXUS_URL = "http://nexus-9wbi3f-tools.pathfinder.gov.bc.ca/"
+             // Repository where we will upload snapshots
+             NEXUS_SNAPSHOT_REPOSITORY = "jrcc-snapshots"
+             // Repository where we will upload releases
+             NEXUS_RELEASE_REPOSITORY = "jrcc-releases"
+             // Jenkins credential id to authenticate to Nexus OSS
+             NEXUS_CREDENTIAL_ID = "nexus-credentials"
+         }
+
         stage("Checkout") {
           git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
         }
@@ -16,22 +31,47 @@ try {
         stage("Build WAR") {
           sh "mvn clean package -Psample-app -Dmaven.test.skip=true"
           sh "ls"
-          stash name:"jars", includes:"*.jar"
+
+          //stash name:"jars", includes:"target/*.jar"
         }
 
-        stage('Build Image With JAR'){
-          unstash name:"jars"
-          sh "oc start-build ${APP_NAME} --from-file=*.jar -n ${project}"
-            openshift.withCluster() {
-              openshift.withProject() {
-                echo "Starting Pipeline for ${APP_NAME}..."
-                def bld = openshift.startBuild(env.APP_NAME)
-                bld.untilEach {
-                  return (it.object().status.phase == "Complete")
-                }
-                bld.logs('-f')
-              }
-            }
+        stage('Push to Nexus'){
+            // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
+            pom = readMavenPom file: "pom.xml";
+            // Find built artifact under target folder
+            filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+            // Print some info from the artifact found
+            echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+            // Extract the path from the File found
+            artifactPath = filesByGlob[0].path;
+            // Assign to a boolean response verifying If the artifact name exists
+            artifactExists = fileExists artifactPath;
+            if(artifactExists) {
+                echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                nexusArtifactUploader(
+                    nexusVersion: NEXUS_VERSION,
+                    protocol: NEXUS_PROTOCOL,
+                    nexusUrl: NEXUS_URL,
+                    groupId: pom.groupId,
+                    version: pom.version,
+                    repository: NEXUS_SNAPSHOT_REPOSITORY,
+                    credentialsId: NEXUS_CREDENTIAL_ID,
+                    artifacts: [
+                        // Artifact generated such as .jar, .ear and .war files.
+                        [artifactId: pom.artifactId,
+                        classifier: '',
+                        file: artifactPath,
+                        type: pom.packaging],
+                        // Lets upload the pom.xml file for additional information for Transitive dependencies
+                        [artifactId: pom.artifactId,
+                        classifier: '',
+                        file: "pom.xml",
+                        type: "pom"]
+                    ]
+                );
+            } else {
+                error "*** File: ${artifactPath}, could not be found";
+            }        
         }
 
 
