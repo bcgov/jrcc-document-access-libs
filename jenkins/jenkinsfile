@@ -71,13 +71,11 @@ try {
                             type: "pom"]
                         ]
                     );
-                 }
-              }
-            } else {
-                error "*** File: ${artifactPath}, could not be found";
+                } else {
+                    error "*** File: ${artifactPath}, could not be found";
+                }
             }
         }
-
 
         // BUILD VERIFICATION STAGE
         stage ('Verify Build') {
