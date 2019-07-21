@@ -10,7 +10,7 @@
 	<version>0.4.0</version>
 
 	<name>document-access</name>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
 
