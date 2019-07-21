@@ -16,12 +16,12 @@ try {
         stage("Build WAR") {
           sh "mvn clean package -Psample-app -Dmaven.test.skip=true"
           sh "ls"
-          stash name:"jars", includes:"target/*.jar"
+          stash name:"jars", includes:"*.jar"
         }
 
         stage('Build Image With JAR'){
-          unstash name:"jasr"
-          sh "oc start-build ${APP_NAME} --from-file=target/*.jar -n ${project}"
+          unstash name:"jars"
+          sh "oc start-build ${APP_NAME} --from-file=*.jar -n ${project}"
             openshift.withCluster() {
               openshift.withProject() {
                 echo "Starting Pipeline for ${APP_NAME}..."
