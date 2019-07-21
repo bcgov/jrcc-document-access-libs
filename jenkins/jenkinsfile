@@ -4,25 +4,24 @@ try {
      node {
        stage("Initialize") {
          project = env.BUILD
+         // @todo: Inject via config
+         // This can be nexus3 or nexus2
+         env.NEXUS_VERSION = "nexus3"
+         // This can be http or https
+         env.NEXUS_PROTOCOL = "http"
+         // Where your Nexus is running
+         env.NEXUS_URL = "http://nexus-9wbi3f-tools.pathfinder.gov.bc.ca/"
+         // Repository where we will upload snapshots
+         env.NEXUS_SNAPSHOT_REPOSITORY = "jrcc-snapshots"
+         // Repository where we will upload releases
+         env.NEXUS_RELEASE_REPOSITORY = "jrcc-releases"
+         // Jenkins credential id to authenticate to Nexus OSS
+         env.NEXUS_CREDENTIAL_ID = "nexus-credentials"
        }
      }
 
      node('maven') {
 
-         environment {
-             // This can be nexus3 or nexus2
-             NEXUS_VERSION = "nexus3"
-             // This can be http or https
-             NEXUS_PROTOCOL = "http"
-             // Where your Nexus is running
-             NEXUS_URL = "http://nexus-9wbi3f-tools.pathfinder.gov.bc.ca/"
-             // Repository where we will upload snapshots
-             NEXUS_SNAPSHOT_REPOSITORY = "jrcc-snapshots"
-             // Repository where we will upload releases
-             NEXUS_RELEASE_REPOSITORY = "jrcc-releases"
-             // Jenkins credential id to authenticate to Nexus OSS
-             NEXUS_CREDENTIAL_ID = "nexus-credentials"
-         }
 
         stage("Checkout") {
           git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
@@ -53,23 +52,25 @@ try {
                 // Assign to a boolean response verifying If the artifact name exists
                 artifactExists = fileExists artifactPath;
                 if(artifactExists) {
-                    echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                    pomPath = it.path.replace(it.name, "pom.xml")
+                    artifactPom = readMavenPom file: pomPath;
+                    echo "*** File: ${artifactPath}, group: ${artifactPom.groupId}, packaging: ${artifactPom.packaging}, version ${artifactPom.version}";
                     nexusArtifactUploader(
                         nexusVersion: NEXUS_VERSION,
                         protocol: NEXUS_PROTOCOL,
                         nexusUrl: NEXUS_URL,
-                        groupId: pom.groupId,
-                        version: pom.version,
+                        groupId: artifactPom.groupId,
+                        version: artifactPom.version,
                         repository: NEXUS_SNAPSHOT_REPOSITORY,
                         credentialsId: NEXUS_CREDENTIAL_ID,
                         artifacts: [
                             // Artifact generated such as .jar, .ear and .war files.
-                            [artifactId: pom.artifactId,
+                            [artifactId: artifactPom.artifactId,
                             classifier: '',
                             file: artifactPath,
                             type: 'jar'],
                             // Lets upload the pom.xml file for additional information for Transitive dependencies
-                            [artifactId: pom.artifactId,
+                            [artifactId: artifactPom.artifactId,
                             classifier: '',
                             file: "pom.xml",
                             type: "pom"]
