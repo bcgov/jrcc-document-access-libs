@@ -13,6 +13,10 @@ try {
           git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
         }
 
+        stage("Quality Scan"){
+            sh "mvn sonar:sonar -Dsonar.host.url= ${SONAR_URL} -Dsonar.login="${SONAR_TOKEN}"
+        }
+
         stage("Build JARs") {
           sh "mvn clean package -Dmaven.test.skip=true"
           sh "ls"
