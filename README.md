@@ -128,7 +128,7 @@ It support the [Common Options](#CommonOptions) and the following options:
 * Value type is Int
 * Default value is `0`
 
-Sets the delay between retries when the service if failing to process the message and throwing application known errors.
+Sets the delay in seconds between retries when the service if failing to process the message and throwing application known errors.
 
 ##### bcgov.access.input.rabbitmq.retryCount
 

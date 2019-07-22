@@ -1,6 +1,7 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import java.text.MessageFormat;
+import java.time.Duration;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -76,7 +77,7 @@ public class InputConfiguration {
 		Queue queue = QueueBuilder
 				.durable(getNameSpace(RabbitMqParam.DOCUMENT_READY_DLQ_FORMAT, accessProperties, properties))
 				.withArgument(RabbitMqParam.X_DEAD_LETTER_EXCHANGE_ARG, RabbitMqParam.DOCUMENT_READY_TOPIC)
-				.withArgument(RabbitMqParam.X_MESSAGE_TTL_ARG, properties.getRetryDelay()).build();
+				.withArgument(RabbitMqParam.X_MESSAGE_TTL_ARG, Duration.ofSeconds(properties.getRetryDelay()).toMillis()).build();
 		return queue;
 	}
 
