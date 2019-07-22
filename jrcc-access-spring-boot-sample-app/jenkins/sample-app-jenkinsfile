@@ -1,0 +1,42 @@
+try {
+   timeout(time: 20, unit: 'MINUTES') {
+
+     node {
+       stage("Initialize") {
+         project = env.BUILD
+       }
+     }
+
+     node('maven') {
+
+        stage("Checkout") {
+          git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
+        }
+
+        stage("Build JARs") {
+          sh "mvn clean package -Psample-app -Dmaven.test.skip=true"
+          sh "ls"
+
+          //stash name:"jars", includes:"target/*.jar"
+        }
+
+        stage('Push to Nexus'){
+            // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
+            pom = readMavenPom file: "pom.xml";
+            // Find built artifact under target folder
+            filesByGlob = findFiles(glob: "**/target/*.jar");
+
+            echo "Found ${filesByGlob.length} files"
+            for(file in filesByGlob){
+                echo "${file.name} ${file.path} ${file.directory} ${file.length} ${file.lastModified}"
+            }          
+        }
+
+      }
+   }
+} catch (err) {
+   echo "in catch block"
+   echo "Caught: ${err}"
+   currentBuild.result = 'FAILURE'
+   throw err
+}
