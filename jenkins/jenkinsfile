@@ -4,24 +4,10 @@ try {
      node {
        stage("Initialize") {
          project = env.BUILD
-         // @todo: Inject via config
-         // This can be nexus3 or nexus2
-         env.NEXUS_VERSION = "nexus2"
-         // This can be http or https
-         env.NEXUS_PROTOCOL = "http"
-         // Where your Nexus is running
-         env.NEXUS_URL = "nexus-9wbi3f-tools.pathfinder.gov.bc.ca/nexus"
-         // Repository where we will upload snapshots
-         env.NEXUS_SNAPSHOT_REPOSITORY = "jrcc-snapshots"
-         // Repository where we will upload releases
-         env.NEXUS_RELEASE_REPOSITORY = "jrcc-releases"
-         // Jenkins credential id to authenticate to Nexus OSS
-         env.NEXUS_CREDENTIAL_ID = "nexus-credentials"
        }
      }
 
      node('maven') {
-
 
         stage("Checkout") {
           git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
@@ -53,7 +39,6 @@ try {
                 artifactExists = fileExists artifactPath;
                 if(artifactExists) {
                     pomPath = it.path.replace("target/${it.name}", "pom.xml")
-                    //propertiesPath = it.path.replace("")
                     artifactPom = readMavenPom file: pomPath;
                     echo "*** File: ${artifactPath}, group: ${artifactPom.groupId}, packaging: ${artifactPom.packaging}, version ${artifactPom.version}";
                     nexusArtifactUploader(
