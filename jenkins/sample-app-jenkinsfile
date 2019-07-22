@@ -29,9 +29,7 @@ try {
             echo "Found ${filesByGlob.length} files"
             for(file in filesByGlob){
                 echo "${file.name} ${file.path} ${file.directory} ${file.length} ${file.lastModified}"
-            }
-            
-            }
+            }          
         }
 
       }
