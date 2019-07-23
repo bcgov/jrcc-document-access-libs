@@ -36,10 +36,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>ca.gov.bc.open</groupId>
-			<artifactId>
-				jrcc-access-spring-boot-autoconfigure
-			</artifactId>
+			<groupId>ca.bc.gov.open</groupId>
+			<artifactId>jrcc-access-spring-boot-autoconfigure</artifactId>
 			<version>0.4.0</version>
 		</dependency>
 		<dependency>

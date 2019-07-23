@@ -9,7 +9,7 @@
 		<version>2.1.6.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ca.gov.bc.open</groupId>
+	<groupId>ca.bc.gov.open</groupId>
 	<artifactId>jrcc-access-spring-boot-autoconfigure</artifactId>
 	<version>0.4.0</version>
 	<name>jrcc-access-spring-boot-autoconfigure</name>
