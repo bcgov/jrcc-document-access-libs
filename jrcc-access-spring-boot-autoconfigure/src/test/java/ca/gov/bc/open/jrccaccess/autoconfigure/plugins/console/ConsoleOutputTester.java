@@ -7,9 +7,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.console.ConsoleOutput;
-import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.console.Prettifier;
-import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 
 public class ConsoleOutputTester {
 

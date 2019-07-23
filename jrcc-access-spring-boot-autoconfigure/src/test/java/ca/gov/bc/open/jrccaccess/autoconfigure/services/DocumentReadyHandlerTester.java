@@ -6,9 +6,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
-import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
-import ca.gov.bc.open.jrccaccess.libs.processing.DocumentProcessor;
+import ca.bc.gov.open.jrccaccess.libs.DocumentOutput;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.processing.DocumentProcessor;
 
 public class DocumentReadyHandlerTester {
 

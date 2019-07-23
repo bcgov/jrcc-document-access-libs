@@ -20,8 +20,8 @@ import ca.bc.gov.open.api.DocumentApi;
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
 import ca.bc.gov.open.api.model.Error;
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 /**
  * The document controller provides an endpoint to submit a document.

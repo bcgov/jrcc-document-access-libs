@@ -17,12 +17,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessApplication;
-import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqDocumentReadyService;
-import ca.gov.bc.open.jrccaccess.libs.DocumentInfo;
-import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
-import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import ca.bc.gov.open.jrccaccess.libs.DocumentInfo;
+import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
+import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(

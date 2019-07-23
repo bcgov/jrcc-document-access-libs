@@ -6,12 +6,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
-import ca.gov.bc.open.jrccaccess.libs.DocumentInfo;
-import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
-import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
-import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import ca.bc.gov.open.jrccaccess.libs.DocumentInfo;
+import ca.bc.gov.open.jrccaccess.libs.DocumentOutput;
+import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
+import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 
 /**
  * The rabbitMqDocumentOutput provides service to send document ready message 

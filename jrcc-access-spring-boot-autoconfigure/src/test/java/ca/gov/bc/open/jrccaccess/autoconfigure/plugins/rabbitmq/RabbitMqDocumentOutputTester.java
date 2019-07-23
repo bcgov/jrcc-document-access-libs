@@ -10,11 +10,8 @@ import org.mockito.MockitoAnnotations;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
-import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqDocumentOutput;
-import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqDocumentReadyService;
-import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RedisStorageService;
-import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 
 public class RabbitMqDocumentOutputTester {
 

@@ -215,7 +215,7 @@ you can register a processor to transform the content of the message.
 
 To register a processor do the following
 
-Create a new spring component that implements [ca.gov.bc.open.jrccaccess.libs.processing.DocumentProcessor](jrcc-document-access-libs/src/main/java/ca/gov/bc/open/jrccaccess/libs/processing/DocumentProcessor.java)
+Create a new spring component that implements [DocumentProcessor](jrcc-document-access-libs/src/main/java/ca/gov/bc/open/jrccaccess/libs/processing/DocumentProcessor.java)
 
 ```java
 @Component

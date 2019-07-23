@@ -4,8 +4,8 @@ import java.util.Locale;
 
 import org.springframework.stereotype.Component;
 
-import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
-import ca.gov.bc.open.jrccaccess.libs.processing.DocumentProcessor;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.processing.DocumentProcessor;
 
 @Component
 public class DocumentProcessorExample implements DocumentProcessor {

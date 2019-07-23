@@ -6,7 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.util.UUID;
 
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentNotFoundException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -19,10 +19,10 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
-import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFailedException;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFailedException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 public class RedisStorageServiceTester {
 

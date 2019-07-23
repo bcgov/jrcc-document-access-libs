@@ -10,7 +10,7 @@
 	</parent>
 
 
-	<groupId>ca.gov.bc.open</groupId>
+	<groupId>ca.bc.gov.open</groupId>
 	<artifactId>jrcc-document-access-libs</artifactId>
 	<packaging>jar</packaging>
 

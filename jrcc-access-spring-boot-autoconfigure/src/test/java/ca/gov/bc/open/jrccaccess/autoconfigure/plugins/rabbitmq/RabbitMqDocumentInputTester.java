@@ -7,19 +7,18 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.gov.bc.open.jrccaccess.autoconfigure.helpers.RandomHelper;
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
-import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
-import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFailedException;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
-import ca.gov.bc.open.jrccaccess.libs.utils.DigestUtils;
+import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
+import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFailedException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import ca.bc.gov.open.jrccaccess.libs.utils.DigestUtils;
 
 public class RabbitMqDocumentInputTester {
 

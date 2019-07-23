@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
-import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
-import ca.gov.bc.open.jrccaccess.libs.DocumentReadyService;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
+import ca.bc.gov.open.jrccaccess.libs.DocumentReadyService;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 /**
  * The RabbitMqDocumentReadyService provides services to interact with rabbitMq

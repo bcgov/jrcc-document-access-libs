@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
-import ca.gov.bc.open.jrccaccess.libs.DocumentReadyMessage;
-import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
+import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 
 /**
  * The RabbitMqDocumentInput handles document from the rabbitMq message listener
