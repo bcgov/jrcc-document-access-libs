@@ -36,7 +36,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>ca.gov.bc.open</groupId>
+			<groupId>ca.bc.gov.open</groupId>
 			<artifactId>jrcc-access-spring-boot-starter</artifactId>
 			<version>0.4.0</version>
 		</dependency>
