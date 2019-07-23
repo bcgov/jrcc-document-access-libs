@@ -7,10 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import ca.gov.bc.open.jrccaccess.libs.DocumentOutput;
-import ca.gov.bc.open.jrccaccess.libs.TransactionInfo;
-import ca.gov.bc.open.jrccaccess.libs.processing.DocumentProcessor;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import ca.bc.gov.open.jrccaccess.libs.DocumentOutput;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.processing.DocumentProcessor;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 
 /**
  * The document ready handler is the global handler for incoming documents

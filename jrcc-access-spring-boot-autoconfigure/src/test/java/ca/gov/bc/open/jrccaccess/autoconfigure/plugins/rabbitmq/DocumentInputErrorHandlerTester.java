@@ -7,7 +7,7 @@ import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.ImmediateAcknowledgeAmqpException;
 import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFailedException;
 
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 public class DocumentInputErrorHandlerTester {
 

@@ -3,7 +3,7 @@ package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 import java.text.MessageFormat;
 import java.util.UUID;
 
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentNotFoundException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentNotFoundException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
@@ -11,12 +11,12 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.stereotype.Service;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
-import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.gov.bc.open.jrccaccess.libs.StorageService;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFailedException;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
-import ca.gov.bc.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
-import ca.gov.bc.open.jrccaccess.libs.utils.DigestUtils;
+import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.StorageService;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFailedException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import ca.bc.gov.open.jrccaccess.libs.utils.DigestUtils;
 
 /**
  * The redisStorageService provides services to interact with Redis cache.
