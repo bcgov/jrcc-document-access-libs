@@ -9,9 +9,9 @@
 		<version>2.1.6.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ca.gov.bc.open</groupId>
+	<groupId>ca.bc.gov.open</groupId>
 	<artifactId>jrcc-access-spring-boot-autoconfigure</artifactId>
-	<version>0.4.0</version>
+	<version>0.5.0</version>
 	<name>jrcc-access-spring-boot-autoconfigure</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -82,14 +82,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>ca.gov.bc.open</groupId>
+			<groupId>ca.bc.gov.open</groupId>
 			<artifactId>jrcc-document-access-libs</artifactId>
-			<version>0.4.0</version>
+			<version>0.5.0</version>
 		</dependency>
 		<dependency>
-			<groupId>ca.gov.bc.open</groupId>
+			<groupId>ca.bc.gov.open</groupId>
 			<artifactId>jrcc-document-api</artifactId>
-			<version>0.4.0</version>
+			<version>0.5.0</version>
 		</dependency>
 	</dependencies>
 </project>

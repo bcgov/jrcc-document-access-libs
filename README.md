@@ -19,9 +19,9 @@ Add `jrcc-access-spring-boot-starter` to your project
 
 ```xml
 <dependency>
-    <groupId>ca.gov.bc.open</groupId>
+    <groupId>ca.bc.gov.open</groupId>
     <artifactId>jrcc-access-spring-boot-starter</artifactId>
-    <version>0.3.3</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
@@ -128,7 +128,7 @@ It support the [Common Options](#CommonOptions) and the following options:
 * Value type is Int
 * Default value is `0`
 
-Sets the delay between retries when the service if failing to process the message and throwing application known errors.
+Sets the delay in seconds between retries when the service if failing to process the message and throwing application known errors.
 
 ##### bcgov.access.input.rabbitmq.retryCount
 
@@ -208,6 +208,27 @@ Sets the time to live for document in the temporary storage (expressed in hours)
 ```properties
 bcgov.access.output.rabbitmq.ttl
 ```
+
+## Processor
+
+you can register a processor to transform the content of the message.
+
+To register a processor do the following
+
+Create a new spring component that implements [DocumentProcessor](jrcc-document-access-libs/src/main/java/ca/gov/bc/open/jrccaccess/libs/processing/DocumentProcessor.java)
+
+```java
+@Component
+public class UpperCaseProcessor implements DocumentProcessor {
+
+	@Override
+	public String processDocument(String content, TransactionInfo transactionInfo) {
+		return content.toUpperCase(Locale.CANADA);
+	}
+}
+```
+
+Where register, the processor will act on the input document content.
 
 ## References
 
