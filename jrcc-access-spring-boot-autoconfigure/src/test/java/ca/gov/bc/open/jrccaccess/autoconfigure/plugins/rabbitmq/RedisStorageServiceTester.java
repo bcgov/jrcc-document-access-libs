@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.util.UUID;
 
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -18,7 +19,6 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.gov.bc.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
-import ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq.RedisStorageService;
 import ca.gov.bc.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFailedException;
 import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
@@ -28,12 +28,9 @@ public class RedisStorageServiceTester {
 
 	private static final String VALID = "valid";
 	private static final String HASH = "9F7D0EE82B6A6CA7DDEAE841F3253059";
-
 	private static final String KEY = "key";
-
+	private static final String MISSING_DOCUMENT = "MISSING_DOCUMENT";
 	private static final String REDIS_CONNECTION_FAILURE_EXCEPTION = "RedisConnectionFailureException";
-
-	
 
 	@Mock
 	private CacheManager cacheManager;
@@ -52,8 +49,6 @@ public class RedisStorageServiceTester {
 	
 	private RedisStorageService sut;
 	
-	
-	
 	@Before
 	public void Init() {
 		
@@ -61,6 +56,7 @@ public class RedisStorageServiceTester {
 		Mockito.when(valueWrapper.get()).thenReturn(VALID);
 	    Mockito.when(cacheManager.getCache("test-doc")).thenReturn(this.cache);
 	    Mockito.when(cache.get(KEY)).thenReturn(valueWrapper);
+	    Mockito.when(cache.get(MISSING_DOCUMENT)).thenReturn(null);
 	    Mockito.doNothing().when(this.cache).put(Mockito.anyString(), Mockito.eq(VALID));
 	    Mockito.doThrow(RedisConnectionFailureException.class).when(this.cache).put(Mockito.anyString(), Mockito.eq(REDIS_CONNECTION_FAILURE_EXCEPTION));
 	    Mockito.doThrow(RedisConnectionFailureException.class).when(this.cache).get(Mockito.eq(REDIS_CONNECTION_FAILURE_EXCEPTION));
@@ -85,10 +81,8 @@ public class RedisStorageServiceTester {
 		} catch (IllegalArgumentException e) {
 			fail("key is not a valid uuid");
 		}
-		
-		
+
 	}
-	
 	
 	@Test(expected = ServiceUnavailableException.class)
 	public void with_RedisConnectionFailureException_should_throw_ServiceUnavailableException() throws Exception {
@@ -119,6 +113,11 @@ public class RedisStorageServiceTester {
 		@SuppressWarnings("unused")
 		String result = sut.getString(REDIS_CONNECTION_FAILURE_EXCEPTION, "098A");
 	}
-	
+
+	@Test(expected = DocumentNotFoundException.class)
+	public void getString_with_missing_document_should_throw_DocumentNotFoundException() throws DocumentMessageException {
+		@SuppressWarnings("unused")
+		String expected = sut.getString(MISSING_DOCUMENT, "098A");
+	}
 	
 }

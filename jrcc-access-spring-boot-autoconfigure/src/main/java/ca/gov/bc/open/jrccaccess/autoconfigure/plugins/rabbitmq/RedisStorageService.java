@@ -1,7 +1,9 @@
 package ca.gov.bc.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
+import java.text.MessageFormat;
 import java.util.UUID;
 
+import ca.gov.bc.open.jrccaccess.libs.services.exceptions.DocumentNotFoundException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
@@ -33,7 +35,8 @@ public class RedisStorageService implements StorageService {
 	/**
 	 * Default constructor
 	 * 
-	 * @param stringRedisTemplate a string redis template
+	 * @param cacheManager a spring cache manager
+	 * @param accessProperties document access properties
 	 */
 	public RedisStorageService(CacheManager cacheManager, AccessProperties accessProperties) {
 		this.cacheManager = cacheManager;
@@ -58,20 +61,31 @@ public class RedisStorageService implements StorageService {
 
 	}
 
+    /**
+     * Gets a document from redis key value store.
+     * @param key    object key to retrieve from storage
+     * @param digest MD5 Digest
+     * @return
+     * @throws DocumentMessageException
+     */
 	@Override
 	public String getString(String key, String digest) throws DocumentMessageException {
 
 		try {
-			ValueWrapper valueWrapper = this.cacheManager.getCache(accessProperties.getInput().getDocumentType())
-					.get(key);
-			String content = (String) valueWrapper.get();
-			String digestToCompare = DigestUtils.computeMd5(content);
 
-			if (digestToCompare.equals(digest)) {
-				return content;
-			} else {
-				throw new DocumentDigestMatchFailedException("Document digest failed comparison: Key=" + key);
-			}
+			ValueWrapper valueWrapper = this.cacheManager
+                    .getCache(accessProperties.getInput().getDocumentType())
+					.get(key);
+
+			if(valueWrapper == null)
+			    throw new DocumentNotFoundException(MessageFormat.format("document [{0}] not found.", key));
+
+			String content = (String) valueWrapper.get();
+
+			if (!DigestUtils.computeMd5(content).equals(digest))
+			    throw new DocumentDigestMatchFailedException("Document digest failed comparison: Key=" + key);
+
+            return content;
 
 		} catch (RedisConnectionFailureException e) {
 			throw new ServiceUnavailableException("redis service unavailable", e.getCause());
