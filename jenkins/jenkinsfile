@@ -1,143 +1,78 @@
 try {
-           timeout(time: 20, unit: 'MINUTES') {
-              node('maven') {
+   timeout(time: 20, unit: 'MINUTES') {
 
-                  // INIT STAGE
-                  //   stage('Initialization') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
+     node {
+       stage("Initialize") {
+         project = env.BUILD
+       }
+     }
 
-                  // CHECKOUT STAGE
-                  //   stage('Checkout Code') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
+     node('maven') {
 
-                  // CODE SCAN STAGE
-                  //   stage('Code Scanning') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
+        stage("Checkout") {
+          git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
+        }
+    
+        stage("Build JARs") {
+          sh "mvn clean package"
+          sh "ls"
 
-                  // BUILD STAGE
-                  stage('Build') {
-                    openshift.withCluster() {
-                      openshift.withProject() {
-                        env.NAMESPACE = openshift.project()
-                        echo "Starting Pipeline for ${APP_NAME}..."
-                        def bld = openshift.startBuild(env.APP_NAME)
-                        bld.untilEach {
-                          return (it.object().status.phase == "Complete")
-                        }
-                        bld.logs('-f')
-                      }
-                    }
-                  }
+          //stash name:"jars", includes:"target/*.jar"
+        }
 
-                  // BUILD VERIFICATION STAGE
-                  stage ('Verify Build') {
-                      openshiftVerifyBuild(bldCfg: env.APP_NAME, namespace: env.BUILD)
-                  }
+        stage('Push to Nexus'){
+            // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
+            pom = readMavenPom file: "pom.xml";
+            // Find built artifact under target folder
+            filesByGlob = findFiles(glob: "**/target/*.jar");
 
-                  // FUNCTIONAL TESTING
-                  //   stage('Functional Tests') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
-
-                  // END TO END TESTING
-                  //   stage('End to End Tests') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
-
-                  // ARTIFACT SCAN
-                  //   stage('Scan Artifacts') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
-
-                  // ARCHIVE ARTIFACTS
-                  //   stage('Archive Artifacts') {
-                  //     openshift.withCluster() {
-                  //       openshift.withProject() {
-                  //       }
-                  //     }
-                  //   }
-
-                  // PROMOTE TO DEV
-                  stage('Promote from Build to Dev') {
-                    openshift.withCluster() {
-                      openshift.withProject() {
-                        openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.DEV)
-                      }
-                    }
-                  }
-
-                  // VERIFY DEV PROMOTION
-                  stage ('Verify Deployment to Dev') {
-                      openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.DEV)
-                  }
-
-                  // MANUAL CHECK FOR PROMOTION TO TEST
-                  stage('Promotion gate') {
-                      script {
-                        input message: 'Promote application to Test?'
-                      }
-                  }
-
-                  // PROMOTE FROM DEV TO TEST
-                  stage('Promote from Dev to Test') {
-                      openshift.withCluster() {
-                        openshift.withProject() {
-                          openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.TEST)
-                        }
-                      }
-                  }
-
-                  // VERIFY DEPLOYMENT TO TEST
-                  stage ('Verify Deployment to Test') {
-                      openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.TEST)
-                  }
-
-                  // MANUAL CHECK FOR PROMOTION TO PRODUCTION
-                  stage('Promotion gate') {
-                      script {
-                        input message: 'Promote application to Production?'
-                      }
-                  }
-
-                  // PROMOTE TO PRODUCTION
-                  stage('Promote from Stage to Prod') {
-                      openshift.withCluster() {
-                        openshift.withProject() {
-                          openshiftDeploy(deploymentConfig: env.APP_NAME, namespace: env.PROD)
-                        }
-                      }
-                  }
-
-                  // MANUAL CHECK FOR PROMOTION TO PRODUCTION
-                  stage ('Verify Deployment to Prod') {
-                      openshiftVerifyDeployment(deploymentConfig: env.APP_NAME, namespace: env.PROD)
-                  }
+            echo "Found ${filesByGlob.length} files"
+            for(file in filesByGlob){
+                echo "${file.name} ${file.path} ${file.directory} ${file.length} ${file.lastModified}"
+            }
+            // Print some info from the artifact found
+            filesByGlob.each {
+                echo "${it.name} ${it.path} ${it.directory} ${it.length} ${it.lastModified}"
+                // Extract the path from the File found
+                artifactPath = it.path;
+                // Assign to a boolean response verifying If the artifact name exists
+                artifactExists = fileExists artifactPath;
+                if(artifactExists) {
+                    pomPath = it.path.replace("target/${it.name}", "pom.xml")
+                    artifactPom = readMavenPom file: pomPath;
+                    echo "*** File: ${artifactPath}, group: ${artifactPom.groupId}, packaging: ${artifactPom.packaging}, version ${artifactPom.version}";
+                    nexusArtifactUploader(
+                        nexusVersion: NEXUS_VERSION,
+                        protocol: NEXUS_PROTOCOL,
+                        nexusUrl: NEXUS_URL,
+                        groupId: artifactPom.groupId,
+                        version: artifactPom.version,
+                        repository: NEXUS_SNAPSHOT_REPOSITORY,
+                        credentialsId: NEXUS_CREDENTIAL_ID,
+                        artifacts: [
+                            // Artifact generated such as .jar, .ear and .war files.
+                            [artifactId: artifactPom.artifactId,
+                            classifier: '',
+                            file: artifactPath,
+                            type: 'jar'],
+                            // Lets upload the pom.xml file for additional information for Transitive dependencies
+                            [artifactId: artifactPom.artifactId,
+                            classifier: '',
+                            file: "pom.xml",
+                            type: "pom"]
+                        ]
+                    );
+                } else {
+                    error "*** File: ${artifactPath}, could not be found";
                 }
-           }
-        } catch (err) {
-           echo "in catch block"
-           echo "Caught: ${err}"
-           currentBuild.result = 'FAILURE'
-           throw err
-        }          
+            }
+        }
+
+      }
+   }
+} catch (err) {
+   echo "in catch block"
+   echo "Caught: ${err}"
+   currentBuild.result = 'FAILURE'
+   throw err
+}
