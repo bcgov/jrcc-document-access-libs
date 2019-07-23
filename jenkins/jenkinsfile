@@ -18,7 +18,7 @@ try {
         }
 
         stage("Build JARs") {
-          sh "mvn clean package -Dmaven.test.skip=true"
+          sh "mvn clean package"
           sh "ls"
 
           //stash name:"jars", includes:"target/*.jar"
