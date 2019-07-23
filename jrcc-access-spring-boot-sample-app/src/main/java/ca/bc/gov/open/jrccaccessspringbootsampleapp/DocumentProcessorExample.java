@@ -1,4 +1,4 @@
-package ca.gov.bc.open.jrccaccessspringbootsampleapp;
+package ca.bc.gov.open.jrccaccessspringbootsampleapp;
 
 import java.util.Locale;
 
