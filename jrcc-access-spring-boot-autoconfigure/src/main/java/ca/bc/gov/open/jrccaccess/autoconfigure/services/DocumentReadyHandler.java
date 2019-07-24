@@ -1,9 +1,11 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.services;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +28,7 @@ public class DocumentReadyHandler {
 
 	private DocumentOutput documentOutput;
 
-	private DocumentProcessor processor;
+	private Optional<DocumentProcessor> processor;
 
 	/**
 	 * Creates a document ready handler with a given document output
@@ -34,7 +36,7 @@ public class DocumentReadyHandler {
 	 * @param documentOutput
 	 * @param processors
 	 */
-	public DocumentReadyHandler(DocumentOutput documentOutput, @Value("#{null}")DocumentProcessor processor) {
+	public DocumentReadyHandler(DocumentOutput documentOutput, Optional<DocumentProcessor> processor) {
 		this.documentOutput = documentOutput;
 		this.processor = processor;
 	}
@@ -65,11 +67,11 @@ public class DocumentReadyHandler {
 	}
 
 	private String ExecuteProcessor(String content, TransactionInfo transactionInfo) {
-		
-		if(processor == null) return content;
+
+		if (!processor.isPresent()) return content;
 		
 		logger.debug("Attempting to process the document.");
-		return this.processor.processDocument(content, transactionInfo);
+		return this.processor.get().processDocument(content, transactionInfo);
 		
 	}
 
