@@ -10,6 +10,8 @@ import ca.bc.gov.open.jrccaccess.libs.DocumentOutput;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.processing.DocumentProcessor;
 
+import java.util.Optional;
+
 public class DocumentReadyHandlerTester {
 
 	private DocumentReadyHandler sut;
@@ -37,15 +39,17 @@ public class DocumentReadyHandlerTester {
 	
 	@Test
 	public void wend_with_valid_input_no_processor_should_process() throws Exception {
-	
-		sut = new DocumentReadyHandler(documentOutput, null);
+
+		Optional<DocumentProcessor> documentProcessorOptional = Optional.empty();
+		sut = new DocumentReadyHandler(documentOutput, documentProcessorOptional);
 		sut.handle("awesome content", "bcgov");
 	}
 	
 	@Test
 	public void wend_with_valid_input_and_processor_should_process() throws Exception {
-	
-		sut = new DocumentReadyHandler(documentOutput, documentProcessor);
+
+		Optional<DocumentProcessor> documentProcessorOptional = Optional.of(documentProcessor);
+		sut = new DocumentReadyHandler(documentOutput, documentProcessorOptional);
 		sut.handle("awesome content", "bcgov");
 	}
 	
