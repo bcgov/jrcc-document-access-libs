@@ -58,7 +58,7 @@ try {
                             // Lets upload the pom.xml file for additional information for Transitive dependencies
                             [artifactId: artifactPom.artifactId,
                             classifier: '',
-                            file: "pom.xml",
+                            file: pomPath,
                             type: "pom"]
                         ]
                     );
