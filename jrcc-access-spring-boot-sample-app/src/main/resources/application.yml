@@ -16,6 +16,8 @@ bcgov:
         port: 2222
         username: master
         password: master
+        local-directory: C:/Users/177226/Downloads/Justice
+        remote-directory: /home/master/
     output:
       document-type: test-doc
       plugin: console

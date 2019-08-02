@@ -22,9 +22,28 @@ public class SftpInputProperties {
 
 	private String password;
 
+	private String remoteDirectory;
+
+	private String localDirectory;
+
+	public String getRemoteDirectory() {
+		return remoteDirectory;
+	}
+
+	public void setRemoteDirectory(String remoteDirectory) {
+		this.remoteDirectory = remoteDirectory;
+	}
+
+	public String getLocalDirectory() {
+		return localDirectory;
+	}
+
+	public void setLocalDirectory(String localDirectory) {
+		this.localDirectory = localDirectory;
+	}
 
 	public String getHost() {
-		return host;
+		return host == null ? "localhost" : host;
 	}
 
 	public void setHost(String host) {
@@ -32,7 +51,7 @@ public class SftpInputProperties {
 	}
 
 	public Integer getPort() {
-		return port;
+		return port == null ? 22 : port;
 	}
 
 	public void setPort(String port) {

@@ -68,7 +68,7 @@ public class AutoConfiguration {
     public SftpInboundFileSynchronizer sftpInboundFileSynchronizer() {
         SftpInboundFileSynchronizer fileSynchronizer = new SftpInboundFileSynchronizer(sftpSessionFactory());
         fileSynchronizer.setDeleteRemoteFiles(false);
-        fileSynchronizer.setRemoteDirectory("/home/master/");
+        fileSynchronizer.setRemoteDirectory(properties.getRemoteDirectory());
         fileSynchronizer.setFilter(new SftpSimplePatternFileListFilter("*.xml"));
         return fileSynchronizer;
     }
@@ -78,7 +78,7 @@ public class AutoConfiguration {
     public MessageSource<File> sftpMessageSource() {
         SftpInboundFileSynchronizingMessageSource source =
                 new SftpInboundFileSynchronizingMessageSource(sftpInboundFileSynchronizer());
-        source.setLocalDirectory(new File("C:/Users/177226/Downloads/Justice"));
+        source.setLocalDirectory(new File(properties.getLocalDirectory()));
         source.setAutoCreateLocalDirectory(true);
         source.setLocalFilter(new AcceptOnceFileListFilter<File>());
         source.setMaxFetchSize(1);
@@ -87,20 +87,8 @@ public class AutoConfiguration {
 
     @Bean
     @ServiceActivator(inputChannel = "sftpChannel")
-    public MessageHandler handler(DocumentReadyHandler documentReadyHandler) {
-        return new MessageHandler() {
-
-            public void handleMessage(Message<File> message) throws MessagingException, DocumentMessageException {
-
-                try {
-                    documentReadyHandler.handle(new String(Files.readAllBytes(Paths.get(message.getPayload().getPath()))), "test");
-                    System.out.println();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        };
+    public MessageHandler handler(SftpDocumentInput sftpDocumentInput) {
+        return sftpDocumentInput;
     }
 
 
