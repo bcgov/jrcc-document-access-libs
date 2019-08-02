@@ -10,7 +10,12 @@ bcgov:
   access:
     input:
       document-type: test-doc
-      plugin: console
+      plugin: sftp
+      sftp:
+        host: localhost
+        port: 2222
+        username: master
+        password: master
     output:
       document-type: test-doc
       plugin: console

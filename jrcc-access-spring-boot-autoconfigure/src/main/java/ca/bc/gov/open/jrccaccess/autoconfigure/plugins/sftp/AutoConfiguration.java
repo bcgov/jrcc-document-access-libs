@@ -1,7 +1,12 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import com.jcraft.jsch.ChannelSftp;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -27,20 +32,33 @@ import java.nio.file.Paths;
 
 @Configuration
 @ComponentScan
+@EnableConfigurationProperties(SftpInputProperties.class)
 @ConditionalOnProperty(
         value="bcgov.access.input.plugin",
         havingValue = "sftp"
 )
 public class AutoConfiguration {
 
+    private Logger logger = LoggerFactory.getLogger(AutoConfiguration.class);
+
+    private SftpInputProperties properties;
+
+    public AutoConfiguration(SftpInputProperties sftpInputProperties) {
+        this.properties = sftpInputProperties;
+
+        logger.debug("SFTP Configuration: Host => [{}]", this.properties.getHost());
+        logger.debug("SFTP Configuration: Port => [{}]", this.properties.getPort());
+
+    }
+
 
     @Bean
     public SessionFactory<ChannelSftp.LsEntry> sftpSessionFactory() {
         DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(true);
-        factory.setHost("localhost");
-        factory.setPort(2222);
-        factory.setUser("master");
-        factory.setPassword("master");
+        factory.setHost(properties.getHost());
+        factory.setPort(properties.getPort());
+        factory.setUser(properties.getUsername());
+        factory.setPassword(properties.getPassword());
         factory.setAllowUnknownKeys(true);
         return new CachingSessionFactory<ChannelSftp.LsEntry>(factory);
     }
@@ -69,15 +87,14 @@ public class AutoConfiguration {
 
     @Bean
     @ServiceActivator(inputChannel = "sftpChannel")
-    public MessageHandler handler() {
+    public MessageHandler handler(DocumentReadyHandler documentReadyHandler) {
         return new MessageHandler() {
 
-            public void handleMessage(Message<File> message) throws MessagingException {
-
-
+            public void handleMessage(Message<File> message) throws MessagingException, DocumentMessageException {
 
                 try {
-                    System.out.println(new String(Files.readAllBytes(Paths.get(message.getPayload().getPath()))));
+                    documentReadyHandler.handle(new String(Files.readAllBytes(Paths.get(message.getPayload().getPath()))), "test");
+                    System.out.println();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
