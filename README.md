@@ -56,6 +56,7 @@ You can configure the document input using `bcgov.access.input` property.
 * [Console](#ConsoleInputPlugin)
 * [Http](#HttpInputPlugin)
 * [RabbitMq](#RabbitMqInputPlugin)
+* [Sftp](#sftpInputPlugin)
 
 ### Console Input Plugin
 
@@ -106,12 +107,24 @@ server.port=5050
 
 #### Description
 
-Using this plugin you can receive messages from a spefied rabbitMq queue.
+Using this plugin you can receive messages from a specified rabbitMq queue.
 
 #### Setup
 
 ```properties
 bcgov.access.input.plugin=rabbitmq
+```
+
+# Sftp Input Plugin
+
+#### Description
+
+Using this plugin you can receive messages from a specified Sftp server.
+
+#### Setup
+
+```properties
+bcgov.access.input.plugin=sftp
 ```
 
 #### Configuration Options
