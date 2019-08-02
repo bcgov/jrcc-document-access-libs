@@ -115,6 +115,29 @@ Using this plugin you can receive messages from a specified rabbitMq queue.
 bcgov.access.input.plugin=rabbitmq
 ```
 
+#### Configuration Options
+
+It support the [Common Options](#CommonOptions) and the following options:
+
+| name | type | required |
+| --- | --- | --- |
+| [bcgov.access.input.rabbitmq.retryDelay](#bcgovaccessinputrabbitmqretryDelay) | Int | No |
+| [bcgov.access.input.rabbitmq.retryCount](#bcgovaccessinputrabbitmqretryCount) | Int | No |
+
+##### bcgov.access.input.rabbitmq.retryDelay
+
+* Value type is Int
+* Default value is `0`
+
+Sets the delay in seconds between retries when the service if failing to process the message and throwing application known errors.
+
+##### bcgov.access.input.rabbitmq.retryCount
+
+* Value type is Int
+* Default value is `1`
+
+Sets the maximum attempt to reprocess a message in the queue.
+
 # Sftp Input Plugin
 
 #### Description
@@ -133,22 +156,36 @@ It support the [Common Options](#CommonOptions) and the following options:
 
 | name | type | required |
 | --- | --- | --- |
-| [bcgov.access.input.rabbitmq.retryDelay](#bcgovaccessinputrabbitmqretryDelay) | Int | No |
-| [bcgov.access.input.rabbitmq.retryCount](#bcgov.access.input.rabbitmq.retryCount) | Int | No |
+| [bcgov.access.input.sftp.host](#bcgovaccessinputsftphost) | String | N |
+| [bcgov.access.input.sftp.port](#bcgovaccessinputsftpport) | Int | N |
+| [bcgov.access.input.sftp.username](#bcgovaccessinputsftpport) | String | Yes |
+| [bcgov.access.input.sftp.password](#bcgovaccessinputsftpport) | String | Yes |
 
-##### bcgov.access.input.rabbitmq.retryDelay
+##### bcgov.access.input.sftp.host
+
+* Value type is String
+* Default value is `localhost`
+
+Sets the sftp server host
+
+##### bcgov.access.input.sftp.port
 
 * Value type is Int
-* Default value is `0`
+* Default value is `22`
 
-Sets the delay in seconds between retries when the service if failing to process the message and throwing application known errors.
+Sets the sftp server port
 
-##### bcgov.access.input.rabbitmq.retryCount
+##### bcgov.access.input.sftp.username
 
-* Value type is Int
-* Default value is `1`
+* Value type is String
 
-Sets the maximum attempt to reprocess a message in the queue.
+Sets the sftp server username
+
+##### bcgov.access.input.sftp.password
+
+* Value type is String
+
+Sets the sftp server password
 
 ## Output Plugins
 
