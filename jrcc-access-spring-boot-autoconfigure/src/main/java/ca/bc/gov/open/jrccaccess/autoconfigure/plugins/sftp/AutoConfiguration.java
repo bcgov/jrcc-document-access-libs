@@ -12,16 +12,21 @@ import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.core.MessageSource;
+import org.springframework.integration.file.filters.AcceptAllFileListFilter;
 import org.springframework.integration.file.filters.AcceptOnceFileListFilter;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
+import org.springframework.integration.sftp.filters.SftpRegexPatternFileListFilter;
 import org.springframework.integration.sftp.filters.SftpSimplePatternFileListFilter;
 import org.springframework.integration.sftp.inbound.SftpInboundFileSynchronizer;
 import org.springframework.integration.sftp.inbound.SftpInboundFileSynchronizingMessageSource;
+import org.springframework.integration.sftp.inbound.SftpStreamingMessageSource;
 import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
+import org.springframework.integration.sftp.session.SftpRemoteFileTemplate;
 
 import javax.websocket.MessageHandler;
 import java.io.File;
+import java.io.InputStream;
 
 @Configuration
 @ComponentScan
@@ -56,26 +61,19 @@ public class AutoConfiguration {
         return new CachingSessionFactory<ChannelSftp.LsEntry>(factory);
     }
 
-
     @Bean
-    public SftpInboundFileSynchronizer sftpInboundFileSynchronizer() {
-        SftpInboundFileSynchronizer fileSynchronizer = new SftpInboundFileSynchronizer(sftpSessionFactory());
-        fileSynchronizer.setDeleteRemoteFiles(false);
-        fileSynchronizer.setRemoteDirectory(properties.getRemoteDirectory());
-        fileSynchronizer.setFilter(new SftpSimplePatternFileListFilter("*.xml"));
-        return fileSynchronizer;
+    public SftpRemoteFileTemplate template() {
+        SftpRemoteFileTemplate sftpRemoteFileTemplate = new SftpRemoteFileTemplate(sftpSessionFactory());
+        return sftpRemoteFileTemplate;
     }
 
     @Bean
-    @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(fixedDelay = "5000"))
-    public MessageSource<File> sftpMessageSource() {
-        SftpInboundFileSynchronizingMessageSource source =
-                new SftpInboundFileSynchronizingMessageSource(sftpInboundFileSynchronizer());
-        source.setLocalDirectory(new File(properties.getLocalDirectory()));
-        source.setAutoCreateLocalDirectory(true);
-        source.setLocalFilter(new AcceptOnceFileListFilter<File>());
-        source.setMaxFetchSize(1);
-        return source;
+    @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}"))
+    public MessageSource<InputStream> sftpMessageSource() {
+        SftpStreamingMessageSource messageSource = new SftpStreamingMessageSource(template());
+        messageSource.setRemoteDirectory(properties.getRemoteDirectory());
+        messageSource.setFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));
+        return messageSource;
     }
 
     @Bean

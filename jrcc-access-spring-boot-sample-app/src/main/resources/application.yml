@@ -18,6 +18,8 @@ bcgov:
         password: master
         local-directory: C:/Users/177226/Downloads/Justice
         remote-directory: /home/master/
+        filter-pattern: '*.xml'
+        cron: '0/5 * * * * *'
     output:
       document-type: test-doc
       plugin: console

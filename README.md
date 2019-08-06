@@ -160,6 +160,10 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.port](#bcgovaccessinputsftpport) | Int | N |
 | [bcgov.access.input.sftp.username](#bcgovaccessinputsftpport) | String | Yes |
 | [bcgov.access.input.sftp.password](#bcgovaccessinputsftpport) | String | Yes |
+| [bcgov.access.input.sftp.local-directory](#bcgovaccessinputsftplocaldirectory) | String | Yes |
+| [bcgov.access.input.sftp.remote-directory](#bcgovaccessinputsftpremotedirectory) | String | Yes |
+| [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilterpattern) | String | No |
+| [bcgov.access.input.sftp.cron](#bcgovaccessinputsftpcron) | String | Yes |
 
 ##### bcgov.access.input.sftp.host
 
@@ -186,6 +190,18 @@ Sets the sftp server username
 * Value type is String
 
 Sets the sftp server password
+
+##### bcgov.access.input.sftp.remote-directory
+
+* Value type is String
+
+Sets the sftp server remote directory
+
+##### bcgov.access.input.sftp.local-directory
+
+* Value type is String
+
+Sets the local directory for downloaded files.
 
 ## Output Plugins
 
