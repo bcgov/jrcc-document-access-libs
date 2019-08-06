@@ -1,7 +1,5 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
-import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import com.jcraft.jsch.ChannelSftp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,14 +19,9 @@ import org.springframework.integration.sftp.filters.SftpSimplePatternFileListFil
 import org.springframework.integration.sftp.inbound.SftpInboundFileSynchronizer;
 import org.springframework.integration.sftp.inbound.SftpInboundFileSynchronizingMessageSource;
 import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessagingException;
 
 import javax.websocket.MessageHandler;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @Configuration
 @ComponentScan

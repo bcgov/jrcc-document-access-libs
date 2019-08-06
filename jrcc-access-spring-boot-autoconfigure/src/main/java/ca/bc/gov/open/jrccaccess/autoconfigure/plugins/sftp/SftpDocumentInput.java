@@ -28,6 +28,9 @@ public class SftpDocumentInput implements MessageHandler {
 
     public void handleMessage(Message<File> message) throws MessagingException, DocumentMessageException {
 
+        if(message == null) throw new IllegalArgumentException("Message is required.");
+
+
         try {
             logger.debug("Attempting to read downloaded file.");
             String content = new String(Files.readAllBytes(Paths.get(message.getPayload().getPath())));
@@ -40,8 +43,6 @@ public class SftpDocumentInput implements MessageHandler {
             logger.error("Sftp Input Plugin error while reading the file.");
            throw new DocumentMessageException("Sftp Input Plugin error while reading the file", e.getCause());
         }
-
-
 
     }
 }

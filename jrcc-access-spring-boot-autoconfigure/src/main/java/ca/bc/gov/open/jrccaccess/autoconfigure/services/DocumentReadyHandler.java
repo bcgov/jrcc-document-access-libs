@@ -34,7 +34,7 @@ public class DocumentReadyHandler {
 	 * Creates a document ready handler with a given document output
 	 * 
 	 * @param documentOutput
-	 * @param processors
+	 * @param processor
 	 */
 	public DocumentReadyHandler(DocumentOutput documentOutput, Optional<DocumentProcessor> processor) {
 		this.documentOutput = documentOutput;
