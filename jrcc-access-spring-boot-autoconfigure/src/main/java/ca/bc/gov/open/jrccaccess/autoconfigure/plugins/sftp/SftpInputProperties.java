@@ -26,6 +26,9 @@ public class SftpInputProperties {
 
 	private String localDirectory;
 
+	@Min(0)
+	private String delay;
+
 	public String getRemoteDirectory() {
 		return remoteDirectory;
 	}
@@ -72,5 +75,13 @@ public class SftpInputProperties {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getDelay() {
+		return delay;
+	}
+
+	public void setDelay(String delay) {
+		this.delay = delay;
 	}
 }
