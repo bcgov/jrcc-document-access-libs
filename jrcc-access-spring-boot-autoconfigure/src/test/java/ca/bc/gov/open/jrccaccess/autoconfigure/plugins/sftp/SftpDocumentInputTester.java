@@ -10,7 +10,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 
 public class SftpDocumentInputTester {
 
@@ -26,7 +28,7 @@ public class SftpDocumentInputTester {
     private Message message;
 
     @Mock
-    private Message messagException;
+    private Message messageException;
 
 
     @Before
@@ -37,9 +39,7 @@ public class SftpDocumentInputTester {
 
 
         ClassLoader classLoader = getClass().getClassLoader();
-        Mockito.when(message.getPayload()).thenReturn(new File(classLoader.getResource("test.txt").getFile()));
-
-        Mockito.when(messagException.getPayload()).thenReturn(new File("unknown.txt"));
+        Mockito.when(message.getPayload()).thenReturn(new ByteArrayInputStream("test".getBytes()));
 
         sut = new SftpDocumentInput(documentReadyHandlerMock);
 
@@ -58,17 +58,6 @@ public class SftpDocumentInputTester {
         SftpDocumentInput sftpDocumentInput = new SftpDocumentInput(documentReadyHandlerMock);
         sftpDocumentInput.handleMessage(null);
     }
-
-    @Test(expected = DocumentMessageException.class)
-    public void with_file_not_present_should_throw_a_DocumentMessageException() throws DocumentMessageException {
-
-        Mockito.when(messagException.getPayload()).thenReturn(new File("unknown.txt"));
-        SftpDocumentInput sftpDocumentInput = new SftpDocumentInput(documentReadyHandlerMock);
-        sftpDocumentInput.handleMessage(messagException);
-
-    }
-
-
 
 
 }

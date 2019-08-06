@@ -2,6 +2,7 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
@@ -9,8 +10,8 @@ import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.MessageHandler;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -26,14 +27,14 @@ public class SftpDocumentInput implements MessageHandler {
     }
 
 
-    public void handleMessage(Message<File> message) throws MessagingException, DocumentMessageException {
+    public void handleMessage(Message<InputStream> message) throws MessagingException, DocumentMessageException {
 
         if(message == null) throw new IllegalArgumentException("Message is required.");
 
 
         try {
             logger.debug("Attempting to read downloaded file.");
-            String content = new String(Files.readAllBytes(Paths.get(message.getPayload().getPath())));
+            String content = getContent(message);
             logger.info("Successfully red downloaded file.");
 
             logger.debug("Attempting to handler document content");
@@ -45,4 +46,21 @@ public class SftpDocumentInput implements MessageHandler {
         }
 
     }
+
+
+    private String getContent(Message<InputStream> message) throws IOException {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        String line = null;
+
+        try (BufferedReader bufferedReader = new BufferedReader(
+                new InputStreamReader(message.getPayload(), StandardCharsets.UTF_8))) {
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
 }

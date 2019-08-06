@@ -26,8 +26,9 @@ public class SftpInputProperties {
 
 	private String localDirectory;
 
-	@Min(0)
-	private String delay;
+	private String filterPattern;
+
+	private String cron;
 
 	public String getRemoteDirectory() {
 		return remoteDirectory;
@@ -77,11 +78,19 @@ public class SftpInputProperties {
 		this.password = password;
 	}
 
-	public String getDelay() {
-		return delay;
+	public String getCron() {
+		return cron;
 	}
 
-	public void setDelay(String delay) {
-		this.delay = delay;
+	public void setCron(String cron) {
+		this.cron = cron;
+	}
+
+	public String getFilterPattern() {
+		return filterPattern == null ? "" : filterPattern ;
+	}
+
+	public void setFilterPattern(String filterPattern) {
+		this.filterPattern = filterPattern;
 	}
 }
