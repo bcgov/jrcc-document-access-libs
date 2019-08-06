@@ -56,6 +56,7 @@ You can configure the document input using `bcgov.access.input` property.
 * [Console](#ConsoleInputPlugin)
 * [Http](#HttpInputPlugin)
 * [RabbitMq](#RabbitMqInputPlugin)
+* [Sftp](#sftpInputPlugin)
 
 ### Console Input Plugin
 
@@ -106,7 +107,7 @@ server.port=5050
 
 #### Description
 
-Using this plugin you can receive messages from a spefied rabbitMq queue.
+Using this plugin you can receive messages from a specified rabbitMq queue.
 
 #### Setup
 
@@ -121,7 +122,7 @@ It support the [Common Options](#CommonOptions) and the following options:
 | name | type | required |
 | --- | --- | --- |
 | [bcgov.access.input.rabbitmq.retryDelay](#bcgovaccessinputrabbitmqretryDelay) | Int | No |
-| [bcgov.access.input.rabbitmq.retryCount](#bcgov.access.input.rabbitmq.retryCount) | Int | No |
+| [bcgov.access.input.rabbitmq.retryCount](#bcgovaccessinputrabbitmqretryCount) | Int | No |
 
 ##### bcgov.access.input.rabbitmq.retryDelay
 
@@ -136,6 +137,71 @@ Sets the delay in seconds between retries when the service if failing to process
 * Default value is `1`
 
 Sets the maximum attempt to reprocess a message in the queue.
+
+# Sftp Input Plugin
+
+#### Description
+
+Using this plugin you can receive messages from a specified Sftp server.
+
+#### Setup
+
+```properties
+bcgov.access.input.plugin=sftp
+```
+
+#### Configuration Options
+
+It support the [Common Options](#CommonOptions) and the following options:
+
+| name | type | required |
+| --- | --- | --- |
+| [bcgov.access.input.sftp.host](#bcgovaccessinputsftphost) | String | N |
+| [bcgov.access.input.sftp.port](#bcgovaccessinputsftpport) | Int | N |
+| [bcgov.access.input.sftp.username](#bcgovaccessinputsftpport) | String | Yes |
+| [bcgov.access.input.sftp.password](#bcgovaccessinputsftpport) | String | Yes |
+| [bcgov.access.input.sftp.local-directory](#bcgovaccessinputsftplocaldirectory) | String | Yes |
+| [bcgov.access.input.sftp.remote-directory](#bcgovaccessinputsftpremotedirectory) | String | Yes |
+| [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilterpattern) | String | No |
+| [bcgov.access.input.sftp.cron](#bcgovaccessinputsftpcron) | String | Yes |
+
+##### bcgov.access.input.sftp.host
+
+* Value type is String
+* Default value is `localhost`
+
+Sets the sftp server host
+
+##### bcgov.access.input.sftp.port
+
+* Value type is Int
+* Default value is `22`
+
+Sets the sftp server port
+
+##### bcgov.access.input.sftp.username
+
+* Value type is String
+
+Sets the sftp server username
+
+##### bcgov.access.input.sftp.password
+
+* Value type is String
+
+Sets the sftp server password
+
+##### bcgov.access.input.sftp.remote-directory
+
+* Value type is String
+
+Sets the sftp server remote directory
+
+##### bcgov.access.input.sftp.local-directory
+
+* Value type is String
+
+Sets the local directory for downloaded files.
 
 ## Output Plugins
 
