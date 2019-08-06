@@ -10,16 +10,7 @@ bcgov:
   access:
     input:
       document-type: test-doc
-      plugin: sftp
-      sftp:
-        host: localhost
-        port: 2222
-        username: master
-        password: master
-        local-directory: C:/Users/177226/Downloads/Justice
-        remote-directory: /home/master/
-        filter-pattern: '*.xml'
-        cron: '0/5 * * * * *'
+      plugin: console
     output:
       document-type: test-doc
       plugin: console
