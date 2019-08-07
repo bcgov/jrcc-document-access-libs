@@ -68,7 +68,7 @@ public class AutoConfiguration {
     }
 
     @Bean
-    @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}"))
+    @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}", maxMessagesPerPoll = "${bcgov.access.input.sftp.max-message-per-poll}"))
     public MessageSource<InputStream> sftpMessageSource() {
         SftpStreamingMessageSource messageSource = new SftpStreamingMessageSource(template());
         messageSource.setRemoteDirectory(properties.getRemoteDirectory());

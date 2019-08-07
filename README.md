@@ -160,10 +160,10 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.port](#bcgovaccessinputsftpport) | Int | N |
 | [bcgov.access.input.sftp.username](#bcgovaccessinputsftpport) | String | Yes |
 | [bcgov.access.input.sftp.password](#bcgovaccessinputsftpport) | String | Yes |
-| [bcgov.access.input.sftp.local-directory](#bcgovaccessinputsftplocaldirectory) | String | Yes |
 | [bcgov.access.input.sftp.remote-directory](#bcgovaccessinputsftpremotedirectory) | String | Yes |
 | [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilterpattern) | String | No |
 | [bcgov.access.input.sftp.cron](#bcgovaccessinputsftpcron) | String | Yes |
+| [bcgov.access.input.sftp.max-file-per-poll](#bcgovaccessinputsftpmaxfileperpoll) | String | Yes |
 
 ##### bcgov.access.input.sftp.host
 
@@ -195,13 +195,25 @@ Sets the sftp server password
 
 * Value type is String
 
-Sets the sftp server remote directory
+Sets the sftp server remote directory.
 
-##### bcgov.access.input.sftp.local-directory
+##### bcgov.access.input.sftp.filter-pattern
 
 * Value type is String
 
-Sets the local directory for downloaded files.
+Sets a regular expression to filter the list.
+
+##### bcgov.access.input.sftp.cron
+
+* Value type is String
+
+Sets a cron tab expression with 6 fields.
+
+##### bcgov.access.input.sftp.max-file-per-poll
+
+* Value type is String
+
+Sets the maximum message per poll.
 
 ## Output Plugins
 
