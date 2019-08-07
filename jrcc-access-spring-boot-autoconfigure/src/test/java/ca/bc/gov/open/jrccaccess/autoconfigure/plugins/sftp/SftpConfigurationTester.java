@@ -22,10 +22,10 @@ import org.springframework.test.context.junit4.SpringRunner;
                 "bcgov.access.input.sftp.port=2222",
                 "bcgov.access.input.sftp.username=master",
                 "bcgov.access.input.sftp.password=master",
-                "bcgov.access.input.sftp.local-directory=local",
                 "bcgov.access.input.sftp.remote-directory=remote",
                 "bcgov.access.input.sftp.filter-pattern=*.xml",
                 "bcgov.access.input.sftp.cron=* * * * * *",
+                "bcgov.access.input.sftp.max-message-per-poll=10",
                 "bcgov.access.output.plugin=console"
         })
 @ContextConfiguration
