@@ -24,11 +24,11 @@ public class SftpInputProperties {
 
 	private String remoteDirectory;
 
-	private String localDirectory;
-
 	private String filterPattern;
 
 	private String cron;
+
+	private String maxMessagePerPoll;
 
 	public String getRemoteDirectory() {
 		return remoteDirectory;
@@ -36,14 +36,6 @@ public class SftpInputProperties {
 
 	public void setRemoteDirectory(String remoteDirectory) {
 		this.remoteDirectory = remoteDirectory;
-	}
-
-	public String getLocalDirectory() {
-		return localDirectory;
-	}
-
-	public void setLocalDirectory(String localDirectory) {
-		this.localDirectory = localDirectory;
 	}
 
 	public String getHost() {
@@ -92,5 +84,13 @@ public class SftpInputProperties {
 
 	public void setFilterPattern(String filterPattern) {
 		this.filterPattern = filterPattern;
+	}
+
+	public String getMaxMessagePerPoll() {
+		return maxMessagePerPoll == null || "".equals(maxMessagePerPoll) ? "1" : maxMessagePerPoll;
+	}
+
+	public void setMaxMessagePerPoll(String maxMessagePerPoll) {
+		this.maxMessagePerPoll = maxMessagePerPoll;
 	}
 }
