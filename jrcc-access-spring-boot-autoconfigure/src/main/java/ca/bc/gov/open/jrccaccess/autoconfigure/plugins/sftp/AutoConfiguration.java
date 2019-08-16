@@ -56,7 +56,12 @@ public class AutoConfiguration {
         factory.setHost(properties.getHost());
         factory.setPort(properties.getPort());
         factory.setUser(properties.getUsername());
-        factory.setPassword(properties.getPassword());
+        if (properties.getSshPrivateKey() != null) {
+            factory.setPrivateKey(properties.getSshPrivateKey());
+            factory.setPrivateKeyPassphrase(properties.getSshPrivatePassphrase());
+        } else {
+            factory.setPassword(properties.getPassword());
+        }
         factory.setAllowUnknownKeys(true);
         return new CachingSessionFactory<ChannelSftp.LsEntry>(factory);
     }
