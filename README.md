@@ -1,13 +1,6 @@
 # jrcc-document-access-libs
 
-This library provides a service to store documents using [redis](https://redis.io/) cache.
-
-## Road Map
-
-* [X] Store a document in redis cache
-* [ ] Retrieve document from redis cache
-* [X] Publish a document ready message to rabbitMq
-* [ ] Subscribe when a document is ready from rabbitMq
+This library provides a service exchange documents between micro services.
 
 ## jrcc document access spring boot starter
 
@@ -164,6 +157,10 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilterpattern) | String | No |
 | [bcgov.access.input.sftp.cron](#bcgovaccessinputsftpcron) | String | Yes |
 | [bcgov.access.input.sftp.max-file-per-poll](#bcgovaccessinputsftpmaxfileperpoll) | String | No |
+| [bcgov.access.input.sftp.max-file-per-poll](#bcgovaccessinputsftpmaxfileperpoll) | String | No |
+| [bcgov.access.input.sftp.max-file-per-poll](#bcgovaccessinputsftpmaxfileperpoll) | String | No |
+| [bcgov.access.input.sftp.ssh-private-key](#bcgovaccessinputsftpsshprivatekey) | Resource | No |
+| [bcgov.access.input.sftp.ssh-private-passphrase](#bcgovaccessinputsftpsshprivatepassphrase) | String | No |
 
 ##### bcgov.access.input.sftp.host
 
@@ -216,6 +213,18 @@ Sets a cron tab expression with 6 fields.
 * Default value is `1`
 
 Sets the maximum message per poll.
+
+##### bcgov.access.input.sftp.ssh-private-key
+
+* Value type is Resource (filepath)
+
+Sets the location of the private key.
+
+#####  bcgov.access.input.sftp.ssh-private-passphrase
+
+* Value type is String
+
+Sets the passphrase for the private key.
 
 ## Output Plugins
 
