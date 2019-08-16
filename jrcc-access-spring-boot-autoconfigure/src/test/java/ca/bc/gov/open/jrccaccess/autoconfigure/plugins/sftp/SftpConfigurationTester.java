@@ -23,7 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
                 "bcgov.access.input.sftp.username=master",
                 "bcgov.access.input.sftp.password=master",
                 "bcgov.access.input.sftp.remote-directory=remote",
-                "bcgov.access.input.sftp.filter-pattern=*.xml",
+                "bcgov.access.input.sftp.filter-pattern=.*.xml",
                 "bcgov.access.input.sftp.cron=* * * * * *",
                 "bcgov.access.input.sftp.max-message-per-poll=10",
                 "bcgov.access.output.plugin=console"
@@ -35,10 +35,6 @@ public class SftpConfigurationTester {
     @Autowired
     @Qualifier("sftpSessionFactory")
     private SessionFactory<ChannelSftp.LsEntry> sftpSessionFactorySut;
-
-    @Autowired
-    @Qualifier("sftpInboundFileSynchronizer")
-    private SftpInboundFileSynchronizer sftpInboundFileSynchronizerSut;
 
     @Test
     public void with_valid_config_should_create_sftpSessionFactory() {

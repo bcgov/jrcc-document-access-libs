@@ -1,6 +1,8 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
+import org.apache.tomcat.util.file.ConfigurationSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.Resource;
 
 import javax.validation.constraints.Min;
 
@@ -29,6 +31,10 @@ public class SftpInputProperties {
 	private String cron;
 
 	private String maxMessagePerPoll;
+
+	private Resource sshPrivateKey;
+
+	private String sshPrivatePassphrase;
 
 	public String getRemoteDirectory() {
 		return remoteDirectory;
@@ -93,4 +99,21 @@ public class SftpInputProperties {
 	public void setMaxMessagePerPoll(String maxMessagePerPoll) {
 		this.maxMessagePerPoll = maxMessagePerPoll;
 	}
+
+	public Resource getSshPrivateKey() {
+		return sshPrivateKey;
+	}
+
+	public void setSshPrivateKey(Resource sshPrivateKey) {
+		this.sshPrivateKey = sshPrivateKey;
+	}
+
+	public String getSshPrivatePassphrase() {
+		return sshPrivatePassphrase;
+	}
+
+	public void setSshPrivatePassphrase(String sshPrivatePassphrase) {
+		this.sshPrivatePassphrase = sshPrivatePassphrase;
+	}
+
 }
