@@ -216,7 +216,7 @@ Sets the maximum message per poll.
 
 ##### bcgov.access.input.sftp.ssh-private-key
 
-* Value type is Resource (filepath)
+* Value type is String
 
 Sets the location of the private key.
 
