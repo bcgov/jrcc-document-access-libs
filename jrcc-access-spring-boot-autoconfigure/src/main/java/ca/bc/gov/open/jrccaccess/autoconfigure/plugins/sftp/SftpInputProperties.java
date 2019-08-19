@@ -2,9 +2,11 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
 import org.apache.tomcat.util.file.ConfigurationSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
 import javax.validation.constraints.Min;
+import java.nio.charset.Charset;
 
 /**
  * Represents the rabbitmq output plugin properties
@@ -32,7 +34,7 @@ public class SftpInputProperties {
 
 	private String maxMessagePerPoll;
 
-	private Resource sshPrivateKey;
+	private String sshPrivateKey;
 
 	private String sshPrivatePassphrase;
 
@@ -101,10 +103,10 @@ public class SftpInputProperties {
 	}
 
 	public Resource getSshPrivateKey() {
-		return sshPrivateKey;
+		return new ByteArrayResource(this.sshPrivateKey.getBytes());
 	}
 
-	public void setSshPrivateKey(Resource sshPrivateKey) {
+	public void setSshPrivateKey(String sshPrivateKey) {
 		this.sshPrivateKey = sshPrivateKey;
 	}
 
