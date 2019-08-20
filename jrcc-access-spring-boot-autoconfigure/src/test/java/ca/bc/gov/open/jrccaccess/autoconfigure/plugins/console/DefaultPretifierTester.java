@@ -42,7 +42,7 @@ public class DefaultPretifierTester {
 		String validInput = String.join("", Collections.nCopies(99, String.valueOf('a')));
 		String result = sut.prettify(validInput);
 		
-		assertEquals(103, result.length());
+		assertEquals(99, result.length());
 		
 	}
 	
