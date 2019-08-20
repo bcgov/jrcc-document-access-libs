@@ -1,8 +1,12 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
+import org.apache.tomcat.util.file.ConfigurationSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 
 import javax.validation.constraints.Min;
+import java.nio.charset.Charset;
 
 /**
  * Represents the rabbitmq output plugin properties
@@ -24,11 +28,15 @@ public class SftpInputProperties {
 
 	private String remoteDirectory;
 
-	private String localDirectory;
-
 	private String filterPattern;
 
 	private String cron;
+
+	private String maxMessagePerPoll;
+
+	private String sshPrivateKey;
+
+	private String sshPrivatePassphrase;
 
 	public String getRemoteDirectory() {
 		return remoteDirectory;
@@ -36,14 +44,6 @@ public class SftpInputProperties {
 
 	public void setRemoteDirectory(String remoteDirectory) {
 		this.remoteDirectory = remoteDirectory;
-	}
-
-	public String getLocalDirectory() {
-		return localDirectory;
-	}
-
-	public void setLocalDirectory(String localDirectory) {
-		this.localDirectory = localDirectory;
 	}
 
 	public String getHost() {
@@ -93,4 +93,29 @@ public class SftpInputProperties {
 	public void setFilterPattern(String filterPattern) {
 		this.filterPattern = filterPattern;
 	}
+
+	public String getMaxMessagePerPoll() {
+		return maxMessagePerPoll == null || "".equals(maxMessagePerPoll) ? "1" : maxMessagePerPoll;
+	}
+
+	public void setMaxMessagePerPoll(String maxMessagePerPoll) {
+		this.maxMessagePerPoll = maxMessagePerPoll;
+	}
+
+	public Resource getSshPrivateKey() {
+		return new ByteArrayResource(this.sshPrivateKey.getBytes());
+	}
+
+	public void setSshPrivateKey(String sshPrivateKey) {
+		this.sshPrivateKey = sshPrivateKey;
+	}
+
+	public String getSshPrivatePassphrase() {
+		return sshPrivatePassphrase;
+	}
+
+	public void setSshPrivatePassphrase(String sshPrivatePassphrase) {
+		this.sshPrivatePassphrase = sshPrivatePassphrase;
+	}
+
 }

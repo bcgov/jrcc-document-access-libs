@@ -1,13 +1,6 @@
 # jrcc-document-access-libs
 
-This library provides a service to store documents using [redis](https://redis.io/) cache.
-
-## Road Map
-
-* [X] Store a document in redis cache
-* [ ] Retrieve document from redis cache
-* [X] Publish a document ready message to rabbitMq
-* [ ] Subscribe when a document is ready from rabbitMq
+This library provides a service exchange documents between micro services.
 
 ## jrcc document access spring boot starter
 
@@ -155,14 +148,18 @@ It support the [Common Options](#CommonOptions) and the following options:
 
 | name | type | required |
 | --- | --- | --- |
-| [bcgov.access.input.sftp.host](#bcgovaccessinputsftphost) | String | N |
-| [bcgov.access.input.sftp.port](#bcgovaccessinputsftpport) | Int | N |
+| [bcgov.access.input.sftp.host](#bcgovaccessinputsftphost) | String | No |
+| [bcgov.access.input.sftp.port](#bcgovaccessinputsftpport) | Int | No |
 | [bcgov.access.input.sftp.username](#bcgovaccessinputsftpport) | String | Yes |
 | [bcgov.access.input.sftp.password](#bcgovaccessinputsftpport) | String | Yes |
-| [bcgov.access.input.sftp.local-directory](#bcgovaccessinputsftplocaldirectory) | String | Yes |
 | [bcgov.access.input.sftp.remote-directory](#bcgovaccessinputsftpremotedirectory) | String | Yes |
 | [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilterpattern) | String | No |
 | [bcgov.access.input.sftp.cron](#bcgovaccessinputsftpcron) | String | Yes |
+| [bcgov.access.input.sftp.max-file-per-poll](#bcgovaccessinputsftpmaxfileperpoll) | String | No |
+| [bcgov.access.input.sftp.max-file-per-poll](#bcgovaccessinputsftpmaxfileperpoll) | String | No |
+| [bcgov.access.input.sftp.max-file-per-poll](#bcgovaccessinputsftpmaxfileperpoll) | String | No |
+| [bcgov.access.input.sftp.ssh-private-key](#bcgovaccessinputsftpsshprivatekey) | Resource | No |
+| [bcgov.access.input.sftp.ssh-private-passphrase](#bcgovaccessinputsftpsshprivatepassphrase) | String | No |
 
 ##### bcgov.access.input.sftp.host
 
@@ -194,13 +191,39 @@ Sets the sftp server password
 
 * Value type is String
 
-Sets the sftp server remote directory
+Sets the sftp server remote directory.
 
-##### bcgov.access.input.sftp.local-directory
+##### bcgov.access.input.sftp.filter-pattern
+
+* Value type is String
+* Default value is `""`
+
+Sets a regular expression to filter the list.
+
+##### bcgov.access.input.sftp.cron
 
 * Value type is String
 
-Sets the local directory for downloaded files.
+Sets a cron tab expression with 6 fields.
+
+##### bcgov.access.input.sftp.max-file-per-poll
+
+* Value type is String
+* Default value is `1`
+
+Sets the maximum message per poll.
+
+##### bcgov.access.input.sftp.ssh-private-key
+
+* Value type is String
+
+Sets the location of the private key.
+
+#####  bcgov.access.input.sftp.ssh-private-passphrase
+
+* Value type is String
+
+Sets the passphrase for the private key.
 
 ## Output Plugins
 

@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -56,7 +57,12 @@ public class AutoConfiguration {
         factory.setHost(properties.getHost());
         factory.setPort(properties.getPort());
         factory.setUser(properties.getUsername());
-        factory.setPassword(properties.getPassword());
+        if (properties.getSshPrivateKey() != null) {
+            factory.setPrivateKey(properties.getSshPrivateKey());
+            factory.setPrivateKeyPassphrase(properties.getSshPrivatePassphrase());
+        } else {
+            factory.setPassword(properties.getPassword());
+        }
         factory.setAllowUnknownKeys(true);
         return new CachingSessionFactory<ChannelSftp.LsEntry>(factory);
     }
@@ -68,11 +74,12 @@ public class AutoConfiguration {
     }
 
     @Bean
-    @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}"))
+    @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}", maxMessagesPerPoll = "${bcgov.access.input.sftp.max-message-per-poll}"))
     public MessageSource<InputStream> sftpMessageSource() {
         SftpStreamingMessageSource messageSource = new SftpStreamingMessageSource(template());
         messageSource.setRemoteDirectory(properties.getRemoteDirectory());
-        messageSource.setFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));
+        if(properties.getFilterPattern() != null && !"".equals(properties.getFilterPattern()))
+            messageSource.setFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));
         return messageSource;
     }
 
