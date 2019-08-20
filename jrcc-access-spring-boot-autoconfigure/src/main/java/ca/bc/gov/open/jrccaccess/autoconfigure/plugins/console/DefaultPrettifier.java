@@ -3,6 +3,8 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+
 /**
  * Default prettifier, truncates the payload
  * @author alexjoybc
@@ -22,7 +24,7 @@ public class DefaultPrettifier implements Prettifier {
 		if(input.length() < max){
 			return input;
 		}
-		return input.substring(0, max) + " ...";
+		return MessageFormat.format("{0} ...", input.substring(0, max) );
 	}
 
 }
