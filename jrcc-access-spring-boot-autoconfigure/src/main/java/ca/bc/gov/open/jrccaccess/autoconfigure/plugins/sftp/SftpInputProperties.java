@@ -1,12 +1,10 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
-import org.apache.tomcat.util.file.ConfigurationSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
 import javax.validation.constraints.Min;
-import java.nio.charset.Charset;
 
 /**
  * Represents the rabbitmq output plugin properties
