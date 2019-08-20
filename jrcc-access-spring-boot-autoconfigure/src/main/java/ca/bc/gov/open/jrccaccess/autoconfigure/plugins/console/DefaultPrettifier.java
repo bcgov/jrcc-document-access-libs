@@ -19,7 +19,9 @@ public class DefaultPrettifier implements Prettifier {
 	@Override
 	public String prettify(String input) {
 		int max = 100;
-		if(input.length() < max) max = input.length();
+		if(input.length() < max){
+			return input;
+		}
 		return input.substring(0, max) + " ...";
 	}
 
