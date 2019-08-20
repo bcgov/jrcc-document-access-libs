@@ -14,8 +14,7 @@ This library provides a service to store documents using [redis](https://redis.i
 This provide a spring boot starter for the document access lib using [redis](https://redis.io/)
 
 ### Usage
-
-Add `jrcc-access-spring-boot-starter` to your project
+Add `jrcc-access-spring-boot-starter` to your project (See jrcc-access-spring-boot-sample-app pom.xml as an example)
 
 ```xml
 <dependency>
@@ -25,7 +24,7 @@ Add `jrcc-access-spring-boot-starter` to your project
 </dependency>
 ```
 
-Add settings into `application.settings` file using the following configuration guide
+Add settings into `application.settings` or `application.yml` file using the following configuration guide.
 
 ## Plugins
 
@@ -34,7 +33,7 @@ Add settings into `application.settings` file using the following configuration 
 | name | definition | required |
 | --- | --- | --- |
 | [bcgov.access.input.document-type](#bcgovaccessinputdocument-type) | String | No |
-| [bcgov.access.input.plugin-type](#bcgovaccessinputplugin-type) | String | Yes |
+| [bcgov.access.input.plugin](#bcgovaccessinputplugin) | String | Yes |
 
 #### bcgov.access.input.document-type
 
@@ -43,7 +42,7 @@ Add settings into `application.settings` file using the following configuration 
 
 Sets the document type to be manipulated
 
-#### bcgov.access.input.plugin-type
+#### bcgov.access.input.plugin
 
 * Value type is String
 
