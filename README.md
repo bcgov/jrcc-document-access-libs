@@ -321,6 +321,7 @@ mvn spring-boot:run -f jrcc-access-spring-boot-sample-app/pom.xml
 
 This app is configured to receive document using the http plugin like following in application.yml
 
+```properties
 logging:
   level:
     ca:
@@ -334,6 +335,7 @@ bcgov:
     output:
       document-type: test-doc
       plugin: console
+```
 
 you can use this [Postman collection](jrcc-access-api/jrcc-document-api.postman_collection.json) to interact with the server.
 
