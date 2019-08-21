@@ -1,6 +1,9 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure;
 
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.InputConfigMissingException;
+import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.InvalidConfigException;
+import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.OutputConfigMissingException;
 import ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqOutputProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +26,19 @@ public class AccessAutoConfiguration {
 	private Logger logger = LoggerFactory.getLogger(AccessAutoConfiguration.class);
 	
 	
-	public AccessAutoConfiguration(AccessProperties accessProperties) {
-		this.accessProperties = accessProperties;
-		logger.info("Bootstraping Access Library", accessProperties.getOutput().getPlugin());
-		logger.info("Input plugin: {}", accessProperties.getInput().getPlugin());
-		logger.info("Output plugin: {}", accessProperties.getOutput().getPlugin());
+	public AccessAutoConfiguration(AccessProperties accessProperties) throws InvalidConfigException {
+
+			this.accessProperties = accessProperties;
+			if( this.accessProperties.getOutput() == null){
+				throw new OutputConfigMissingException();
+			}
+			if( this.accessProperties.getInput() == null){
+				throw new InputConfigMissingException();
+			}
+			logger.info("Bootstraping Access Library", accessProperties.getOutput().getPlugin());
+			logger.info("Input plugin: {}", accessProperties.getInput().getPlugin());
+			logger.info("Output plugin: {}", accessProperties.getOutput().getPlugin());
+
 	}
 	
 }
