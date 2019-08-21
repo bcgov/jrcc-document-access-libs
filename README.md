@@ -89,8 +89,9 @@ For more details have a look at the [document API](jrcc-access-api/jrcc.swagger.
 ```properties
 bcgov.access.input.plugin=http
 ```
+Make sure "spring.main.web-application-type: none"(which will block all http operation) is not present the `application.settings` or `application.yml` file.
 
-You can configure the webserver using standard spring configuration.
+You can configure the web server using standard spring configuration.
 Document sent to the api are handle with the default documentReadyHandler.
 
 #### Configuration Options
@@ -140,7 +141,7 @@ Sets the delay in seconds between retries when the service if failing to process
 
 Sets the maximum attempt to reprocess a message in the queue.
 
-# Sftp Input Plugin
+### Sftp Input Plugin
 
 #### Description
 
@@ -318,7 +319,21 @@ mvn clean install -P sample-app
 mvn spring-boot:run -f jrcc-access-spring-boot-sample-app/pom.xml
 ```
 
-This app is configure to receive document using the http plugin.
+This app is configured to receive document using the http plugin like following in application.yml
+
+logging:
+  level:
+    ca:
+      gov:
+        bc: DEBUG
+bcgov:
+  access:
+    input:
+      document-type: test-doc
+      plugin: http
+    output:
+      document-type: test-doc
+      plugin: console
 
 you can use this [Postman collection](jrcc-access-api/jrcc-document-api.postman_collection.json) to interact with the server.
 
