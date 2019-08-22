@@ -27,18 +27,16 @@ public class AccessAutoConfiguration {
 	
 	
 	public AccessAutoConfiguration(AccessProperties accessProperties) throws InvalidConfigException {
-
-			this.accessProperties = accessProperties;
-			if( this.accessProperties.getOutput() == null){
-				throw new OutputConfigMissingException();
-			}
-			if( this.accessProperties.getInput() == null){
-				throw new InputConfigMissingException();
-			}
-			logger.info("Bootstraping Access Library", accessProperties.getOutput().getPlugin());
-			logger.info("Input plugin: {}", accessProperties.getInput().getPlugin());
-			logger.info("Output plugin: {}", accessProperties.getOutput().getPlugin());
-
+		if( accessProperties.getOutput() == null){
+			throw new OutputConfigMissingException();
+		}
+		if( accessProperties.getInput() == null){
+			throw new InputConfigMissingException();
+		}
+		this.accessProperties = accessProperties;
+		logger.info("Bootstraping Access Library", accessProperties.getOutput().getPlugin());
+		logger.info("Input plugin: {}", accessProperties.getInput().getPlugin());
+		logger.info("Output plugin: {}", accessProperties.getOutput().getPlugin());
 	}
 	
 }

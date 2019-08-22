@@ -27,7 +27,7 @@ public class AccessProperties {
 	public static class PluginConfig {
 		
 		
-		// Colision ???
+		// Collision ???
 		public String documentType;
 		
 		public String plugin;
