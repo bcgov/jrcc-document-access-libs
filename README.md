@@ -103,7 +103,26 @@ server.port=5050
 
 #### Description
 
-Using this plugin you can receive messages from a specified rabbitMq queue.
+Using this plugin you can receive JSON format messages from a specified rabbitMq queue(in our program, it is test-doc.0s.x0.q). 
+The message Payload should be like following:
+```properties
+{
+    "transactionInfo":{
+         "fileName":"filename.txt",
+         "sender":"unknown",
+         "receivedOn":"2019-08-21T22:20:45.173"        
+    },        
+    "documentInfo":{
+        "type":"crown-counsel-report"        
+    },        
+    "documentStorageProperties":{
+        "key":"455591e2-6753-4a7f-9438-bedd52327b52",
+        "md5":"311743F3D8EC271CA2BB23936C7392F5"        
+    }   
+} 
+```
+The Properties of the published message should be : content-type = application/json .
+The lib will try to get the content from Redis Storage with key and md5 specified in above key and md5.
 
 #### Setup
 

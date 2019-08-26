@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DocumentInfo {
 
 	/**
-	 * Represents the type of document beeing processed
+	 * Represents the type of document being processed
 	 */
 	private String type;
 	
