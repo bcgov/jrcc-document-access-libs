@@ -46,20 +46,25 @@ public class DocumentControllerTester {
 		
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(this.documentReadyHandler).handle("message", this.transactionInfo);
-		Mockito.doThrow(new ServiceUnavailableException(SERVICE_UNAVAILABLE)).when(this.documentReadyHandler).handle(Mockito.anyString(), this.transactionInfo);
+		Mockito.doThrow(new ServiceUnavailableException(SERVICE_UNAVAILABLE)).when(this.documentReadyHandler).handle("message", this.transactionInfo);
 		Mockito.when(this.resourceWithException.getInputStream()).thenThrow(IOException.class);
 		sut = new DocumentController(this.documentReadyHandler);
 	}
 	
 	@Test
 	public void post_with_valid_input_should_return_valid_response() {
-		
-		ResponseEntity<DocumentReceivedResponse> response = sut.postDocument(VALID, null, null, null, null, null, new ByteArrayResource("awesome content".getBytes()));
-		
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertTrue(response.getBody().getAcknowledge());
-		
-	}
+		ByteArrayResource bytes = new ByteArrayResource("awesome content".getBytes()){
+		@Override
+		public String getFilename(){
+			return "documentController.txt";
+		}
+	};
+	ResponseEntity<DocumentReceivedResponse> response = sut.postDocument(VALID, null, null, null, null, null, bytes);
+
+	assertEquals(HttpStatus.OK, response.getStatusCode());
+	assertTrue(response.getBody().getAcknowledge());
+
+}
 
 	@Test
 	public void post_with_sevice_unavailable_input_should_return_503_response() {
