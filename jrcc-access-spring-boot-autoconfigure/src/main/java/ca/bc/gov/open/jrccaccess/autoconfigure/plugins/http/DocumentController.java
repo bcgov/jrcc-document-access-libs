@@ -64,9 +64,7 @@ public class DocumentController implements DocumentApi {
 		TransactionInfo transactionInfo = new TransactionInfo(body.getFilename(), sender, LocalDateTime.now());
 		try {
 			documentReadyHandler.handle(getContent(body.getInputStream()), transactionInfo);
-			
 		} catch (ServiceUnavailableException e) {
-			
 			Error error = new Error();
 			error.setCode(Integer.toString(HttpStatus.SERVICE_UNAVAILABLE.value()));
 			error.setMessage(e.getMessage());
