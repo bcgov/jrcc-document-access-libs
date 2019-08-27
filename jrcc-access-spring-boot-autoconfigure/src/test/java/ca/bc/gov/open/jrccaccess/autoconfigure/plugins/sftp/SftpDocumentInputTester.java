@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,12 +31,15 @@ public class SftpDocumentInputTester {
     @Mock
     private Message messageException;
 
+    @Mock
+    private TransactionInfo transactionInfoMock;
+
 
     @Before
     public void init() throws DocumentMessageException {
 
         MockitoAnnotations.initMocks(this);
-        Mockito.doNothing().when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.anyString());
+        Mockito.doNothing().when(documentReadyHandlerMock).handle("message", transactionInfoMock);
 
 
         ClassLoader classLoader = getClass().getClassLoader();

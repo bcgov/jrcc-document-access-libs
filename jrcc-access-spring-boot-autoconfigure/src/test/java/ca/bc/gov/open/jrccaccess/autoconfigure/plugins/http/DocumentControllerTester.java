@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -32,6 +33,8 @@ public class DocumentControllerTester {
 	private DocumentReadyHandler documentReadyHandler;
 
 	@Mock
+	private TransactionInfo transactionInfo;
+	@Mock
 	private Resource resource;
 	
 	@Mock
@@ -42,8 +45,8 @@ public class DocumentControllerTester {
 	public void init() throws Exception {
 		
 		MockitoAnnotations.initMocks(this);
-		Mockito.doNothing().when(this.documentReadyHandler).handle(Mockito.anyString(), Mockito.eq(VALID));
-		Mockito.doThrow(new ServiceUnavailableException(SERVICE_UNAVAILABLE)).when(this.documentReadyHandler).handle(Mockito.anyString(), Mockito.eq(SERVICE_UNAVAILABLE));
+		Mockito.doNothing().when(this.documentReadyHandler).handle("message", this.transactionInfo);
+		Mockito.doThrow(new ServiceUnavailableException(SERVICE_UNAVAILABLE)).when(this.documentReadyHandler).handle(Mockito.anyString(), this.transactionInfo);
 		Mockito.when(this.resourceWithException.getInputStream()).thenThrow(IOException.class);
 		sut = new DocumentController(this.documentReadyHandler);
 	}
