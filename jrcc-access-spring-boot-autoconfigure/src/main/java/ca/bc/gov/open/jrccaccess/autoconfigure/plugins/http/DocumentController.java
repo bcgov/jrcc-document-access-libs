@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -58,9 +60,10 @@ public class DocumentController implements DocumentApi {
 		
 		DocumentReceivedResponse response = new DocumentReceivedResponse();
 		response.setAcknowledge(true);
-		
+
+		TransactionInfo transactionInfo = new TransactionInfo(body.getFilename(), sender, LocalDateTime.now());
 		try {
-			documentReadyHandler.handle(getContent(body.getInputStream()), sender);
+			documentReadyHandler.handle(getContent(body.getInputStream()), transactionInfo);
 			
 		} catch (ServiceUnavailableException e) {
 			

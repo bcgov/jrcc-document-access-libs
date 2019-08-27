@@ -59,7 +59,7 @@ public class RabbitMqDocumentInput {
 			logger.debug(content);
 		}
 		
-		this.documentReadyHandler.handle(content, documentReadyMessage.getTransactionInfo().getSender());
+		this.documentReadyHandler.handle(content, documentReadyMessage.getTransactionInfo());
 		logger.info("message successfully acknowledged");
 
 	}

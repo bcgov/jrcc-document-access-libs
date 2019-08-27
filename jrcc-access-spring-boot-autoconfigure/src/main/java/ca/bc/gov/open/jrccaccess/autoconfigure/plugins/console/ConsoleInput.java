@@ -1,8 +1,10 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -39,7 +41,8 @@ public class ConsoleInput implements CommandLineRunner {
 		Scanner scanner = new Scanner(System.in);
 		
 		while(scanner.hasNext()) {
-			documentReadyHandler.handle(scanner.nextLine(), appName);
+			TransactionInfo transactionInfo = new TransactionInfo("console.txt","console", LocalDateTime.now());
+			documentReadyHandler.handle(scanner.nextLine(), transactionInfo);
 		}	
 		
 		scanner.close();
