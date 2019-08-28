@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 
 @Component
 public class SftpDocumentInput implements MessageHandler {
@@ -38,7 +40,9 @@ public class SftpDocumentInput implements MessageHandler {
             logger.info("Successfully red downloaded file.");
 
             logger.debug("Attempting to handler document content");
-            this.documentReadyHandler.handle(content, "unknown");
+            //TODO: Create TransactionInfo from input message
+            TransactionInfo transactionInfo = new TransactionInfo("sftp.txt","sftp", LocalDateTime.now());
+            this.documentReadyHandler.handle(content, transactionInfo);
             logger.info("successfully handled incoming document.");
         } catch (IOException e) {
             logger.error("Sftp Input Plugin error while reading the file.");

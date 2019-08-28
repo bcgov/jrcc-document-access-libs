@@ -381,8 +381,8 @@ bcgov:
 
 you can use this [Postman collection](jrcc-access-api/jrcc-document-api.postman_collection.json) to interact with the server.
 
-For body, select binary and click select file
-set the http header to `Content-Type:application/octet-stream`
+For body, select form-data and input key value as "file" and select file.
+set the http header to `Content-Type: multipart/form-data`.
 
 ![Postman config](docs\postman.body.png)
 

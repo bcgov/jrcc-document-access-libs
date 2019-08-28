@@ -48,8 +48,8 @@ public class RabbitMqDocumentInputTester {
 		
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(this.documentReadyService).publish(Mockito.any());
-		Mockito.doNothing().when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.anyString());
-		Mockito.doThrow(ServiceUnavailableException.class).when(documentReadyHandlerMock).handle(Mockito.anyString(), Mockito.eq(SERVICE_UNAVAILABLE_EXCEPTION));
+		Mockito.doNothing().when(documentReadyHandlerMock).handle("message", transactionInfoMock);
+		Mockito.doThrow(ServiceUnavailableException.class).when(documentReadyHandlerMock).handle("message", transactionInfoMock);
 		Mockito.when(this.storageService.putString(Mockito.anyString())).thenReturn(new DocumentStorageProperties("key", "A1"));
 		
 		AccessProperties.PluginConfig output = new AccessProperties.PluginConfig();

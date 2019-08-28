@@ -5,7 +5,7 @@ info:
   description: JRCC ACCESS API enables document to be submited of HTTP REST API.
 servers:
   - url: 'http://localhost/8080'
-tags: 
+tags:
   - name: document
     description: Document API
 paths:
@@ -29,10 +29,13 @@ paths:
             type: string
       requestBody:
         content:
-          application/octet-stream:
+          multipart/form-data:
             schema:
-              type: string
-              format: binary
+              type: object
+              properties:
+                fileInfo:
+                  type: string
+                  format: binary
       responses:
         '200':
           description: File successfully received

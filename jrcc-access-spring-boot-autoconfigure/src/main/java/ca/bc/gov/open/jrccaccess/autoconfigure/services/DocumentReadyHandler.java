@@ -47,12 +47,12 @@ public class DocumentReadyHandler {
 	 * @param inputStream
 	 * @param sender
 	 */
-	public void handle(String message, String sender) throws DocumentMessageException {
+	public void handle(String message, TransactionInfo transactionInfo) throws DocumentMessageException {
+
+		if(transactionInfo == null)
+			throw new IllegalArgumentException("TransactionInfo is required.");
 
 		logger.debug("New document in {}", this.getClass().getName());
-
-		logger.debug("Attempting to create a new transaction");
-		TransactionInfo transactionInfo = new TransactionInfo("filename.txt", sender, LocalDateTime.now());
 
 		String processedMessage = this.ExecuteProcessor(message, transactionInfo);
 		logger.info("document {} successfully processed.", transactionInfo);
