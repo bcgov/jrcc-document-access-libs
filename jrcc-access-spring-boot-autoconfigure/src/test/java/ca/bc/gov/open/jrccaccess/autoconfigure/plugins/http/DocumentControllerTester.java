@@ -3,7 +3,10 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.http;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -21,12 +24,15 @@ import org.springframework.http.ResponseEntity;
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import org.springframework.web.multipart.MultipartFile;
 
 public class DocumentControllerTester {
-	
+
 	private static final String SERVICE_UNAVAILABLE = "service_unavailable";
 
 	private static final String VALID = "valid";
+
+	private static final String FILENAME ="filename.txt";
 
 	private DocumentController sut;
 	
@@ -37,59 +43,66 @@ public class DocumentControllerTester {
 	private TransactionInfo transactionInfoMock;
 	
 	@Mock
-	private Resource resourceWithException ;
+	private MultipartFile multipartFileWithException ;
 	
 	@Before
 	public void init() throws Exception {
 		
 		MockitoAnnotations.initMocks(this);
-		Mockito.doNothing().when(this.documentReadyHandler).handle("message", this.transactionInfoMock);
+		this.transactionInfoMock.sender=VALID;
+		this.transactionInfoMock.fileName=FILENAME;
+		this.transactionInfoMock.receivedOn = LocalDateTime.now();
+		Mockito.doNothing().when(this.documentReadyHandler).handle(Mockito.anyString(), Mockito.eq(this.transactionInfoMock));
 		Mockito.doThrow(new ServiceUnavailableException(SERVICE_UNAVAILABLE)).when(this.documentReadyHandler).handle(Mockito.eq(SERVICE_UNAVAILABLE), Mockito.any());
-		Mockito.doReturn("filename.txt").when(this.resourceWithException).getFilename();
-		Mockito.when(this.resourceWithException.getInputStream()).thenThrow(IOException.class);
+
+		Mockito.doReturn(FILENAME).when(this.multipartFileWithException).getOriginalFilename();
+		Mockito.when(this.multipartFileWithException.getInputStream()).thenThrow(IOException.class);
 		sut = new DocumentController(this.documentReadyHandler);
 	}
 	
 	@Test
 	public void post_with_valid_input_should_return_valid_response() {
-		ByteArrayResource bytes = new ByteArrayResource("awesome content".getBytes()){
-			@Override
-			public String getFilename(){
-				return "documentController.txt";
-			}
-		};
-		ResponseEntity<DocumentReceivedResponse> response = sut.postDocument(VALID, null, null, null, null, null, bytes);
-
+		MultipartFile multipartFile = Mockito.mock(MultipartFile.class);
+		Mockito.doReturn(FILENAME).when(multipartFile).getOriginalFilename();
+		InputStream stream = new ByteArrayInputStream("awesome_content".getBytes(StandardCharsets.UTF_8));
+		try {
+			Mockito.doReturn(stream).when(multipartFile).getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ResponseEntity<DocumentReceivedResponse> response = sut.postDocument(VALID, null, null, null, null, null, multipartFile);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertTrue(response.getBody().getAcknowledge());
 	}
 
 	@Test
 	public void post_with_sevice_unavailable_input_should_return_503_response() {
-		ByteArrayResource bytes = new ByteArrayResource(SERVICE_UNAVAILABLE.getBytes()){
-			@Override
-			public String getFilename(){
-				return "documentController.txt";
-			}
-		};
 		@SuppressWarnings("rawtypes")
-		ResponseEntity response = sut.postDocument(SERVICE_UNAVAILABLE, null, null, null, null, null, bytes);
+		MultipartFile multipartFile = Mockito.mock(MultipartFile.class);
+		Mockito.doReturn(FILENAME).when(multipartFile).getOriginalFilename();
+		InputStream stream = new ByteArrayInputStream(SERVICE_UNAVAILABLE.getBytes(StandardCharsets.UTF_8));
+		try {
+			Mockito.doReturn(stream).when(multipartFile).getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ResponseEntity response = sut.postDocument(SERVICE_UNAVAILABLE, null, null, null, null, null, multipartFile);
 
 		assertEquals(HttpStatus.SERVICE_UNAVAILABLE, response.getStatusCode());
 		assertEquals(SERVICE_UNAVAILABLE, ((ca.bc.gov.open.api.model.Error)response.getBody()).getMessage());
 		assertEquals(Integer.toString(HttpStatus.SERVICE_UNAVAILABLE.value()), ((ca.bc.gov.open.api.model.Error)response.getBody()).getCode());
-		
 	}
-	
+
 	@Test
 	public void post_with_io_exception_input_should_return_500_response() {
 		@SuppressWarnings("rawtypes")
-		ResponseEntity response = sut.postDocument(VALID, null, null, null, null, null, this.resourceWithException);
-		
+		ResponseEntity response = sut.postDocument(VALID, null, null, null, null, null, this.multipartFileWithException);
+
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), ((ca.bc.gov.open.api.model.Error)response.getBody()).getMessage());
 		assertEquals(Integer.toString(HttpStatus.INTERNAL_SERVER_ERROR.value()), ((ca.bc.gov.open.api.model.Error)response.getBody()).getCode());
-		
 	}
-	
+
+	//@Test
+	//public void post_with
 }
