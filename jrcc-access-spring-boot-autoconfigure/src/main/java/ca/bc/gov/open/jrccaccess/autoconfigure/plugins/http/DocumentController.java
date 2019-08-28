@@ -51,6 +51,11 @@ public class DocumentController implements DocumentApi {
 		
 	}
 
+	/**
+	 * POST /document?sender={sender}
+	 */
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	@Override
 	public ResponseEntity<DocumentReceivedResponse> postDocument(@NotNull @Valid String sender,
 																 UUID xRequestID,
 																 UUID xB3TraceId,
