@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>ca.bc.gov.open</groupId>
 		<artifactId>document-access</artifactId>
-		<version>0.6.2</version>
+		<version>0.7.0</version>
 	</parent>
 
 
 	<groupId>ca.bc.gov.open</groupId>
 	<artifactId>jrcc-document-access-libs</artifactId>
-	<version>0.6.2</version>
+	<version>0.7.0</version>
 	<packaging>jar</packaging>
 
 	<name>jrcc-document-access-libs</name>
