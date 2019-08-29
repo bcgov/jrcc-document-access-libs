@@ -2,6 +2,7 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentFilenameMissingException;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -19,6 +20,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
+/**
+ * The Sftp document input reads file stream from SFTP server
+ * @author 177226
+ */
 @Component
 public class SftpDocumentInput implements MessageHandler {
 
@@ -69,14 +74,14 @@ public class SftpDocumentInput implements MessageHandler {
         return stringBuilder.toString();
     }
 
-    private String getFilename(Message<InputStream> message) throws IOException{
+    private String getFilename(Message<InputStream> message) throws DocumentFilenameMissingException{
         MessageHeaders messageHeaders = message.getHeaders();
         Object filenameObj = messageHeaders.get("file_remoteFile");
-        if(filenameObj == null ){
-            IOException exception = new IOException("corrupted SFTP header. Filename is required.");
+        if (!(filenameObj instanceof String )){
+            DocumentFilenameMissingException exception = new DocumentFilenameMissingException("corrupted SFTP header. Filename is required.");
             throw exception;
         }
-        return String.valueOf(messageHeaders.get("file_remoteFile"));
+        return filenameObj.toString();
     }
 
 }
