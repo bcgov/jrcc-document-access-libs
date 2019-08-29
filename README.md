@@ -230,7 +230,7 @@ Sets a cron tab expression with 6 fields.
 ##### bcgov.access.input.sftp.max-message-per-poll
 
 * Value type is String
-* Default value is `1`
+* Required
 
 Sets the maximum message per poll.
 
