@@ -15,7 +15,7 @@ Add `jrcc-access-spring-boot-starter` to your project (See jrcc-access-spring-bo
 <dependency>
     <groupId>ca.bc.gov.open</groupId>
     <artifactId>jrcc-access-spring-boot-starter</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0</version>
 </dependency>
 ```
 
@@ -178,9 +178,7 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.remote-directory](#bcgovaccessinputsftpremotedirectory) | String | Yes |
 | [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilterpattern) | String | No |
 | [bcgov.access.input.sftp.cron](#bcgovaccessinputsftpcron) | String | Yes |
-| [bcgov.access.input.sftp.max-file-per-poll](#bcgovaccessinputsftpmaxfileperpoll) | String | No |
-| [bcgov.access.input.sftp.max-file-per-poll](#bcgovaccessinputsftpmaxfileperpoll) | String | No |
-| [bcgov.access.input.sftp.max-file-per-poll](#bcgovaccessinputsftpmaxfileperpoll) | String | No |
+| [bcgov.access.input.sftp.max-message-per-poll](#bcgovaccessinputsftpmaxmesssageperpoll) | String | No |
 | [bcgov.access.input.sftp.ssh-private-key](#bcgovaccessinputsftpsshprivatekey) | Resource | No |
 | [bcgov.access.input.sftp.ssh-private-passphrase](#bcgovaccessinputsftpsshprivatepassphrase) | String | No |
 
@@ -229,7 +227,7 @@ Sets a regular expression to filter the list.
 
 Sets a cron tab expression with 6 fields.
 
-##### bcgov.access.input.sftp.max-file-per-poll
+##### bcgov.access.input.sftp.max-message-per-poll
 
 * Value type is String
 * Default value is `1`
