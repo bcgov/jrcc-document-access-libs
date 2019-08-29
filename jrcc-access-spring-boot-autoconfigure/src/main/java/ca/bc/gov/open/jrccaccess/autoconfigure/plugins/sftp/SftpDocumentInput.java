@@ -7,8 +7,10 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Component;
+import sun.net.www.MessageHeader;
 
 import javax.websocket.MessageHandler;
 import java.io.*;
@@ -33,15 +35,14 @@ public class SftpDocumentInput implements MessageHandler {
 
         if(message == null) throw new IllegalArgumentException("Message is required.");
 
-
         try {
             logger.debug("Attempting to read downloaded file.");
             String content = getContent(message);
-            logger.info("Successfully red downloaded file.");
-
+            logger.info("Successfully read downloaded file.");
+            MessageHeaders messageHeaders = message.getHeaders();
+            String fileName = String.valueOf(messageHeaders.get("file_remoteFile"));
+            TransactionInfo transactionInfo = new TransactionInfo(fileName,"sftp", LocalDateTime.now());
             logger.debug("Attempting to handler document content");
-            //TODO: Create TransactionInfo from input message
-            TransactionInfo transactionInfo = new TransactionInfo("sftp.txt","sftp", LocalDateTime.now());
             this.documentReadyHandler.handle(content, transactionInfo);
             logger.info("successfully handled incoming document.");
         } catch (IOException e) {
