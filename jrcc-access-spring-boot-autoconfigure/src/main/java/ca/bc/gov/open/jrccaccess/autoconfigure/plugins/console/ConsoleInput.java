@@ -1,14 +1,14 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
-import java.time.LocalDateTime;
-import java.util.Scanner;
-
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.Scanner;
 
 /**
  * The console input reads message from standard input

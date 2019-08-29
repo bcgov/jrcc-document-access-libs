@@ -1,30 +1,26 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.http;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
+import ca.bc.gov.open.api.model.DocumentReceivedResponse;
+import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import ca.bc.gov.open.api.model.DocumentReceivedResponse;
-import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DocumentControllerTester {
 

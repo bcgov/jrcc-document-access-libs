@@ -1,14 +1,13 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.services;
 
+import ca.bc.gov.open.jrccaccess.libs.DocumentOutput;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.processing.DocumentProcessor;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import ca.bc.gov.open.jrccaccess.libs.DocumentOutput;
-import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
-import ca.bc.gov.open.jrccaccess.libs.processing.DocumentProcessor;
 
 import java.util.Optional;
 

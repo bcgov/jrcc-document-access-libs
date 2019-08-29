@@ -1,16 +1,15 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Set;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.Set;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class rabbitMqOutputPropertiesTester {
 

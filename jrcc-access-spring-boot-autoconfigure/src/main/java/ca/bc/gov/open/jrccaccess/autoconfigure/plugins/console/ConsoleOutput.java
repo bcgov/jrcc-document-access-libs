@@ -1,12 +1,11 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
+import ca.bc.gov.open.jrccaccess.libs.DocumentOutput;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-
-import ca.bc.gov.open.jrccaccess.libs.DocumentOutput;
-import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 
 /**
  * The console output prints document properties to the standard output

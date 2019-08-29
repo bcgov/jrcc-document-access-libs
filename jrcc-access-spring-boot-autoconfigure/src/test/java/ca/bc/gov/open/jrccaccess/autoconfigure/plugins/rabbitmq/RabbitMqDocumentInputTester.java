@@ -1,16 +1,8 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
-import java.time.LocalDateTime;
-
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.helpers.RandomHelper;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
 import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
@@ -18,6 +10,13 @@ import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFai
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 import ca.bc.gov.open.jrccaccess.libs.utils.DigestUtils;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.time.LocalDateTime;
 
 public class RabbitMqDocumentInputTester {
 

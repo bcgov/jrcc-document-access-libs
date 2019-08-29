@@ -4,6 +4,7 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.InputConfigMiss
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.InvalidConfigException;
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.OutputConfigMissingException;
 import org.junit.Test;
+
 import static org.junit.Assert.assertNotNull;
 
 

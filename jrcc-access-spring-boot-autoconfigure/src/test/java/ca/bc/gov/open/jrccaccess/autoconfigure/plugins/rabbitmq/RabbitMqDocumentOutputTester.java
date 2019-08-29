@@ -1,17 +1,16 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
-import java.time.LocalDateTime;
-
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
+import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
-import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import java.time.LocalDateTime;
 
 public class RabbitMqDocumentOutputTester {
 

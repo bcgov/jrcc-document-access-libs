@@ -1,11 +1,10 @@
 package ca.bc.gov.open.jrccaccessspringbootsampleapp;
 
-import java.util.Locale;
-
-import org.springframework.stereotype.Component;
-
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.processing.DocumentProcessor;
+import org.springframework.stereotype.Component;
+
+import java.util.Locale;
 
 @Component
 public class DocumentProcessorExample implements DocumentProcessor {

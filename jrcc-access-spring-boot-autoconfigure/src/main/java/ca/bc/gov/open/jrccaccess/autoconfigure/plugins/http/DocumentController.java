@@ -1,5 +1,20 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.http;
 
+import ca.bc.gov.open.api.DocumentApi;
+import ca.bc.gov.open.api.model.DocumentReceivedResponse;
+import ca.bc.gov.open.api.model.Error;
+import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,24 +22,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
-import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-
-import ca.bc.gov.open.api.DocumentApi;
-import ca.bc.gov.open.api.model.DocumentReceivedResponse;
-import ca.bc.gov.open.api.model.Error;
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * The document controller provides an endpoint to submit a document.

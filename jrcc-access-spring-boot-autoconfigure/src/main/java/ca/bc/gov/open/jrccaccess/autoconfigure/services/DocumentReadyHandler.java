@@ -1,18 +1,14 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.services;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import ca.bc.gov.open.jrccaccess.libs.DocumentOutput;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.processing.DocumentProcessor;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 /**
  * The document ready handler is the global handler for incoming documents

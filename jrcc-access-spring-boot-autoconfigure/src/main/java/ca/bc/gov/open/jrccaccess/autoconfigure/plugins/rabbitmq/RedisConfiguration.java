@@ -1,11 +1,5 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.naming.OperationNotSupportedException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -21,6 +15,11 @@ import org.springframework.data.redis.connection.RedisNode;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+
+import javax.naming.OperationNotSupportedException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

@@ -1,11 +1,11 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Collections;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class DefaultPretifierTester {
 
