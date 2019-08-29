@@ -385,7 +385,7 @@ set the http header to `Content-Type: multipart/form-data`.
 ![Postman config](docs\postman.body.png)
 
 
-if you want to run the sample app using redis and rabbitmq do the following
+####if you want to run the sample app using redis and rabbitmq do the following
 
 Create a redis container
 
@@ -419,6 +419,42 @@ logging:
 To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
 
 ![binding](docs/document.ready.bind.png)
+
+####if you want to run the sample app using sftp do the following:
+Create a sftp server container
+```bash
+docker run -p 7777:22 -d atmoz/sftp myname:pass:::upload
+```
+User "myname" with password "pass" can login with sftp and upload files to a folder called "upload". We are forwarding the container's port 22 to the host's port 7777.
+Use a Sftp Client application ( such as Fillzilla, WinSCP, coreFTP) to connect to the server.(use sftp protocal and ip: localhost, port:7777)
+update the [application.yml](jrcc-access-spring-boot-sample-app/src/main/resources/application.yml)
+```properties
+spring:
+  main:
+    web-application-type: none
+logging:
+  level:
+    ca:
+      gov:
+        bc: DEBUG
+bcgov:
+  access:
+    input:
+      document-type: test-doc
+      plugin: sftp
+      sftp:
+        host: localhost
+        port: 7777
+        username: myname
+        password: pass
+        remote-directory: /upload
+        max-message-per-poll: 5
+        cron: 0/5 * * * * *
+    output:
+      document-type: test-doc
+      plugin: console
+```
+Then start the sample application and use Sftp client to drag a file from your local file system to remote upload folder. The sample application should process the file and output it.
 
 ## Release
 
