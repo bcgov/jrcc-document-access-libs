@@ -423,10 +423,10 @@ To view the message in a queue, login to [rabbitmq management console](http://lo
 ####if you want to run the sample app using sftp do the following:
 Create a sftp server container
 ```bash
-docker run -p 7777:22 -d atmoz/sftp myname:pass:::upload
+docker run -p 22:22 -d atmoz/sftp myname:pass:::upload
 ```
-User "myname" with password "pass" can login with sftp and upload files to a folder called "upload". We are forwarding the container's port 22 to the host's port 7777.
-Use a Sftp Client application ( such as Fillzilla, WinSCP, coreFTP) to connect to the server.(use sftp protocal and ip: localhost, port:7777)
+User "myname" with password "pass" can login with sftp and upload files to a folder called "upload". We are forwarding the container's port 22 to the host's port 22.
+Use a Sftp Client application ( such as Fillzilla, WinSCP, coreFTP) to connect to the server.(use sftp protocal and ip: localhost, port:22)
 update the [application.yml](jrcc-access-spring-boot-sample-app/src/main/resources/application.yml)
 ```properties
 spring:
@@ -444,7 +444,7 @@ bcgov:
       plugin: sftp
       sftp:
         host: localhost
-        port: 7777
+        port: 22
         username: myname
         password: pass
         remote-directory: /upload
