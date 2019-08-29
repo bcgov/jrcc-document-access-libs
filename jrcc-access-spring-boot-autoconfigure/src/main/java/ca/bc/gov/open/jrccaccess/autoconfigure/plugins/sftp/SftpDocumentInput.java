@@ -78,8 +78,7 @@ public class SftpDocumentInput implements MessageHandler {
         MessageHeaders messageHeaders = message.getHeaders();
         Object filenameObj = messageHeaders.get("file_remoteFile");
         if (!(filenameObj instanceof String )){
-            DocumentFilenameMissingException exception = new DocumentFilenameMissingException("corrupted SFTP header. Filename is required.");
-            throw exception;
+            throw new DocumentFilenameMissingException("corrupted SFTP header. Filename is required.");
         }
         return filenameObj.toString();
     }
