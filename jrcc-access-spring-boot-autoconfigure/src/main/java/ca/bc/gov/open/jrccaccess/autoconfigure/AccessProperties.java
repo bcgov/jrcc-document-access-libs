@@ -28,9 +28,9 @@ public class AccessProperties {
 		
 		
 		// Collision ???
-		public String documentType;
+		private String documentType;
 		
-		public String plugin;
+		private String plugin;
 		
 		/**
 		 * Gets the plugin type
