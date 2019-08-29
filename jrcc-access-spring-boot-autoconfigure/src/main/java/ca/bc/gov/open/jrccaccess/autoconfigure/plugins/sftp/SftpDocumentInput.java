@@ -39,15 +39,16 @@ public class SftpDocumentInput implements MessageHandler {
             logger.debug("Attempting to read downloaded file.");
             String content = getContent(message);
             logger.info("Successfully read downloaded file.");
-            MessageHeaders messageHeaders = message.getHeaders();
-            String fileName = String.valueOf(messageHeaders.get("file_remoteFile"));
+            logger.debug("Attempting to get file name");
+            String fileName = getFilename(message);
+            logger.info("Successfully get file name.");
             TransactionInfo transactionInfo = new TransactionInfo(fileName,"sftp", LocalDateTime.now());
             logger.debug("Attempting to handler document content");
             this.documentReadyHandler.handle(content, transactionInfo);
             logger.info("successfully handled incoming document.");
         } catch (IOException e) {
-            logger.error("Sftp Input Plugin error while reading the file.");
-           throw new DocumentMessageException("Sftp Input Plugin error while reading the file", e.getCause());
+            logger.error("Sftp Input Plugin error while reading the file."+e.getMessage());
+            throw new DocumentMessageException("Sftp Input Plugin error while reading the file."+e.getMessage(), e.getCause());
         }
 
     }
@@ -66,6 +67,16 @@ public class SftpDocumentInput implements MessageHandler {
         }
 
         return stringBuilder.toString();
+    }
+
+    private String getFilename(Message<InputStream> message) throws IOException{
+        MessageHeaders messageHeaders = message.getHeaders();
+        Object filenameObj = messageHeaders.get("file_remoteFile");
+        if(filenameObj == null ){
+            IOException exception = new IOException("corrupted SFTP header. Filename is required.");
+            throw exception;
+        }
+        return String.valueOf(messageHeaders.get("file_remoteFile"));
     }
 
 }
