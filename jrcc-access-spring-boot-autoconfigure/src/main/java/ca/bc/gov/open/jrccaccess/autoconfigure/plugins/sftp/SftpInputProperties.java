@@ -94,7 +94,7 @@ public class SftpInputProperties {
 	}
 
 	public String getMaxMessagePerPoll() {
-		return maxMessagePerPoll == null || "".equals(maxMessagePerPoll) ? "1" : maxMessagePerPoll;
+		return maxMessagePerPoll;
 	}
 
 	public void setMaxMessagePerPoll(String maxMessagePerPoll) {
