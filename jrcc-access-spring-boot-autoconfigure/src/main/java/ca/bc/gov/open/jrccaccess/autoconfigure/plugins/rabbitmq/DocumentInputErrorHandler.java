@@ -1,5 +1,6 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
@@ -8,8 +9,6 @@ import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFaile
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ErrorHandler;
-
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 /**
  * Document input error handler

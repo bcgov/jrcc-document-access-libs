@@ -1,15 +1,14 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
+import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
+import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-
-import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
-import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 
 /**
  * The RabbitMqDocumentInput handles document from the rabbitMq message listener

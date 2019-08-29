@@ -1,13 +1,12 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
-import java.time.LocalDateTime;
-
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import java.time.LocalDateTime;
 
 public class ConsoleOutputTester {
 

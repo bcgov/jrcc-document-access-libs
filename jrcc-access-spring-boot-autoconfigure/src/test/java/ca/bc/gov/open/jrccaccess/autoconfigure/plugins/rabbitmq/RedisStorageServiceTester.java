@@ -1,12 +1,12 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import java.util.UUID;
-
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
+import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFailedException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentNotFoundException;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -17,12 +17,9 @@ import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.RedisConnectionFailureException;
 
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
-import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFailedException;
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import java.util.UUID;
+
+import static org.junit.Assert.*;
 
 public class RedisStorageServiceTester {
 

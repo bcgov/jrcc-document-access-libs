@@ -1,9 +1,9 @@
 package ca.bc.gov.open.jrccaccess.libs;
 
-import java.text.MessageFormat;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.text.MessageFormat;
 
 /**
  * Represent information about the document

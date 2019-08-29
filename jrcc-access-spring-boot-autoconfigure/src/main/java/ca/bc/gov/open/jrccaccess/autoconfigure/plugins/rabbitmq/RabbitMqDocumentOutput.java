@@ -1,17 +1,12 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
+import ca.bc.gov.open.jrccaccess.libs.*;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
-import ca.bc.gov.open.jrccaccess.libs.DocumentInfo;
-import ca.bc.gov.open.jrccaccess.libs.DocumentOutput;
-import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
-import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 
 /**
  * The rabbitMqDocumentOutput provides service to send document ready message 

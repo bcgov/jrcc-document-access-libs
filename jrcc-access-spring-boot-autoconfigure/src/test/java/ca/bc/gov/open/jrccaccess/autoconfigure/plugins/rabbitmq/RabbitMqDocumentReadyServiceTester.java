@@ -1,7 +1,11 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
-import java.time.LocalDateTime;
-
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessApplication;
+import ca.bc.gov.open.jrccaccess.libs.DocumentInfo;
+import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
+import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,12 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessApplication;
-import ca.bc.gov.open.jrccaccess.libs.DocumentInfo;
-import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
-import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
-import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import java.time.LocalDateTime;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(

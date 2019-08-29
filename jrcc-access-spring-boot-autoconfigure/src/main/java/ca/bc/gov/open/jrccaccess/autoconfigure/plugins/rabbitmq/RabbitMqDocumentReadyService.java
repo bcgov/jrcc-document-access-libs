@@ -1,5 +1,9 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
+import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
+import ca.bc.gov.open.jrccaccess.libs.DocumentReadyService;
+import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 import org.springframework.amqp.AmqpConnectException;
 import org.springframework.amqp.AmqpIOException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -7,11 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
-import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
-import ca.bc.gov.open.jrccaccess.libs.DocumentReadyService;
-import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 
 /**
  * The RabbitMqDocumentReadyService provides services to interact with rabbitMq
