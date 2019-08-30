@@ -32,11 +32,9 @@ public class ConsoleOutput implements DocumentOutput {
 	 */
 	@Override
 	public void send(String content, TransactionInfo transactionInfo) {
-		// TODO Auto-generated method stub
 		logger.info("transactionInfo: {}", transactionInfo);
 		String result = this.prettifier.prettify(content);
 		System.out.println(result);
-
 	}
 
 }

@@ -36,8 +36,6 @@ public class ConsoleInput implements CommandLineRunner {
 	 */
 	@Override
 	public void run(String... args) throws Exception {
-		// TODO Auto-generated method stub	
-		
 		Scanner scanner = new Scanner(System.in);
 		
 		while(scanner.hasNext()) {

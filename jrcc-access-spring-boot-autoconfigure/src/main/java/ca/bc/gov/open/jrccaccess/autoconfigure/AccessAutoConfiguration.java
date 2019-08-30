@@ -34,7 +34,7 @@ public class AccessAutoConfiguration {
 			throw new InputConfigMissingException();
 		}
 		this.accessProperties = accessProperties;
-		logger.info("Bootstraping Access Library", accessProperties.getOutput().getPlugin());
+		logger.info("Bootstraping Access Library");
 		logger.info("Input plugin: {}", accessProperties.getInput().getPlugin());
 		logger.info("Output plugin: {}", accessProperties.getOutput().getPlugin());
 	}
