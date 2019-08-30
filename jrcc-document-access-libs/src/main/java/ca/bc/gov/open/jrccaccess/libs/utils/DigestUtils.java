@@ -5,8 +5,16 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * This class provides message digest algorithm tool.
+ */
 public class DigestUtils {
-	
+
+	/**
+	 * Provide MD5 message-digest algorithm
+	 * @param content the content needs to be processed.
+	 * @return the result after applying MD5 on the content
+	 */
 	public static String computeMd5(String content) {
 
 		MessageDigest md;
@@ -16,7 +24,6 @@ public class DigestUtils {
 			return DatatypeConverter.printHexBinary(md.digest());
 		} catch (NoSuchAlgorithmException e) {
 			// can't happen
-			e.printStackTrace();
 			return null;
 		}
 
