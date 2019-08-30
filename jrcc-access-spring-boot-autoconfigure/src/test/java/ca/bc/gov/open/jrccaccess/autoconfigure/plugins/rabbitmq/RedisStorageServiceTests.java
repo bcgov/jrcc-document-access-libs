@@ -70,7 +70,7 @@ public class RedisStorageServiceTests {
 		DocumentStorageProperties result = sut.putString(VALID);
 		
 		assertNotNull(result.getKey());
-		assertEquals(HASH, result.getMD5());
+		assertEquals(HASH, result.getDigest());
 		
 		// validation of uuid
 		try {

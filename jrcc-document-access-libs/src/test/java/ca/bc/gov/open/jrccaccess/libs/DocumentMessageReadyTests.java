@@ -32,7 +32,7 @@ public class DocumentMessageReadyTests {
 		
 		
 		assertEquals("my key", sut.getDocumentStorageProperties().getKey());
-		assertEquals("A123B1", sut.getDocumentStorageProperties().getMD5());
+		assertEquals("A123B1", sut.getDocumentStorageProperties().getDigest());
 		
 	}
 	
