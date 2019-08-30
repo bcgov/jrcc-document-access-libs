@@ -36,15 +36,15 @@ public class DocumentReadyHandlerTests {
 	}
 	
 	
-	@Test
+	@Test(expected = Test.None.class )
 	public void when_with_valid_input_no_processor_should_process() throws Exception {
 
 		Optional<DocumentProcessor> documentProcessorOptional = Optional.empty();
 		sut = new DocumentReadyHandler(documentOutput, documentProcessorOptional);
 		sut.handle("awesome content", transactionInfoMock);
 	}
-	
-	@Test
+
+	@Test(expected = Test.None.class )
 	public void when_with_valid_input_and_processor_should_process() throws Exception {
 
 		Optional<DocumentProcessor> documentProcessorOptional = Optional.of(documentProcessor);

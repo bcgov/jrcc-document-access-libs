@@ -53,7 +53,7 @@ public class SftpDocumentInputTests {
         sut = new SftpDocumentInput(documentReadyHandlerMock);
     }
 
-    @Test
+    @Test(expected = Test.None.class )
     public void should_handle_incoming_document() throws DocumentMessageException {
 
         sut.handleMessage(message);

@@ -42,7 +42,6 @@ public class RabbitMqDocumentInput {
 	 * documentReadyHandler.
 	 * 
 	 * @param documentReadyMessage
-	 * @param xDeath
 	 * @throws DocumentMessageException
 	 */
 	@RabbitListener(queues = "#{documentReadyQueue.getName()}")
