@@ -76,8 +76,7 @@ public class AutoConfiguration {
 	 */
 	@Bean
     public MessageConverter jsonMessageConverter(ObjectMapper objectMapper){
-        Jackson2JsonMessageConverter converter  = new Jackson2JsonMessageConverter(objectMapper);
-		return converter;
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
 	
 	/**

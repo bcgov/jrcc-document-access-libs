@@ -74,7 +74,6 @@ public class DocumentController implements DocumentApi {
 			return new ResponseEntity(error, HttpStatus.SERVICE_UNAVAILABLE);
 
 		} catch (IOException | DocumentMessageException e) {
-			// TODO Auto-generated catch block
 			Error error = new Error();
 			error.setCode(Integer.toString(HttpStatus.INTERNAL_SERVER_ERROR.value()));
 			error.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
