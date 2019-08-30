@@ -17,32 +17,38 @@ import static org.junit.Assert.assertNotNull;
 @SpringBootTest(
         classes = AccessApplication.class,
         properties = {
+        		"spring.redis.cluster.nodes=127.0.0.1:5000,127.0.0.1:5001",
+        		"bcgov.access.input=http",
         		"bcgov.access.input.plugin=http",
         		"bcgov.access.output.plugin=rabbitmq"
         })
 @ContextConfiguration
-public class StandaloneAccessConfigurationTester {
+public class ClusterAccessConfigurationTests {
 
 	@Autowired
 	private JedisConnectionFactory jedisConnectionFactory;
-
+	
 	@Autowired
 	private CacheManager cacheManager;
-
+	
 	@Test
 	public void with_default_config_should_return_a_valid_stringRedisTemplate() {
 
 		assertNotNull(cacheManager);
-	}
 
+	}
+	
 	@Test
 	public void with_default_config_should_return_a_valid_jedisConnectionFactory() {
 
-		int expectedPort = 6379;
-
-		assertEquals("localhost", this.jedisConnectionFactory.getHostName());
-
-		assertEquals(expectedPort, this.jedisConnectionFactory.getPort());
+		assertEquals(2, this.jedisConnectionFactory
+				.getClusterConfiguration()
+				.getClusterNodes().size());		
+		
+		this.jedisConnectionFactory
+				.getClusterConfiguration()
+				.getClusterNodes()
+				.forEach(redisNode -> assertEquals("127.0.0.1",redisNode.getHost()));		
 	}
-
+	
 }

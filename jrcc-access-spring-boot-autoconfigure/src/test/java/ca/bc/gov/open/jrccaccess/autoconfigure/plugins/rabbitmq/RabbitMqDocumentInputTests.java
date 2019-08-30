@@ -18,7 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 
-public class RabbitMqDocumentInputTester {
+public class RabbitMqDocumentInputTests {
 
 
 	private static final String SERVICE_UNAVAILABLE_EXCEPTION = "ServiceUnavailableException";

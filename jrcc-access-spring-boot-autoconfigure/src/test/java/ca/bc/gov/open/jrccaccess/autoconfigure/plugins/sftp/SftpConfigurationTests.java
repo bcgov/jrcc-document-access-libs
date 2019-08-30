@@ -28,7 +28,7 @@ import org.springframework.test.context.junit4.SpringRunner;
                 "bcgov.access.output.plugin=console"
         })
 @ContextConfiguration
-public class SftpConfigurationTester {
+public class SftpConfigurationTests {
 
 
     @Autowired

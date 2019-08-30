@@ -7,7 +7,7 @@ import java.time.Month;
 
 import static org.junit.Assert.assertEquals;
 
-public class DocumentMessageReadyTester {
+public class DocumentMessageReadyTests {
 
 	private static final TransactionInfo TRANSACTION_INFO = new TransactionInfo("myfile.txt", "me", LocalDateTime.of(2019, Month.FEBRUARY, 1, 10,10,10));
 	private static final DocumentInfo DOCUMENT_INFO = new DocumentInfo("my-type");

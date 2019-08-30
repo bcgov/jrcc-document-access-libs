@@ -8,7 +8,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 
-public class ConsoleOutputTester {
+public class ConsoleOutputTests {
 
 	private ConsoleOutput sut;
 	

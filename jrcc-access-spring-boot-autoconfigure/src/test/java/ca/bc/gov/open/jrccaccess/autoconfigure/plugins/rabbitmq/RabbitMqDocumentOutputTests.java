@@ -12,7 +12,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 
-public class RabbitMqDocumentOutputTester {
+public class RabbitMqDocumentOutputTests {
 
 	
 	private RabbitMqDocumentOutput sut;

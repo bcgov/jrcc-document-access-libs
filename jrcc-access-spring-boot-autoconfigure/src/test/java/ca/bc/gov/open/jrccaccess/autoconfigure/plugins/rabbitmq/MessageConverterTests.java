@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 				"bcgov.access.output.plugin=rabbitmq"
 		})
 @ContextConfiguration
-public class MessageConverterTester {
+public class MessageConverterTests {
 
 	@Qualifier("jsonMessageConverter")
 	@Autowired

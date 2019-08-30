@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-public class DocumentReadyHandlerTester {
+public class DocumentReadyHandlerTests {
 
 	private DocumentReadyHandler sut;
 	

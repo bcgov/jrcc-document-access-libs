@@ -7,7 +7,7 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 
-public class DefaultPretifierTester {
+public class DefaultPretifierTests {
 
 	private Prettifier sut;
 	

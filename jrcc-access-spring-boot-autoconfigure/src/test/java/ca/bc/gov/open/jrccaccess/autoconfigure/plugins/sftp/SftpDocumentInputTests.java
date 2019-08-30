@@ -14,7 +14,7 @@ import org.springframework.messaging.MessageHeaders;
 import java.io.ByteArrayInputStream;
 import java.util.Map;
 
-public class SftpDocumentInputTester {
+public class SftpDocumentInputTests {
 
     private SftpDocumentInput sut;
 

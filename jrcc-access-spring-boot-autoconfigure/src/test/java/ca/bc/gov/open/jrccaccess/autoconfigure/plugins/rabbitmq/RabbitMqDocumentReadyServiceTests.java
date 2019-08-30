@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
         		"bcgov.access.output.plugin=rabbitmq"
         })
 @ContextConfiguration
-public class RabbitMqDocumentReadyServiceTester {
+public class RabbitMqDocumentReadyServiceTests {
 
 	
 	private static final DocumentReadyMessage MESSAGE_1 = new DocumentReadyMessage(new TransactionInfo("text.txt", "me", LocalDateTime.now()), new DocumentInfo("test"), new DocumentStorageProperties("key", "A1"));
