@@ -52,7 +52,7 @@ public class RabbitMqDocumentInput {
 
 		DocumentStorageProperties storageProperties = documentReadyMessage.getDocumentStorageProperties();
 		
-		String content = this.redisStorageService.getString(storageProperties.getKey(), storageProperties.getMD5());
+		String content = this.redisStorageService.getString(storageProperties.getKey(), storageProperties.getDigest());
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug(content);

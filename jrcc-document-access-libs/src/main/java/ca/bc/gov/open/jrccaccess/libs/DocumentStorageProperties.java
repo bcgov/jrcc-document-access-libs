@@ -18,32 +18,32 @@ public class DocumentStorageProperties {
 	/**
 	 * The MD5 of the document in hex format
 	 */
-	private String MD5;
+	private String digest;
 	
 	/**
 	 * Default construtor
 	 * @param key - The document key
-	 * @param MD5 - The document MD5 in hex format
+	 * @param md5 - The document MD5 in hex format
 	 */
 	@JsonCreator
 	public DocumentStorageProperties(
 			@JsonProperty("key")String key,
-			@JsonProperty("md5")String MD5) {
+			@JsonProperty("digest")String digest) {
 		
 		if(key == null || key.isEmpty()) throw new IllegalArgumentException("key");
-		if(MD5 == null || MD5.isEmpty()) throw new IllegalArgumentException("MD5");
-		if(!MD5.matches("-?[0-9a-fA-F]+")) throw new IllegalArgumentException("MD5 must be an hexadecimal string only");
+		if(digest == null || digest.isEmpty()) throw new IllegalArgumentException("digest");
+		if(!digest.matches("-?[0-9a-fA-F]+")) throw new IllegalArgumentException("Digest must be an hexadecimal string only");
 		
 		this.key = key;
-		this.MD5 = MD5;
+		this.digest = digest;
 	}
 	
 	public String getKey() {
 		return key;
 	}
 
-	public String getMD5() {
-		return MD5;
+	public String getDigest() {
+		return this.digest;
 	}
 
 }

@@ -9,12 +9,10 @@ public class DocumentDigestMatchFailedException extends DocumentMessageException
 	
 	public DocumentDigestMatchFailedException(String message, Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	public DocumentDigestMatchFailedException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
 }

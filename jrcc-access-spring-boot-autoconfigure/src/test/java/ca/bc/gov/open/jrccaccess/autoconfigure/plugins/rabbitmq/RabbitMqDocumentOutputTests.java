@@ -34,8 +34,8 @@ public class RabbitMqDocumentOutputTests {
 		accessProperties.setOutput(output);
 		this.sut = new RabbitMqDocumentOutput(this.storageService, this.documentReadyService, accessProperties);
 	}
-	
-	@Test
+
+	@Test(expected = Test.None.class /* no exception expected */)
 	public void send_with_valid_input_should_store_and_publish_a_message() throws Exception {
 		String content = "my awesome content";
 		TransactionInfo transactionInfo = new TransactionInfo("testfile.txt", "me", LocalDateTime.now());

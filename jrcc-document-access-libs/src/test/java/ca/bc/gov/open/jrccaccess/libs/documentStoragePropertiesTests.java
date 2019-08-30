@@ -12,7 +12,7 @@ public class documentStoragePropertiesTests {
 		
 		DocumentStorageProperties sut = new DocumentStorageProperties("my key", "A123B1");	
 		assertEquals("my key", sut.getKey());
-		assertEquals("A123B1", sut.getMD5());
+		assertEquals("A123B1", sut.getDigest());
 		
 	}
 	
