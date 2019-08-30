@@ -17,17 +17,17 @@ public class TransactionInfo {
 	/**
 	 * the original sender (organization_
 	 */
-	public String sender;
+	private String sender;
 	
 	/**
 	 * the original fileName
 	 */
-	public String fileName;
+	private String fileName;
 	
 	/**
 	 * the date the file was received on
 	 */
-	public LocalDateTime receivedOn;
+	private LocalDateTime receivedOn;
 
 	@JsonCreator
 	public TransactionInfo(

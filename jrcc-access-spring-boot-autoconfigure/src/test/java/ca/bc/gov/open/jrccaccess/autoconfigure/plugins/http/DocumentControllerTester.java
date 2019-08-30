@@ -45,9 +45,9 @@ public class DocumentControllerTester {
 	public void init() throws Exception {
 		
 		MockitoAnnotations.initMocks(this);
-		this.transactionInfoMock.sender=VALID;
-		this.transactionInfoMock.fileName=FILENAME;
-		this.transactionInfoMock.receivedOn = LocalDateTime.now();
+		Mockito.doReturn(VALID).when(this.transactionInfoMock.getSender());
+		Mockito.doReturn(FILENAME).when(this.transactionInfoMock.getFileName());
+		Mockito.doReturn(LocalDateTime.now()).when(this.transactionInfoMock.getReceivedOn());
 		Mockito.doNothing().when(this.documentReadyHandler).handle(Mockito.anyString(), Mockito.eq(this.transactionInfoMock));
 		Mockito.doThrow(new ServiceUnavailableException(SERVICE_UNAVAILABLE)).when(this.documentReadyHandler).handle(Mockito.eq(SERVICE_UNAVAILABLE), Mockito.any());
 
