@@ -2,7 +2,6 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.ImmediateAcknowledgeAmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessagePostProcessor;
@@ -31,8 +30,7 @@ public class DocumentInputPreProcessor implements MessagePostProcessor {
 	
 	
 	@Override
-	public Message postProcessMessage(Message message) throws AmqpException {
-		
+	public Message postProcessMessage(Message message) {
 		logger.debug("Message Pre Processor");
 		
 		if(message.getMessageProperties() == null) return message;
