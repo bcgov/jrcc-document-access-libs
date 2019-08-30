@@ -20,12 +20,11 @@ public class ConsoleOutputTests {
 		MockitoAnnotations.initMocks(this);
 		sut = new ConsoleOutput(this.prettifier);
 	}
-	
-	@Test
+
+	@Test(expected = Test.None.class /* no exception expected */)
 	public void send_with_valid_input_should_print_to_console() {
 	
 		sut.send("my content", new TransactionInfo("my file.txt", "bcgov", LocalDateTime.now()));
-		
 	}
 	
 	

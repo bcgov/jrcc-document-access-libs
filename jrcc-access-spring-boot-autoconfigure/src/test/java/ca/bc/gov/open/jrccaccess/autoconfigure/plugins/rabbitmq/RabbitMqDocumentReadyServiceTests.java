@@ -56,8 +56,8 @@ public class RabbitMqDocumentReadyServiceTests {
 		Mockito.doThrow(AmqpIOException.class).when(this.rabbitTemplateMock).convertAndSend(Mockito.eq(MESSAGE_3), Mockito.any());
 		
 	}
-	
-	@Test
+
+	@Test(expected = Test.None.class /* no exception expected */)
 	public void publish_with_valid_input_shoud_publish() throws Exception {
 		
 		sut.publish(MESSAGE_1);

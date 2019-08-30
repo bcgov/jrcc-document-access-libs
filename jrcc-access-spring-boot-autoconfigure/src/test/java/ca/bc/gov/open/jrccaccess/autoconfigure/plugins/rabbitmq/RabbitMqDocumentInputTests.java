@@ -59,8 +59,8 @@ public class RabbitMqDocumentInputTests {
 		sut = new RabbitMqDocumentInput(documentReadyHandlerMock, storageService);
 		sutOutput = new RabbitMqDocumentOutput(this.storageService, this.documentReadyService, accessProperties);
 	}
-	
-	@Test
+
+	@Test(expected = Test.None.class /* no exception expected */)
 	public void should_handle_input_document() throws DocumentMessageException {
 		
 		String key = RandomHelper.makeRandomString(10);
@@ -96,9 +96,9 @@ public class RabbitMqDocumentInputTests {
 		sut.receiveMessage(message);
 		
 	}
-	
-	
-	@Test
+
+
+	@Test(expected = Test.None.class /* no exception expected */)
 	public void when_under_retry_limit_reach_should_process() throws DocumentMessageException {
 		
 		String key = RandomHelper.makeRandomString(10);
@@ -115,8 +115,8 @@ public class RabbitMqDocumentInputTests {
 		sut.receiveMessage(message);
 		
 	}
-	
-	@Test
+
+	@Test(expected = Test.None.class /* no exception expected */)
 	public void testPutAndGetDocumentFromStorage() throws DocumentMessageException {
 		
 		String key = RandomHelper.makeRandomString(10);

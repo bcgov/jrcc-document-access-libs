@@ -29,4 +29,7 @@ public class DigestUtils {
 
 	}
 
+	private DigestUtils(){
+		throw new IllegalStateException("DigestUtils class");
+	}
 }
