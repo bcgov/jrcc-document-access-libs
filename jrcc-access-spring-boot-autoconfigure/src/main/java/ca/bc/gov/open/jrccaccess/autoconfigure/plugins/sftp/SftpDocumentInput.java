@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.MessageHandler;
@@ -35,7 +34,7 @@ public class SftpDocumentInput implements MessageHandler {
     }
 
 
-    public void handleMessage(Message<InputStream> message) throws MessagingException, DocumentMessageException {
+    public void handleMessage(Message<InputStream> message) throws DocumentMessageException {
 
         if(message == null) throw new IllegalArgumentException("Message is required.");
 
@@ -51,8 +50,7 @@ public class SftpDocumentInput implements MessageHandler {
             this.documentReadyHandler.handle(content, transactionInfo);
             logger.info("successfully handled incoming document.");
         } catch (IOException e) {
-            logger.error("Sftp Input Plugin error while reading the file."+e.getMessage());
-            throw new DocumentMessageException("Sftp Input Plugin error while reading the file."+e.getMessage(), e.getCause());
+            throw new DocumentMessageException("Sftp Input Plugin error while reading the file.%s.".format(e.getMessage()), e.getCause());
         }
 
     }

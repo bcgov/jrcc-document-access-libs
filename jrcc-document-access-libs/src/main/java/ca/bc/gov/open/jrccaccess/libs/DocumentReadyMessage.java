@@ -41,8 +41,8 @@ public class DocumentReadyMessage {
 		
 		
 		if(transactionInfo == null) throw new IllegalArgumentException("transactionInfo");
-		if(documentInfo == null) throw new IllegalArgumentException("transactionInfo");
-		if(documentStorageProperties == null) throw new IllegalArgumentException("transactionInfo");
+		if(documentInfo == null) throw new IllegalArgumentException("documentInfo");
+		if(documentStorageProperties == null) throw new IllegalArgumentException("documentStorageProperties");
 		
 		this.transactionInfo = transactionInfo;
 		this.documentInfo = documentInfo;

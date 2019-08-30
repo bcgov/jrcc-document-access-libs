@@ -40,8 +40,8 @@ public class DocumentReadyHandler {
 	/**
 	 * Handles a give document as inputStream and call the document output
 	 * 
-	 * @param inputStream
-	 * @param sender
+	 * @param message
+	 * @param transactionInfo
 	 */
 	public void handle(String message, TransactionInfo transactionInfo) throws DocumentMessageException {
 
@@ -50,7 +50,7 @@ public class DocumentReadyHandler {
 
 		logger.debug("New document in {}", this.getClass().getName());
 
-		String processedMessage = this.ExecuteProcessor(message, transactionInfo);
+		String processedMessage = this.executeProcessor(message, transactionInfo);
 		logger.info("document {} successfully processed.", transactionInfo);
 
 		// for each validation
@@ -62,7 +62,7 @@ public class DocumentReadyHandler {
 
 	}
 
-	private String ExecuteProcessor(String content, TransactionInfo transactionInfo) {
+	private String executeProcessor(String content, TransactionInfo transactionInfo) {
 
 		if (!processor.isPresent()) return content;
 		
