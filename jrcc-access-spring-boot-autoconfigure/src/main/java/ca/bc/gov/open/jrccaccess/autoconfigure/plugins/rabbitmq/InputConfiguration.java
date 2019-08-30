@@ -40,12 +40,11 @@ public class InputConfiguration {
 	 */
 	@Bean
 	public Queue documentReadyQueue(AccessProperties accessProperties, RabbitMqInputProperties properties) {
-		Queue queue = QueueBuilder
+		return QueueBuilder
 				.durable(getNameSpace(RabbitMqParam.DOCUMENT_READY_Q_FORMAT, accessProperties, properties))
 				.withArgument(RabbitMqParam.X_DEAD_LETTER_EXCHANGE_ARG,
 						dlxDocumentReadyExchange(accessProperties, properties).getName())
 				.build();
-		return queue;
 	}
 
 	/**
@@ -69,11 +68,10 @@ public class InputConfiguration {
 	 */
 	@Bean
 	public Queue documentReadyDeadLetterQueue(AccessProperties accessProperties, RabbitMqInputProperties properties) {
-		Queue queue = QueueBuilder
+		return QueueBuilder
 				.durable(getNameSpace(RabbitMqParam.DOCUMENT_READY_DLQ_FORMAT, accessProperties, properties))
 				.withArgument(RabbitMqParam.X_DEAD_LETTER_EXCHANGE_ARG, RabbitMqParam.DOCUMENT_READY_TOPIC)
 				.withArgument(RabbitMqParam.X_MESSAGE_TTL_ARG, Duration.ofSeconds(properties.getRetryDelay()).toMillis()).build();
-		return queue;
 	}
 
 	/**

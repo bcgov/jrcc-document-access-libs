@@ -24,5 +24,8 @@ public class RabbitMqParam {
 	public static final String X_EXPIRES_ARG = "x-expires";
 	
 	public static final String X_DEAD_LETTER_ROUTING_KEY = "message-ready-dead";
-	
+
+	private RabbitMqParam() {
+		throw new IllegalStateException("RabbitMqParam class");
+	}
 }

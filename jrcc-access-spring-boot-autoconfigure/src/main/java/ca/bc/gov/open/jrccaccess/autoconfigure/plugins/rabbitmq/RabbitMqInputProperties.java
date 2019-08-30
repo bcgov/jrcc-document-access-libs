@@ -41,7 +41,7 @@ public class RabbitMqInputProperties {
 	 * @param retryDelay
 	 */
 	public void setRetryDelay(String retryDelay) {
-		this.retryDelay = Integer.decode(retryDelay);;
+		this.retryDelay = Integer.decode(retryDelay);
 	}
 	
 	/**
