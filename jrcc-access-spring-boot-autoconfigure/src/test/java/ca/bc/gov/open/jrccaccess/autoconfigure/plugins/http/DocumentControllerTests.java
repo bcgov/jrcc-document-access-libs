@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class DocumentControllerTester {
+public class DocumentControllerTests {
 
 	private static final String SERVICE_UNAVAILABLE = "service_unavailable";
 
@@ -45,9 +45,9 @@ public class DocumentControllerTester {
 	public void init() throws Exception {
 		
 		MockitoAnnotations.initMocks(this);
-		Mockito.doReturn(VALID).when(this.transactionInfoMock.getSender());
-		Mockito.doReturn(FILENAME).when(this.transactionInfoMock.getFileName());
-		Mockito.doReturn(LocalDateTime.now()).when(this.transactionInfoMock.getReceivedOn());
+		Mockito.when(this.transactionInfoMock.getSender()).thenReturn(VALID);
+		Mockito.when(this.transactionInfoMock.getFileName()).thenReturn(FILENAME);
+		Mockito.when(this.transactionInfoMock.getReceivedOn()).thenReturn(LocalDateTime.now());
 		Mockito.doNothing().when(this.documentReadyHandler).handle(Mockito.anyString(), Mockito.eq(this.transactionInfoMock));
 		Mockito.doThrow(new ServiceUnavailableException(SERVICE_UNAVAILABLE)).when(this.documentReadyHandler).handle(Mockito.eq(SERVICE_UNAVAILABLE), Mockito.any());
 

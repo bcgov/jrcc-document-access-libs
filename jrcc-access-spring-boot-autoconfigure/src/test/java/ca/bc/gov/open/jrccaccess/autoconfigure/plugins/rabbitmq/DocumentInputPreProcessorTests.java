@@ -14,7 +14,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-public class DocumentInputPreProcessorTester {
+public class DocumentInputPreProcessorTests {
 
 	
 	@Mock

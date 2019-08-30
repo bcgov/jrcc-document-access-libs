@@ -7,7 +7,7 @@ import java.time.Month;
 
 import static org.junit.Assert.assertEquals;
 
-public class TransactionInfoTester {
+public class TransactionInfoTests {
 
 	
 	@Test

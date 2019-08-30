@@ -8,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 
 
-public class AccessAutoConfigurationTester {
+public class AccessAutoConfigurationTests {
     private AccessAutoConfiguration aac;
 
     @Test

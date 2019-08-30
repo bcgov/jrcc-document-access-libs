@@ -21,7 +21,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-public class RedisStorageServiceTester {
+public class RedisStorageServiceTests {
 
 	private static final String VALID = "valid";
 	private static final String HASH = "9F7D0EE82B6A6CA7DDEAE841F3253059";

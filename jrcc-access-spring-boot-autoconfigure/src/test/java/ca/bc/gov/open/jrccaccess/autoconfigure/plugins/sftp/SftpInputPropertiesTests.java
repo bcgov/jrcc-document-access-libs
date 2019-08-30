@@ -3,7 +3,7 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SftpInputPropertiesTester {
+public class SftpInputPropertiesTests {
 
     @Test
     public void with_null_ssh_key_should_return_null() {

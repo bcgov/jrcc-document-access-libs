@@ -8,7 +8,7 @@ import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.ImmediateAcknowledgeAmqpException;
 import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFailedException;
 
-public class DocumentInputErrorHandlerTester {
+public class DocumentInputErrorHandlerTests {
 
 	
 	private DocumentInputErrorHandler sut;

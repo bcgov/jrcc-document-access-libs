@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
         		"bcgov.access.output.plugin=console"
         })
 @ContextConfiguration
-public class DeadLetterQConfigurationTester {
+public class DeadLetterQConfigurationTests {
 
 	@Autowired
 	@Qualifier("documentReadyDeadLetterQueue")

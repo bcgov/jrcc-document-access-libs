@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
         		"bcgov.access.output.plugin=console"
         })
 @ContextConfiguration
-public class inputQueueConfigurationTester {
+public class inputQueueConfigurationTests {
 
 	@Autowired
 	@Qualifier("documentReadyQueue")

@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 				"bcgov.access.output.plugin=rabbitmq"
 		})
 @ContextConfiguration
-public class TopicExchangeTester {
+public class TopicExchangeTests {
 
 	@Qualifier("documentReadyTopic")
 	@Autowired

@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class ConsolePropertiesTester {
+public class ConsolePropertiesTests {
 
 	@Test
 	public void with_valid_format_should_return_format() {
