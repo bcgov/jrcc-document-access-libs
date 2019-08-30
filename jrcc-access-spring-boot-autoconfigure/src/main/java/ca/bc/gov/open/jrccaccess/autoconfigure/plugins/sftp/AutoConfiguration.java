@@ -57,13 +57,12 @@ public class AutoConfiguration {
             factory.setPassword(properties.getPassword());
         }
         factory.setAllowUnknownKeys(true);
-        return new CachingSessionFactory<ChannelSftp.LsEntry>(factory);
+        return new CachingSessionFactory<>(factory);
     }
 
     @Bean
     public SftpRemoteFileTemplate template() {
-        SftpRemoteFileTemplate sftpRemoteFileTemplate = new SftpRemoteFileTemplate(sftpSessionFactory());
-        return sftpRemoteFileTemplate;
+        return new SftpRemoteFileTemplate(sftpSessionFactory());
     }
 
     @Bean

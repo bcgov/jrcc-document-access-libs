@@ -1,6 +1,5 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
@@ -31,10 +30,6 @@ import java.util.List;
 @ConditionalOnExpression("'${bcgov.access.input.plugin}' == 'rabbitmq' || '${bcgov.access.output.plugin}' == 'rabbitmq'")
 public class RedisConfiguration {
 
-	@Autowired
-	private RabbitMqOutputProperties rabbitMqOutputProperties;
-	
-	
 	/**
 	 * Configure the JedisConnectionFactory
 	 * @param properties The redis properties
@@ -73,7 +68,7 @@ public class RedisConfiguration {
 	
 	
 	private List<RedisNode> createSentinels(Sentinel sentinel) {
-        List<RedisNode> nodes = new ArrayList<RedisNode>();
+        List<RedisNode> nodes = new ArrayList<>();
         for (String node : sentinel.getNodes()) {
            try {
               String[] parts = node.split(":");
@@ -90,16 +85,16 @@ public class RedisConfiguration {
 	/**
 	 * Configures the cache manager
 	 * @param jedisConnectionFactory A jedisConnectionFactory
-	 * @param accessProperties Custom access properties
+	 * @param rabbitMqOutputProperties rabbitMq Output Properties
 	 * @return
 	 */
 	@Bean(name = "Document")
 	@ConditionalOnMissingBean(CacheManager.class)
-    public CacheManager cacheManager(JedisConnectionFactory jedisConnectionFactory) {
+    public CacheManager cacheManager(JedisConnectionFactory jedisConnectionFactory, RabbitMqOutputProperties rabbitMqOutputProperties) {
 
 		RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
 	            .disableCachingNullValues()
-	            .entryTtl(Duration.ofHours(this.rabbitMqOutputProperties.getTtl()));
+	            .entryTtl(Duration.ofHours(rabbitMqOutputProperties.getTtl()));
 	    redisCacheConfiguration.usePrefix();
 
 	   return RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(jedisConnectionFactory)
