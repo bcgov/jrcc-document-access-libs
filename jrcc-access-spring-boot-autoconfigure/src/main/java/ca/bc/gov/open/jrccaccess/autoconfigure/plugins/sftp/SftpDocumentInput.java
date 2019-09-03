@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 
 /**
@@ -50,7 +51,7 @@ public class SftpDocumentInput implements MessageHandler {
             this.documentReadyHandler.handle(content, transactionInfo);
             logger.info("successfully handled incoming document.");
         } catch (IOException e) {
-            throw new DocumentMessageException("Sftp Input Plugin error while reading the file.%s.".format(e.getMessage()), e.getCause());
+            throw new DocumentMessageException(MessageFormat.format("Sftp Input Plugin error while reading the file.{0},{1}.",e.getMessage(),e.getCause()));
         }
 
     }
