@@ -26,7 +26,11 @@ public class ConsoleInput implements CommandLineRunner {
 	private String appName;
 	
 	private DocumentReadyHandler documentReadyHandler;
-	
+
+	/**
+	 * Constructs a new ConsoleInput with the specified DocumentReadyHandler.
+	 * @param documentReadyHandler
+	 */
 	public ConsoleInput(DocumentReadyHandler documentReadyHandler) {
 		this.documentReadyHandler = documentReadyHandler;
 	}
