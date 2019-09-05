@@ -1,6 +1,6 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
-import ca.bc.gov.open.jrccaccess.autoconfigure.Common;
+import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import org.slf4j.MDC;
@@ -47,7 +47,7 @@ public class ConsoleInput implements CommandLineRunner {
 		Scanner scanner = new Scanner(System.in);
 		
 		while(scanner.hasNext()) {
-			MDC.put(Common.MDC_KEY_FILENAME, CONSOLE_FILENAME);
+			MDC.put(Constants.MDC_KEY_FILENAME, CONSOLE_FILENAME);
 			TransactionInfo transactionInfo = new TransactionInfo(CONSOLE_FILENAME,"console", LocalDateTime.now());
 
 			documentReadyHandler.handle(scanner.nextLine(), transactionInfo);
