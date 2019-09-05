@@ -1,7 +1,9 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,6 +26,8 @@ public class ConsoleInput implements CommandLineRunner {
 
 	@Value("${spring.application.name:unknown}")
 	private String appName;
+
+	private final String CONSOLE_FILENAME="console.txt";
 	
 	private DocumentReadyHandler documentReadyHandler;
 
@@ -43,10 +47,13 @@ public class ConsoleInput implements CommandLineRunner {
 		Scanner scanner = new Scanner(System.in);
 		
 		while(scanner.hasNext()) {
-			TransactionInfo transactionInfo = new TransactionInfo("console.txt","console", LocalDateTime.now());
+			MDC.put(Constants.MDC_KEY_FILENAME, CONSOLE_FILENAME);
+			TransactionInfo transactionInfo = new TransactionInfo(CONSOLE_FILENAME,"console", LocalDateTime.now());
+
 			documentReadyHandler.handle(scanner.nextLine(), transactionInfo);
 		}	
-		
+
+		MDC.clear();
 		scanner.close();
 	}
 
