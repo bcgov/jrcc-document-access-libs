@@ -371,6 +371,8 @@ Running this application requires Apache Maven which in-turn has a dependency on
 #### Note
 Other versions of Java may not work with this project due to project restrictions and requirements.
 
+### Installation Steps
+
 Install jrcc-access-libs
 
 Run the following command: `mvn clean install`
