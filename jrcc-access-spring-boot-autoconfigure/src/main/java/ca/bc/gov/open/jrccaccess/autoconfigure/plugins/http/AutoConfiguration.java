@@ -3,7 +3,6 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.http;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @since 0.2.0
  */
 @Configuration
-@EnableWebMvc
 @ComponentScan
 @ConditionalOnExpression("'${bcgov.access.input.plugin}' == 'http'")
 public class AutoConfiguration implements WebMvcConfigurer {
