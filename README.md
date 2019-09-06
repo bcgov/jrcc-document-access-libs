@@ -4,7 +4,7 @@ This library provides a service exchange documents between micro services.
 
 ## jrcc document access spring boot starter
 
-This provide a spring boot starter for the document access lib using [redis](https://redis.io/)
+This provides a spring boot starter for the document access lib using [redis](https://redis.io/)
 
 ### Usage
 
@@ -20,7 +20,7 @@ Add `jrcc-access-spring-boot-starter` to your project (See jrcc-access-spring-bo
 ```
 
 #### Step 2
-Add settings into `application.settings` or `application.yml` file.
+Add settings into the `application.settings` or `application.yml` file.
  ##### Use following settings to config logging level and logging message.
  ```properties
  logging.level.root = INFO  
