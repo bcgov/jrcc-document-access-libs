@@ -361,9 +361,21 @@ Where register, the processor will act on the input document content.
 
 The sample app is a demo that shows the usage of `jrcc-access-spring-boot-starter`
 
+### Prerequisites
+
+Running this application requires Apache Maven which in-turn has a dependency on Java. As a result, the following will need to be installed:
+
+* mvn [Apache Maven](https://maven.apache.org/)
+* Java JDK [Java SE Development Kit 8u221, Java 1.8](https://www.oracle.com/java/technologies/jdk8-downloads.html)
+
+#### Note
+Other versions of Java may not work with this project due to project restrictions and requirements.
+
+### Installation Steps
+
 Install jrcc-access-libs
 
-Run the `make.bat` file
+Run the following command: `mvn clean install`
 
 Run the sample
 
