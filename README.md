@@ -365,12 +365,11 @@ The sample app is a demo that shows the usage of `jrcc-access-spring-boot-starte
 
 Running this application requires Apache Maven which in-turn has a dependency on Java. As a result, the following will need to be installed:
 
+* mvn [Apache Maven](https://maven.apache.org/)
 * Java JDK [Java SE Development Kit 8u221, Java 1.8](https://www.oracle.com/java/technologies/jdk8-downloads.html)
 
 #### Note
 Other versions of Java may not work with this project due to project restrictions and requirements.
-
-* mvn [Apache Maven](https://maven.apache.org/)
 
 Install jrcc-access-libs
 
