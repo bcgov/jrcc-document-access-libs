@@ -130,7 +130,7 @@ The message Payload should be like following:
     },        
     "documentStorageProperties":{
         "key":"455591e2-6753-4a7f-9438-bedd52327b52",
-        "md5":"311743F3D8EC271CA2BB23936C7392F5"        
+        "digest":"311743F3D8EC271CA2BB23936C7392F5"        
     }   
 } 
 ```
