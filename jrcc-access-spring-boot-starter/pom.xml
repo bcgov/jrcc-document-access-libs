@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>ca.bc.gov.open</groupId>
 	<artifactId>jrcc-access-spring-boot-starter</artifactId>
-	<version>0.7.0</version>
+	<version>0.8.0</version>
 	<name>jrcc-access-spring-boot-starter</name>
 	<description>Demo project for Spring Boot</description>
 
