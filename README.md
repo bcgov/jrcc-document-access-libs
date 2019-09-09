@@ -4,7 +4,7 @@ This library provides a service exchange documents between micro services.
 
 ## jrcc document access spring boot starter
 
-This provide a spring boot starter for the document access lib using [redis](https://redis.io/)
+This provides a spring boot starter for the document access lib using [redis](https://redis.io/)
 
 ### Usage
 
@@ -20,7 +20,7 @@ Add `jrcc-access-spring-boot-starter` to your project (See jrcc-access-spring-bo
 ```
 
 #### Step 2
-Add settings into `application.settings` or `application.yml` file.
+Add settings into the `application.settings` or `application.yml` file.
  ##### Use following settings to config logging level and logging message.
  ```properties
  logging.level.root = INFO  
@@ -368,8 +368,11 @@ Running this application requires Apache Maven which in-turn has a dependency on
 * mvn [Apache Maven](https://maven.apache.org/)
 * Java JDK [Java SE Development Kit 8u221, Java 1.8](https://www.oracle.com/java/technologies/jdk8-downloads.html)
 
-#### Note
-Other versions of Java may not work with this project due to project restrictions and requirements.
+#### Notes
+* Other versions of Java may not work with this project due to project restrictions and requirements.
+* When installing Java and Maven, make sure that the path environment variable is set to `<path_to_jdk>/bin`.
+* Add an env variable called `JAVA_HOME` and set it to `<path_to_jdk>`.
+* Edit the `Path` system variable and add 3 new paths: 1) `%MAVEN_HOME%\bin`, 2) `%JAVA_HOME%\bin`, and 3) `<path_to_jdk>`.
 
 ### Installation Steps
 
