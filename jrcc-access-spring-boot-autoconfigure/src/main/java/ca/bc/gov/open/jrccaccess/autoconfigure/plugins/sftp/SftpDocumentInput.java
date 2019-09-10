@@ -1,11 +1,13 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentFilenameMissingException;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
@@ -46,12 +48,17 @@ public class SftpDocumentInput implements MessageHandler {
             logger.debug("Attempting to get file name");
             String fileName = getFilename(message);
             logger.info("Successfully get file name.");
+            MDC.put(Constants.MDC_KEY_FILENAME, fileName);
             TransactionInfo transactionInfo = new TransactionInfo(fileName,"sftp", LocalDateTime.now());
             logger.debug("Attempting to handler document content");
             this.documentReadyHandler.handle(content, transactionInfo);
             logger.info("successfully handled incoming document.");
+            MDC.clear();
         } catch (IOException e) {
-            throw new DocumentMessageException(MessageFormat.format("Sftp Input Plugin error while reading the file.{0},{1}.",e.getMessage(),e.getCause()));
+            String logMsg = MessageFormat.format("Sftp Input Plugin error while reading the file.{0},{1}.",e.getMessage(),e.getCause());
+            logger.error(logMsg);
+            MDC.clear();
+            throw new DocumentMessageException(logMsg);
         }
 
     }
