@@ -1,11 +1,13 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -46,7 +48,7 @@ public class RabbitMqDocumentInput {
 	 */
 	@RabbitListener(queues = "#{documentReadyQueue.getName()}")
 	public void receiveMessage(DocumentReadyMessage documentReadyMessage) throws DocumentMessageException {
-
+		MDC.put(Constants.MDC_KEY_FILENAME, documentReadyMessage.getTransactionInfo().getFileName());
 		logger.info("New Document Received {}", documentReadyMessage);
 
 		DocumentStorageProperties storageProperties = documentReadyMessage.getDocumentStorageProperties();
@@ -59,6 +61,6 @@ public class RabbitMqDocumentInput {
 		
 		this.documentReadyHandler.handle(content, documentReadyMessage.getTransactionInfo());
 		logger.info("message successfully acknowledged");
-
+		MDC.clear();
 	}
 }
