@@ -38,12 +38,12 @@
 		<dependency>
 			<groupId>ca.bc.gov.open</groupId>
 			<artifactId>jrcc-access-spring-boot-autoconfigure</artifactId>
-			<version>0.7.0</version>
+			<version>0.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>ca.bc.gov.open</groupId>
 			<artifactId>jrcc-document-access-libs</artifactId>
-			<version>0.7.0</version>
+			<version>0.8.0</version>
 		</dependency>
 	</dependencies>
 
