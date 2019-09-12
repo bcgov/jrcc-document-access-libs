@@ -8,7 +8,7 @@ import org.springframework.core.io.Resource;
 import javax.validation.constraints.Min;
 
 /**
- * Represents the rabbitmq output plugin properties
+ * Represents the rabbitmq input plugin properties
  * @author alexjoybc
  * @since 0.6.0
  *
@@ -36,6 +36,10 @@ public class SftpInputProperties {
 	private String sshPrivateKey;
 
 	private String sshPrivatePassphrase;
+
+	private boolean allowUnknownKeys;
+
+	private String knownHostFile;
 
 	public String getRemoteDirectory() {
 		return remoteDirectory;
@@ -119,4 +123,38 @@ public class SftpInputProperties {
 		this.sshPrivatePassphrase = sshPrivatePassphrase;
 	}
 
+	/**
+	 * @return if allow Unknown Keys
+	 */
+	public boolean isAllowUnknownKeys() {
+		return this.allowUnknownKeys;
+	}
+
+	/**
+	 * Set to true to unconditionally allow connecting to an unknown host or when a host's key has changed (see knownHosts).
+	 * Default false. Set to true if a knownHosts file is not provided.
+	 * @param allowUnknowKeys : true or false
+	 */
+	public void setAllowUnknownKeys(boolean allowUnknowKeys) {
+		this.allowUnknownKeys = allowUnknowKeys;
+	}
+
+	/**
+	 * @return the filename that will be used for a host key repository. The file has the same format as OpenSSH's known_hosts file.
+	 * by default, it will return application running folder + "\.ssh\known_hosts".
+	 */
+	public String getKnownHostFile() {
+		if(this.knownHostFile == null || this.knownHostFile == ""){
+			return System.getProperty("user.dir")+"\\.ssh\\known_hosts";
+		}
+		return this.knownHostFile;
+	}
+
+	/**
+	 * set the known_hosts file name, including path
+	 * @param known_host_file
+	 */
+	public void setKnownHostFile(String known_host_file) {
+		this.knownHostFile = known_host_file;
+	}
 }

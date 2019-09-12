@@ -56,7 +56,12 @@ public class AutoConfiguration {
         } else {
             factory.setPassword(properties.getPassword());
         }
-        factory.setAllowUnknownKeys(true);
+        boolean isAllowUnknownKeys = properties.isAllowUnknownKeys();
+        factory.setAllowUnknownKeys(isAllowUnknownKeys);
+        if(!isAllowUnknownKeys){
+            factory.setKnownHosts(properties.getKnownHostFile());
+        }
+
         return new CachingSessionFactory<>(factory);
     }
 
