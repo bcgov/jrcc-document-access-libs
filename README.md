@@ -270,7 +270,7 @@ You can configure the document input using `bcgov.access.output` property.
 
 #### Description
 
-A simple output wich pring document information to STDOUT.
+A simple output which prints document information to STDOUT.
 The console output is mostly used when testing the application configuration.
 
 #### Setup
