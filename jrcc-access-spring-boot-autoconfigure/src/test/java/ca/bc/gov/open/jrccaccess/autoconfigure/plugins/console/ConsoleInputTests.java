@@ -36,7 +36,7 @@ public class ConsoleInputTests {
         }
 
         Mockito.when(spanMock.tag(Mockito.anyString(), Mockito.anyString())).thenReturn(spanMock);
-        Mockito.when(tracerMock.currentSpan()).thenReturn(spanMock);
+        Mockito.when(tracerMock.nextSpan()).thenReturn(spanMock);
 
         consoleInput = new ConsoleInput(documentReadyHandlerMock, tracerMock);
     }

@@ -38,5 +38,5 @@ public class AccessAutoConfiguration {
 		logger.info("Input plugin: {}", accessProperties.getInput().getPlugin());
 		logger.info("Output plugin: {}", accessProperties.getOutput().getPlugin());
 	}
-	
+
 }

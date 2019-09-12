@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * The console input reads message from standard input
@@ -32,6 +33,7 @@ public class ConsoleInput implements CommandLineRunner {
 	
 	private DocumentReadyHandler documentReadyHandler;
 
+        @Autowired
 	private Tracer tracer;
 
 	/**
@@ -53,7 +55,7 @@ public class ConsoleInput implements CommandLineRunner {
 
                 while(scanner.hasNext()) {
                         MDC.put(Constants.MDC_KEY_FILENAME, CONSOLE_FILENAME);
-                        this.tracer.currentSpan().tag("filename", CONSOLE_FILENAME);
+                        this.tracer.nextSpan().tag("filename", CONSOLE_FILENAME);
                         TransactionInfo transactionInfo = new TransactionInfo(CONSOLE_FILENAME,"console", LocalDateTime.now());
 
                         documentReadyHandler.handle(scanner.nextLine(), transactionInfo);
