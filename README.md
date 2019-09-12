@@ -194,6 +194,9 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.max-message-per-poll](#bcgovaccessinputsftpmaxmesssageperpoll) | String | No |
 | [bcgov.access.input.sftp.ssh-private-key](#bcgovaccessinputsftpsshprivatekey) | Resource | No |
 | [bcgov.access.input.sftp.ssh-private-passphrase](#bcgovaccessinputsftpsshprivatepassphrase) | String | No |
+| [bcgov.access.input.sftp.allow-unknown-key](#bcgovaccessinputsftpallowunknownkey) | boolean | No |
+| [bcgov.access.input.sftp.known-host-file](#bcgovaccessinputsftpknownhostfile) | String | Yes (if allow-unknown-key is false) |
+
 
 ##### bcgov.access.input.sftp.host
 
@@ -258,6 +261,19 @@ Sets the location of the private key.
 * Value type is String
 
 Sets the passphrase for the private key.
+
+##### bcgov.access.input.sftp.allow-unknown-key
+
+* Value type is Boolean
+* Default value is false
+* When no UserInfo has been provided, set to true to unconditionally allow connecting to an unknown host or when a host's key has changed (see knownHosts)
+
+##### bcgov.access.input.sftp.known-host-file
+
+* Value type is String
+* Specifies the filename that will be used for a host key repository. The file has the same format as OpenSSH's known_hosts file.
+* If allow-unknown-key is false, this property must be set correctly, or KnownHostFileNotDefinedException or KnownHostFileNotFoundException will be thrown.
+* If allow-unknown-key is true, this property will be ignored.
 
 ## Output Plugins
 
@@ -449,22 +465,33 @@ To view the message in a queue, login to [rabbitmq management console](http://lo
 ![binding](docs/document.ready.bind.png)
 
 ####if you want to run the sample app using sftp do the following:
-Create a sftp server container
+
+step 1. Create a sftp server container (from WindowsPowerShell or GitBash)
 ```bash
 docker run -p 22:22 -d atmoz/sftp myname:pass:::upload
 ```
-User "myname" with password "pass" can login with sftp and upload files to a folder called "upload". We are forwarding the container's port 22 to the host's port 22.
-Use a Sftp Client application ( such as Fillzilla, WinSCP, coreFTP) to connect to the server.(use sftp protocal and ip: localhost, port:22)
-update the [application.yml](jrcc-access-spring-boot-sample-app/src/main/resources/application.yml)
+
+step 2. User "myname" with password "pass" can login with sftp and upload files to a folder called "upload". We are forwarding the container's port 22 to the host's port 22.
+
+step 3. Use a Sftp Client application ( such as Filezilla, WinSCP, coreFTP) to connect to the server.(use sftp protocal and ip: localhost, port:22)
+
+step 4. If you do not want unconditionally allow connecting to an unknown host or when a host's key has changed, you need to provide known_hosts file.
+User following command to generate known_hosts file for started sftp server (from WindowsPowerShell or GitBash).
+```bash
+ssh-keyscan -v -p 22 localhost>>known_hosts
+```
+step 5. Update the [application.yml](jrcc-access-spring-boot-sample-app/src/main/resources/application.yml)
 ```properties
-spring:
-  main:
-    web-application-type: none
+main:
+      web-application-type: none
 logging:
   level:
     ca:
       gov:
         bc: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} %X{transaction.filename} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} %X{transaction.filename} - %msg%n"
 bcgov:
   access:
     input:
@@ -478,6 +505,8 @@ bcgov:
         remote-directory: /upload
         max-message-per-poll: 5
         cron: 0/5 * * * * *
+        allow-unknown-keys: false
+        known-host-file: C:\Users\user\.ssh\known_hosts
     output:
       document-type: test-doc
       plugin: console

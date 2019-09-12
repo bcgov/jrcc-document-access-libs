@@ -1,5 +1,8 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.InvalidConfigException;
+import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.KnownHostFileNotDefinedException;
+import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.KnownHostFileNotFoundException;
 import com.jcraft.jsch.ChannelSftp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +23,7 @@ import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
 import org.springframework.integration.sftp.session.SftpRemoteFileTemplate;
 
 import javax.websocket.MessageHandler;
+import java.io.File;
 import java.io.InputStream;
 
 @Configuration
@@ -45,7 +49,7 @@ public class AutoConfiguration {
 
 
     @Bean
-    public SessionFactory<ChannelSftp.LsEntry> sftpSessionFactory() {
+    public SessionFactory<ChannelSftp.LsEntry> sftpSessionFactory() throws InvalidConfigException {
         DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(true);
         factory.setHost(properties.getHost());
         factory.setPort(properties.getPort());
@@ -59,6 +63,14 @@ public class AutoConfiguration {
         boolean isAllowUnknownKeys = properties.isAllowUnknownKeys();
         factory.setAllowUnknownKeys(isAllowUnknownKeys);
         if(!isAllowUnknownKeys){
+            String knownHostFileStr = properties.getKnownHostFile();
+            if(knownHostFileStr == null || knownHostFileStr == "" )
+                throw new KnownHostFileNotDefinedException("Must define known_hosts file when allow-unknown-keys is false. ");
+
+            File knownHostFile = new File(knownHostFileStr);
+            if( ! knownHostFile.exists() )
+                throw new KnownHostFileNotFoundException("Cannot find known_hosts file when allow-unknown-keys is false.");
+
             factory.setKnownHosts(properties.getKnownHostFile());
         }
 
@@ -67,7 +79,13 @@ public class AutoConfiguration {
 
     @Bean
     public SftpRemoteFileTemplate template() {
-        return new SftpRemoteFileTemplate(sftpSessionFactory());
+        try {
+            return new SftpRemoteFileTemplate(sftpSessionFactory());
+        }catch(InvalidConfigException ex)
+        {
+            logger.error(ex.getMessage());
+        }
+        return null;
     }
 
     @Bean

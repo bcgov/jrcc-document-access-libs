@@ -141,20 +141,16 @@ public class SftpInputProperties {
 
 	/**
 	 * @return the filename that will be used for a host key repository. The file has the same format as OpenSSH's known_hosts file.
-	 * by default, it will return application running folder + "\.ssh\known_hosts".
 	 */
 	public String getKnownHostFile() {
-		if(this.knownHostFile == null || this.knownHostFile == ""){
-			return System.getProperty("user.dir")+"\\.ssh\\known_hosts";
-		}
 		return this.knownHostFile;
 	}
 
 	/**
 	 * set the known_hosts file name, including path
-	 * @param known_host_file
+	 * @param knownHostFile
 	 */
-	public void setKnownHostFile(String known_host_file) {
-		this.knownHostFile = known_host_file;
+	public void setKnownHostFile(String knownHostFile) {
+		this.knownHostFile = knownHostFile;
 	}
 }
