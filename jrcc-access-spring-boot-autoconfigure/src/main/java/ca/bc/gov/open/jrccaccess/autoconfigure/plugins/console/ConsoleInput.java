@@ -49,17 +49,17 @@ public class ConsoleInput implements CommandLineRunner {
 	 */
 	@Override
 	public void run(String... args) throws Exception {
-            Scanner scanner = new Scanner(System.in);
+				Scanner scanner = new Scanner(System.in);
 
-            while(scanner.hasNext()) {
-					MDC.put(Constants.MDC_KEY_FILENAME, CONSOLE_FILENAME);
-					this.tracer.currentSpan().tag("filename", CONSOLE_FILENAME);
-                    TransactionInfo transactionInfo = new TransactionInfo(CONSOLE_FILENAME,"console", LocalDateTime.now());
+				while(scanner.hasNext()) {
+						MDC.put(Constants.MDC_KEY_FILENAME, CONSOLE_FILENAME);
+						this.tracer.currentSpan().tag("filename", CONSOLE_FILENAME);
+						TransactionInfo transactionInfo = new TransactionInfo(CONSOLE_FILENAME,"console", LocalDateTime.now());
 
-                    documentReadyHandler.handle(scanner.nextLine(), transactionInfo);
-            }	
+						documentReadyHandler.handle(scanner.nextLine(), transactionInfo);
+				}	
 
-            MDC.clear();
-            scanner.close();
-	}
+				MDC.clear();
+				scanner.close();
+		}
 }
