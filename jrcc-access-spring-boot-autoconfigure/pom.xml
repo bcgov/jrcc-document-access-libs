@@ -102,6 +102,12 @@
 			<artifactId>jrcc-document-api</artifactId>
 			<version>0.8.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.zipkin.brave/brave -->
+		<dependency>
+			<groupId>io.zipkin.brave</groupId>
+			<artifactId>brave</artifactId>
+			<version>5.6.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

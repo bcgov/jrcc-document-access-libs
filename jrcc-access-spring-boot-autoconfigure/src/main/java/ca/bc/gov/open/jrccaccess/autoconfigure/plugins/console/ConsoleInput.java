@@ -1,5 +1,6 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
+import brave.Tracer;
 import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
@@ -31,12 +32,16 @@ public class ConsoleInput implements CommandLineRunner {
 	
 	private DocumentReadyHandler documentReadyHandler;
 
+	private Tracer tracer;
+
 	/**
-	 * Constructs a new ConsoleInput with the specified DocumentReadyHandler.
+	 * Constructs a new ConsoleInput with the specified DocumentReadyHandler and Tracer.
 	 * @param documentReadyHandler
+	 * @param tracer
 	 */
-	public ConsoleInput(DocumentReadyHandler documentReadyHandler) {
+	public ConsoleInput(DocumentReadyHandler documentReadyHandler, Tracer tracer) {
 		this.documentReadyHandler = documentReadyHandler;
+		this.tracer = tracer;
 	}
 	
 	/**
@@ -44,21 +49,17 @@ public class ConsoleInput implements CommandLineRunner {
 	 */
 	@Override
 	public void run(String... args) throws Exception {
-		Scanner scanner = new Scanner(System.in);
-		
-		while(scanner.hasNext()) {
-			MDC.put(Constants.MDC_KEY_FILENAME, CONSOLE_FILENAME);
-			TransactionInfo transactionInfo = new TransactionInfo(CONSOLE_FILENAME,"console", LocalDateTime.now());
+            Scanner scanner = new Scanner(System.in);
 
-			documentReadyHandler.handle(scanner.nextLine(), transactionInfo);
-		}	
+            while(scanner.hasNext()) {
+					MDC.put(Constants.MDC_KEY_FILENAME, CONSOLE_FILENAME);
+					this.tracer.currentSpan().tag("filename", CONSOLE_FILENAME);
+                    TransactionInfo transactionInfo = new TransactionInfo(CONSOLE_FILENAME,"console", LocalDateTime.now());
 
-		MDC.clear();
-		scanner.close();
+                    documentReadyHandler.handle(scanner.nextLine(), transactionInfo);
+            }	
+
+            MDC.clear();
+            scanner.close();
 	}
-
-	
-	
-	
-	
 }

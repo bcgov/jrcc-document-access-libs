@@ -1,5 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
+import brave.Span;
+import brave.Tracer;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
@@ -16,6 +18,10 @@ public class ConsoleInputTests {
     private ConsoleInput consoleInput;
     @Mock
     private DocumentReadyHandler documentReadyHandlerMock;
+    @Mock
+    private Tracer tracerMock;
+    @Mock
+    private Span spanMock;
 
     @Mock
     private TransactionInfo transactionInfoMock;
@@ -28,7 +34,11 @@ public class ConsoleInputTests {
         } catch (DocumentMessageException e) {
             e.printStackTrace();
         }
-        consoleInput = new ConsoleInput(documentReadyHandlerMock);
+
+        Mockito.when(spanMock.tag(Mockito.anyString(), Mockito.anyString())).thenReturn(spanMock);
+        Mockito.when(tracerMock.currentSpan()).thenReturn(spanMock);
+
+        consoleInput = new ConsoleInput(documentReadyHandlerMock, tracerMock);
     }
 
     @Test(expected = Test.None.class /* no exception expected */)
