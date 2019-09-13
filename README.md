@@ -37,6 +37,7 @@ logging.pattern.console property only works if we use Logback logging implementa
 
 ## Plugins
 
+<a name="CommonOptions"></a>
 ### Common Options
 
 | name | definition | required |
@@ -193,11 +194,11 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.remote-directory](#bcgovaccessinputsftpremotedirectory) | String | Yes |
 | [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilterpattern) | String | No |
 | [bcgov.access.input.sftp.cron](#bcgovaccessinputsftpcron) | String | Yes |
-| [bcgov.access.input.sftp.max-message-per-poll](#bcgovaccessinputsftpmaxmesssageperpoll) | String | No |
-| [bcgov.access.input.sftp.ssh-private-key](#bcgovaccessinputsftpsshprivatekey) | Resource | No |
-| [bcgov.access.input.sftp.ssh-private-passphrase](#bcgovaccessinputsftpsshprivatepassphrase) | String | No |
-| [bcgov.access.input.sftp.allow-unknown-key](#bcgovaccessinputsftpallowunknownkey) | boolean | No |
-| [bcgov.access.input.sftp.known-host-file](#bcgovaccessinputsftpknownhostfile) | String | Yes (if allow-unknown-key is false) |
+| [bcgov.access.input.sftp.max-message-per-poll](#bcgovaccessinputsftpmax-messsage-per-poll) | String | No |
+| [bcgov.access.input.sftp.ssh-private-key](#bcgovaccessinputsftpssh-private-key) | Resource | No |
+| [bcgov.access.input.sftp.ssh-private-passphrase](#bcgovaccessinputsftpssh-private-passphrase) | String | No |
+| [bcgov.access.input.sftp.allow-unknown-key](#bcgovaccessinputsftpallow-unknown-key) | boolean | No |
+| [bcgov.access.input.sftp.known-host-file](#bcgovaccessinputsftpknown-host-file) | String | Yes (if allow-unknown-key is false) |
 
 
 ##### bcgov.access.input.sftp.host
@@ -286,6 +287,7 @@ You can configure the document input using `bcgov.access.output` property.
 * [Console](#ConsoleOutputPlugin)
 * [RabbitMq](#RabbitMqOutputPlugin)
 
+<a name="ConsoleOutputPlugin"></a>
 ### Console Output Plugin
 
 #### Description
@@ -320,6 +322,7 @@ When set to `xml` the plugins tries to prettify the xml document or return the c
 bcgov.access.output.console.format=xml
 ````
 
+<a name="RabbitMqOutputPlugin"></a>
 ### RabbitMq Output Plugin
 
 #### Description
@@ -334,7 +337,7 @@ bcgov.access.output.plugin=rabbitmq
 
 #### Configuration Options
 
-It support the [Common Options](#Common Options) and the following options:
+It support the [Common Options](#CommonOptions) and the following options:
 
 | name | type | required |
 | --- | --- | --- |
@@ -357,7 +360,7 @@ you can register a processor to transform the content of the message.
 
 To register a processor do the following
 
-Create a new spring component that implements [DocumentProcessor](jrcc-document-access-libs/src/main/java/ca/gov/bc/open/jrccaccess/libs/processing/DocumentProcessor.java)
+Create a new spring component that implements [DocumentProcessor](jrcc-document-access-libs/src/main/java/ca/bc/gov/open/jrccaccess/libs/processing/DocumentProcessor.java)
 
 ```java
 @Component
