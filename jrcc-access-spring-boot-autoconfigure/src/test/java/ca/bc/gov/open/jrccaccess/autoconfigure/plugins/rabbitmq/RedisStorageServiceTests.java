@@ -116,5 +116,12 @@ public class RedisStorageServiceTests {
 		@SuppressWarnings("unused")
 		String expected = sut.getString(MISSING_DOCUMENT, "098A");
 	}
+
+        @Test
+	public void deleteString_with_valid_input_should_return_true() throws DocumentMessageException {
+		Boolean result = sut.deleteString(KEY);
+
+		assertEquals(true, result);
+	}
 	
 }

@@ -60,6 +60,10 @@ public class RabbitMqDocumentInput {
 		}
 		
 		this.documentReadyHandler.handle(content, documentReadyMessage.getTransactionInfo());
+
+                //when successfully processed, delete the document from redis storage
+                this.redisStorageService.deleteString(storageProperties.getKey());
+
 		logger.info("message successfully acknowledged");
 		MDC.clear();
 	}

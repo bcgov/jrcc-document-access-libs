@@ -92,4 +92,19 @@ public class RedisStorageService implements StorageService {
 
 	}
 
+	/**
+	 * Deletes a key/document pair from redis store
+	 * @param key
+	 * @return
+	 */
+	public Boolean deleteString(String key) throws DocumentMessageException {
+
+		try {
+                        this.cacheManager.getCache(accessProperties.getInput().getDocumentType()).evict(key);
+			return true;
+		} catch (RedisConnectionFailureException e) {
+			throw new ServiceUnavailableException("redis service unavailable", e.getCause());
+		}
+
+	}
 }
