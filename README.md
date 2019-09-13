@@ -61,7 +61,7 @@ Sets the plugin type
 
 You can configure the document input using `bcgov.access.input.plugin` property.
 
-* [Console](#ConsoleInputPlugin)
+* [Console](#console-input-plugin)
 * [Http](#HttpInputPlugin)
 * [RabbitMq](#RabbitMqInputPlugin)
 * [Sftp](#sftpInputPlugin)
