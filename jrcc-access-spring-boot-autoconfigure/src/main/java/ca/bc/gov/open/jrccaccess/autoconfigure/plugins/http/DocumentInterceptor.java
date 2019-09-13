@@ -5,7 +5,6 @@ import org.slf4j.MDC;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,13 +23,6 @@ public class DocumentInterceptor implements HandlerInterceptor {
             MDC.put(Constants.MDC_KEY_FILENAME,file.getOriginalFilename());
         }
         return true;
-    }
-
-    // Called after handler method request completion, before rendering the view
-    @Override
-    public void postHandle(HttpServletRequest req, HttpServletResponse res,
-                           Object handler, ModelAndView model)  throws Exception {
-        //will clear MDC in afterCompletion, not here
     }
 
     // Called after rendering the view
