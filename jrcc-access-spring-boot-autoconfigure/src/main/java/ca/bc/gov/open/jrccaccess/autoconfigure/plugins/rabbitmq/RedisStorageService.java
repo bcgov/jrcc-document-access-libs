@@ -103,7 +103,7 @@ public class RedisStorageService implements StorageService {
                         this.cacheManager.getCache(accessProperties.getInput().getDocumentType()).evict(key);
 			return true;
 		} catch (RedisConnectionFailureException e) {
-			throw new ServiceUnavailableException("redis service unavailable", e.getCause());
+			throw new DocumentMessageException("redis service unavailable", e.getCause());
 		}
 
 	}
