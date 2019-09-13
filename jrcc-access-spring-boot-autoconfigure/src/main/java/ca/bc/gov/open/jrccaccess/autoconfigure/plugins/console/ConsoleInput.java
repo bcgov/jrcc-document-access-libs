@@ -27,7 +27,7 @@ public class ConsoleInput implements CommandLineRunner {
 	@Value("${spring.application.name:unknown}")
 	private String appName;
 
-	private final String CONSOLE_FILENAME="console.txt";
+	private static final String CONSOLE_FILENAME="console.txt";
 	
 	private DocumentReadyHandler documentReadyHandler;
 

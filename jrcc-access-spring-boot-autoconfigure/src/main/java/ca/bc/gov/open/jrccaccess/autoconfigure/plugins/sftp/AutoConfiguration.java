@@ -64,7 +64,7 @@ public class AutoConfiguration {
         factory.setAllowUnknownKeys(isAllowUnknownKeys);
         if(!isAllowUnknownKeys){
             String knownHostFileStr = properties.getKnownHostFile();
-            if(knownHostFileStr == null || knownHostFileStr == "" )
+            if(knownHostFileStr == null || knownHostFileStr.equals("") )
                 throw new KnownHostFileNotDefinedException("Must define known_hosts file when allow-unknown-keys is false. ");
 
             File knownHostFile = new File(knownHostFileStr);

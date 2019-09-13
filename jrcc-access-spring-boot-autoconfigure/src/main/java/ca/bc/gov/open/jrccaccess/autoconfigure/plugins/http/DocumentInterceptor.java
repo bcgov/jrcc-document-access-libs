@@ -30,6 +30,7 @@ public class DocumentInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest req, HttpServletResponse res,
                            Object handler, ModelAndView model)  throws Exception {
+        //will clear MDC in afterCompletion, not here
     }
 
     // Called after rendering the view
