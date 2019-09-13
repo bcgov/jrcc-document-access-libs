@@ -26,7 +26,7 @@ import static org.junit.Assert.assertNotNull;
         		"bcgov.access.output.document-type=test-doc"
         })
 @ContextConfiguration
-public class DocumentReadyTemplateTests {
+public class DocumentReadyTemplateIT {
 
 	@Qualifier("documentReadyTopicTemplate")
 	@Autowired

@@ -17,25 +17,30 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest(
         classes = AccessApplication.class,
         properties = {
-        		"spring.redis.cluster.nodes=127.0.0.1:5000,127.0.0.1:5001",
-        		"bcgov.access.input.document-type=test-doc",
         		"bcgov.access.input.plugin=rabbitmq",
+        		"bcgov.access.input.document-type=test-doc",
+        		"bcgov.access.input.rabbitmq.retry-delay=5",
+        		"bcgov.access.input.rabbitmq.retry-count=2",
         		"bcgov.access.output.plugin=console"
         })
 @ContextConfiguration
-public class inputQueueConfigurationTests {
+public class DeadLetterQConfigurationIT {
 
 	@Autowired
-	@Qualifier("documentReadyQueue")
+	@Qualifier("documentReadyDeadLetterQueue")
 	private Queue sut;
 	
+
 	@Test
-	public void queue_with_default_config_should_return_queue() {
-		
+	public void with_default_config_should_return_a_valid_stringRedisTemplate() {
+
 		assertTrue(sut.isDurable());
-		assertEquals("test-doc.0s.x0.q", sut.getName());
+		assertEquals("test-doc.5s.x2.dlq", sut.getName());
+		assertEquals(5000L, sut.getArguments().get(RabbitMqParam.X_MESSAGE_TTL_ARG));
+		assertEquals("document.ready", sut.getArguments().get(RabbitMqParam.X_DEAD_LETTER_EXCHANGE_ARG));
 		
 	}
 	
+
 	
 }
