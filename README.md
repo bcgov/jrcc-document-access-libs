@@ -112,7 +112,7 @@ exemple to run the service on port `5050`
 server.port=5050
 ```
 
-
+<a name="RabbitMqInputPlugin"></a>
 ### RabbitMq Input Plugin
 
 #### Description
@@ -167,6 +167,7 @@ Sets the delay in seconds between retries when the service if failing to process
 
 Sets the maximum attempt to reprocess a message in the queue.
 
+<a name="sftpInputPlugin"></a>
 ### Sftp Input Plugin
 
 #### Description
