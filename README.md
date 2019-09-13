@@ -37,6 +37,7 @@ logging.pattern.console property only works if we use Logback logging implementa
 
 ## Plugins
 
+<a name="CommonOptions"></a>
 ### Common Options
 
 | name | definition | required |
@@ -61,7 +62,7 @@ Sets the plugin type
 
 You can configure the document input using `bcgov.access.input.plugin` property.
 
-* [Console](#ConsoleInputPlugin)
+* [Console](#console-input-plugin)
 * [Http](#HttpInputPlugin)
 * [RabbitMq](#RabbitMqInputPlugin)
 * [Sftp](#sftpInputPlugin)
@@ -83,6 +84,7 @@ bcgov.access.input.plugin=console
 
 There are no special configuration options for this plugin, but it does support the [Common Options](#CommonOptions).
 
+<a name="HttpInputPlugin"></a>
 ### Http Input Plugin
 
 #### Description
@@ -111,7 +113,7 @@ exemple to run the service on port `5050`
 server.port=5050
 ```
 
-
+<a name="RabbitMqInputPlugin"></a>
 ### RabbitMq Input Plugin
 
 #### Description
@@ -166,6 +168,7 @@ Sets the delay in seconds between retries when the service if failing to process
 
 Sets the maximum attempt to reprocess a message in the queue.
 
+<a name="sftpInputPlugin"></a>
 ### Sftp Input Plugin
 
 #### Description
@@ -188,14 +191,14 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.port](#bcgovaccessinputsftpport) | Int | No |
 | [bcgov.access.input.sftp.username](#bcgovaccessinputsftpport) | String | Yes |
 | [bcgov.access.input.sftp.password](#bcgovaccessinputsftpport) | String | Yes |
-| [bcgov.access.input.sftp.remote-directory](#bcgovaccessinputsftpremotedirectory) | String | Yes |
-| [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilterpattern) | String | No |
+| [bcgov.access.input.sftp.remote-directory](#bcgovaccessinputsftpremote-directory) | String | Yes |
+| [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilter-pattern) | String | No |
 | [bcgov.access.input.sftp.cron](#bcgovaccessinputsftpcron) | String | Yes |
-| [bcgov.access.input.sftp.max-message-per-poll](#bcgovaccessinputsftpmaxmesssageperpoll) | String | No |
-| [bcgov.access.input.sftp.ssh-private-key](#bcgovaccessinputsftpsshprivatekey) | Resource | No |
-| [bcgov.access.input.sftp.ssh-private-passphrase](#bcgovaccessinputsftpsshprivatepassphrase) | String | No |
-| [bcgov.access.input.sftp.allow-unknown-key](#bcgovaccessinputsftpallowunknownkey) | boolean | No |
-| [bcgov.access.input.sftp.known-host-file](#bcgovaccessinputsftpknownhostfile) | String | Yes (if allow-unknown-key is false) |
+| [bcgov.access.input.sftp.max-message-per-poll](#bcgovaccessinputsftpmax-message-per-poll) | String | No |
+| [bcgov.access.input.sftp.ssh-private-key](#bcgovaccessinputsftpssh-private-key) | Resource | No |
+| [bcgov.access.input.sftp.ssh-private-passphrase](#bcgovaccessinputsftpssh-private-passphrase) | String | No |
+| [bcgov.access.input.sftp.allow-unknown-key](#bcgovaccessinputsftpallow-unknown-key) | boolean | No |
+| [bcgov.access.input.sftp.known-host-file](#bcgovaccessinputsftpknown-host-file) | String | Yes (if allow-unknown-key is false) |
 
 
 ##### bcgov.access.input.sftp.host
@@ -284,6 +287,7 @@ You can configure the document input using `bcgov.access.output` property.
 * [Console](#ConsoleOutputPlugin)
 * [RabbitMq](#RabbitMqOutputPlugin)
 
+<a name="ConsoleOutputPlugin"></a>
 ### Console Output Plugin
 
 #### Description
@@ -318,6 +322,7 @@ When set to `xml` the plugins tries to prettify the xml document or return the c
 bcgov.access.output.console.format=xml
 ````
 
+<a name="RabbitMqOutputPlugin"></a>
 ### RabbitMq Output Plugin
 
 #### Description
@@ -332,7 +337,7 @@ bcgov.access.output.plugin=rabbitmq
 
 #### Configuration Options
 
-It support the [Common Options](#Common Options) and the following options:
+It support the [Common Options](#CommonOptions) and the following options:
 
 | name | type | required |
 | --- | --- | --- |
@@ -355,7 +360,7 @@ you can register a processor to transform the content of the message.
 
 To register a processor do the following
 
-Create a new spring component that implements [DocumentProcessor](jrcc-document-access-libs/src/main/java/ca/gov/bc/open/jrccaccess/libs/processing/DocumentProcessor.java)
+Create a new spring component that implements [DocumentProcessor](jrcc-document-access-libs/src/main/java/ca/bc/gov/open/jrccaccess/libs/processing/DocumentProcessor.java)
 
 ```java
 @Component
@@ -428,7 +433,7 @@ you can use this [Postman collection](jrcc-access-api/jrcc-document-api.postman_
 For body, select form-data and input key value as "file" and select file.
 set the http header to `Content-Type: multipart/form-data`.
 
-![Postman config](docs\postman.body.png)
+![Postman config](docs/postman.body.png)
 
 
 ####if you want to run the sample app using redis and rabbitmq do the following
@@ -464,7 +469,7 @@ logging:
 
 To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
 
-![binding](docs\document.ready.bind.png)
+![binding](docs/document.ready.bind.png)
 
 ####if you want to run the sample app using sftp do the following:
 
