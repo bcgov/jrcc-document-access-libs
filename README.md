@@ -191,8 +191,8 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.port](#bcgovaccessinputsftpport) | Int | No |
 | [bcgov.access.input.sftp.username](#bcgovaccessinputsftpport) | String | Yes |
 | [bcgov.access.input.sftp.password](#bcgovaccessinputsftpport) | String | Yes |
-| [bcgov.access.input.sftp.remote-directory](#bcgovaccessinputsftpremotedirectory) | String | Yes |
-| [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilterpattern) | String | No |
+| [bcgov.access.input.sftp.remote-directory](#bcgovaccessinputsftpremote-directory) | String | Yes |
+| [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilter-pattern) | String | No |
 | [bcgov.access.input.sftp.cron](#bcgovaccessinputsftpcron) | String | Yes |
 | [bcgov.access.input.sftp.max-message-per-poll](#bcgovaccessinputsftpmax-message-per-poll) | String | No |
 | [bcgov.access.input.sftp.ssh-private-key](#bcgovaccessinputsftpssh-private-key) | Resource | No |
