@@ -266,14 +266,16 @@ Sets the passphrase for the private key.
 
 * Value type is Boolean
 * Default value is false
-* When no UserInfo has been provided, set to true to unconditionally allow connecting to an unknown host or when a host's key has changed (see knownHosts)
+
+When no UserInfo has been provided, set to true to unconditionally allow connecting to an unknown host or when a host's key has changed (see knownHosts)
 
 ##### bcgov.access.input.sftp.known-host-file
 
 * Value type is String
-* Specifies the filename that will be used for a host key repository. The file has the same format as OpenSSH's known_hosts file.
-* If allow-unknown-key is false, this property must be set correctly, or KnownHostFileNotDefinedException or KnownHostFileNotFoundException will be thrown.
-* If allow-unknown-key is true, this property will be ignored.
+
+Specifies the filename that will be used for a host key repository. The file has the same format as OpenSSH's known_hosts file.
+If allow-unknown-key is false, this property must be set correctly, or KnownHostFileNotDefinedException or KnownHostFileNotFoundException will be thrown.
+If allow-unknown-key is true, this property will be ignored.
 
 ## Output Plugins
 
