@@ -134,7 +134,7 @@ The message Payload should be like following:
     }   
 } 
 ```
-The Properties of the published message should be : content-type = application/json .
+The Properties of the published message should be : content_type = application/json .
 The lib will try to get the content from Redis Storage with key and md5 specified in above key and md5.
 
 #### Setup
@@ -410,7 +410,7 @@ you can use this [Postman collection](jrcc-access-api/jrcc-document-api.postman_
 For body, select form-data and input key value as "file" and select file.
 set the http header to `Content-Type: multipart/form-data`.
 
-![Postman config](docs\postman.body.png)
+![Postman config](docs/postman.body.png)
 
 
 ####if you want to run the sample app using redis and rabbitmq do the following
