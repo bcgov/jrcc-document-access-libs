@@ -22,14 +22,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(
-        classes = AccessApplication.class,
-        properties = {
-        		"bcgov.access.input.plugin=http",
-        		"bcgov.access.output.plugin=rabbitmq"
-        })
-@ContextConfiguration
 public class RabbitMqDocumentReadyServiceTests {
 
 	

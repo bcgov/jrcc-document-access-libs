@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
         		"bcgov.access.output.plugin=rabbitmq"
         })
 @ContextConfiguration
-public class ConnectionFactoryTests {
+public class ConnectionFactoryIT {
 
 	@Autowired
 	private ConnectionFactory sut;

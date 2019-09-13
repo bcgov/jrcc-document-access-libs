@@ -11,7 +11,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
-public class rabbitMqInputPropertiesTests {
+public class RabbitMqInputPropertiesTests {
 
 	private static Validator validator;
 
