@@ -462,7 +462,7 @@ logging:
 
 To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
 
-![binding](docs/document.ready.bind.png)
+![binding](docs\document.ready.bind.png)
 
 ####if you want to run the sample app using sftp do the following:
 

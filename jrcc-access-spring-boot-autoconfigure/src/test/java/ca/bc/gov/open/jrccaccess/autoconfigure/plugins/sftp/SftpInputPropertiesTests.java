@@ -42,6 +42,6 @@ public class SftpInputPropertiesTests {
     public void set_known_hosts_should_succeed() {
         SftpInputProperties sut = new SftpInputProperties();
         sut.setKnownHostFile("c://test//known_hosts");
-        Assert.assertEquals(sut.getKnownHostFile(), "c://test//known_hosts");
+        Assert.assertEquals("c://test//known_hosts", sut.getKnownHostFile());
     }
 }
