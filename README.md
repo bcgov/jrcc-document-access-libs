@@ -137,7 +137,10 @@ The message Payload should be like following:
 } 
 ```
 
-The Properties of the published message should be : content_type = application/json. (Note: Make sure this is a property and not a header)
+The Properties of the published message should be : content_type = application/json.
+##### Note
+Make sure this is a property and not a header
+
 The lib will try to get the content from Redis Storage with key and md5 specified in above key and md5.
 
 #### Setup
