@@ -194,7 +194,7 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.remote-directory](#bcgovaccessinputsftpremotedirectory) | String | Yes |
 | [bcgov.access.input.sftp.filter-pattern](#bcgovaccessinputsftpfilterpattern) | String | No |
 | [bcgov.access.input.sftp.cron](#bcgovaccessinputsftpcron) | String | Yes |
-| [bcgov.access.input.sftp.max-message-per-poll](#bcgovaccessinputsftpmax-messsage-per-poll) | String | No |
+| [bcgov.access.input.sftp.max-message-per-poll](#bcgovaccessinputsftpmax-message-per-poll) | String | No |
 | [bcgov.access.input.sftp.ssh-private-key](#bcgovaccessinputsftpssh-private-key) | Resource | No |
 | [bcgov.access.input.sftp.ssh-private-passphrase](#bcgovaccessinputsftpssh-private-passphrase) | String | No |
 | [bcgov.access.input.sftp.allow-unknown-key](#bcgovaccessinputsftpallow-unknown-key) | boolean | No |
@@ -433,7 +433,7 @@ you can use this [Postman collection](jrcc-access-api/jrcc-document-api.postman_
 For body, select form-data and input key value as "file" and select file.
 set the http header to `Content-Type: multipart/form-data`.
 
-![Postman config](docs\postman.body.png)
+![Postman config](docs/postman.body.png)
 
 
 ####if you want to run the sample app using redis and rabbitmq do the following
@@ -469,7 +469,7 @@ logging:
 
 To view the message in a queue, login to [rabbitmq management console](http://localhost:15672) with default guest/guest and create a binding to the `document.ready` exchange using `test-doc` routing key
 
-![binding](docs\document.ready.bind.png)
+![binding](docs/document.ready.bind.png)
 
 ####if you want to run the sample app using sftp do the following:
 
