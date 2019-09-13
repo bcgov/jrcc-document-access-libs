@@ -83,7 +83,8 @@ bcgov.access.input.plugin=console
 
 There are no special configuration options for this plugin, but it does support the [Common Options](#CommonOptions).
 
-###<a name="HttpInputPlugin"></a> Http Input Plugin
+<a name="HttpInputPlugin"></a>
+### Http Input Plugin
 
 #### Description
 
