@@ -107,7 +107,7 @@ Document sent to the api are handle with the default documentReadyHandler.
 There are no special configuration options for this plugin, but it does support the [Common Options](#CommonOptions) and spring standard EMBEDDED SERVER CONFIGURATION (ServerProperties).
 [Common Application Properties](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html)
 
-exemple to run the service on port `5050`
+Example to run the service on port `5050`
 
 ```properties
 server.port=5050
@@ -153,7 +153,7 @@ bcgov.access.input.plugin=rabbitmq
 
 #### Configuration Options
 
-It support the [Common Options](#CommonOptions) and the following options:
+It supports the [Common Options](#CommonOptions) and the following options:
 
 | name | type | required |
 | --- | --- | --- |
@@ -165,7 +165,7 @@ It support the [Common Options](#CommonOptions) and the following options:
 * Value type is Int
 * Default value is `0`
 
-Sets the delay in seconds between retries when the service if failing to process the message and throwing application known errors.
+Sets the delay in seconds between retries when the service is failing to process the message and throwing application known errors.
 
 ##### bcgov.access.input.rabbitmq.retryCount
 
@@ -288,7 +288,7 @@ If allow-unknown-key is true, this property will be ignored.
 
 ## Output Plugins
 
-You can configure the document input using `bcgov.access.output` property.
+You can configure the document input using the `bcgov.access.output` property.
 
 * [Console](#ConsoleOutputPlugin)
 * [RabbitMq](#RabbitMqOutputPlugin)
@@ -298,7 +298,7 @@ You can configure the document input using `bcgov.access.output` property.
 
 #### Description
 
-A simple output wich pring document information to STDOUT.
+A simple output which prints document information to STDOUT.
 The console output is mostly used when testing the application configuration.
 
 #### Setup
@@ -309,7 +309,7 @@ bcgov.access.output.plugin=console
 
 #### Configuration Options
 
-It support the [Common Options](#Common Options) and the following options:
+It supports the [Common Options](#Common Options) and the following options:
 
 | name | type | required |
 | --- | --- | --- |
@@ -343,7 +343,7 @@ bcgov.access.output.plugin=rabbitmq
 
 #### Configuration Options
 
-It support the [Common Options](#CommonOptions) and the following options:
+It supports the [Common Options](#CommonOptions) and the following options:
 
 | name | type | required |
 | --- | --- | --- |
@@ -354,7 +354,7 @@ It support the [Common Options](#CommonOptions) and the following options:
 * Value type is Int
 * Default value is `1`
 
-Sets the time to live for document in the temporary storage (expressed in hours)
+Sets the time to live for the document in the temporary storage (expressed in hours)
 
 ```properties
 bcgov.access.output.rabbitmq.ttl
@@ -362,9 +362,9 @@ bcgov.access.output.rabbitmq.ttl
 
 ## Processor
 
-you can register a processor to transform the content of the message.
+You can register a processor to transform the content of the message.
 
-To register a processor do the following
+To register a processor do the following:
 
 Create a new spring component that implements [DocumentProcessor](jrcc-document-access-libs/src/main/java/ca/bc/gov/open/jrccaccess/libs/processing/DocumentProcessor.java)
 
@@ -379,7 +379,7 @@ public class UpperCaseProcessor implements DocumentProcessor {
 }
 ```
 
-Where register, the processor will act on the input document content.
+When registered, the processor will act on the input document content. For example, in the case shown above all input content will be converted to upper case.
 
 ## References
 
@@ -442,14 +442,14 @@ set the http header to `Content-Type: multipart/form-data`.
 ![Postman config](docs/postman.body.png)
 
 
-####if you want to run the sample app using redis and rabbitmq do the following
+#### If you want to run the sample app using redis and rabbitmq do the following
 
 Create a redis container
 
 ```bash
 docker run --name some-redis -p 6379:6379 -d redis
 ```
-Create a rabit container
+Create a rabbit container
 
 ```bash
 docker run -d --hostname some-rabbit --name some-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
@@ -477,7 +477,7 @@ To view the message in a queue, login to [rabbitmq management console](http://lo
 
 ![binding](docs/document.ready.bind.png)
 
-####if you want to run the sample app using sftp do the following:
+#### If you want to run the sample app using sftp do the following:
 
 step 1. Create a sftp server container (from WindowsPowerShell or GitBash)
 ```bash
@@ -488,8 +488,8 @@ step 2. User "myname" with password "pass" can login with sftp and upload files 
 
 step 3. Use a Sftp Client application ( such as Filezilla, WinSCP, coreFTP) to connect to the server.(use sftp protocal and ip: localhost, port:22)
 
-step 4. If you do not want unconditionally allow connecting to an unknown host or when a host's key has changed, you need to provide known_hosts file.
-User following command to generate known_hosts file for started sftp server (from WindowsPowerShell or GitBash).
+step 4. If you do not want to unconditionally allow connecting to an unknown host or when a host's key has changed, you need to provide a known_hosts file.
+Use the following command to generate a known_hosts file for started sftp server (from WindowsPowerShell or GitBash).
 ```bash
 ssh-keyscan -v -p 22 localhost>>known_hosts
 ```
