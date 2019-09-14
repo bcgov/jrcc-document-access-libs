@@ -203,7 +203,7 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.max-message-per-poll](#bcgovaccessinputsftpmax-message-per-poll) | String | No |
 | [bcgov.access.input.sftp.ssh-private-key](#bcgovaccessinputsftpssh-private-key) | Resource | No |
 | [bcgov.access.input.sftp.ssh-private-passphrase](#bcgovaccessinputsftpssh-private-passphrase) | String | No |
-| [bcgov.access.input.sftp.allow-unknown-key](#bcgovaccessinputsftpallow-unknown-key) | boolean | No |
+| [bcgov.access.input.sftp.allow-unknown-keys](#bcgovaccessinputsftpallow-unknown-keys) | boolean | No |
 | [bcgov.access.input.sftp.known-host-file](#bcgovaccessinputsftpknown-host-file) | String | Yes (if allow-unknown-key is false) |
 
 
@@ -271,7 +271,7 @@ Sets the location of the private key.
 
 Sets the passphrase for the private key.
 
-##### bcgov.access.input.sftp.allow-unknown-key
+##### bcgov.access.input.sftp.allow-unknown-keys
 
 * Value type is Boolean
 * Default value is false
