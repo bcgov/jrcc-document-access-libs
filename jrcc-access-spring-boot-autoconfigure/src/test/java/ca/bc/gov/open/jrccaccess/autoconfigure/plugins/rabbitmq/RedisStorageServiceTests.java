@@ -57,6 +57,7 @@ public class RedisStorageServiceTests {
 	    Mockito.doNothing().when(this.cache).put(Mockito.anyString(), Mockito.eq(VALID));
 	    Mockito.doThrow(RedisConnectionFailureException.class).when(this.cache).put(Mockito.anyString(), Mockito.eq(REDIS_CONNECTION_FAILURE_EXCEPTION));
 	    Mockito.doThrow(RedisConnectionFailureException.class).when(this.cache).get(Mockito.eq(REDIS_CONNECTION_FAILURE_EXCEPTION));
+            Mockito.doThrow(RedisConnectionFailureException.class).when(this.cache).evict(Mockito.eq(REDIS_CONNECTION_FAILURE_EXCEPTION));
 	    Mockito.when(pluginConfig.getDocumentType()).thenReturn("test-doc");
 	    Mockito.when(accessProperties.getInput()).thenReturn(pluginConfig);
 	    Mockito.when(accessProperties.getOutput()).thenReturn(pluginConfig);
@@ -116,5 +117,18 @@ public class RedisStorageServiceTests {
 		@SuppressWarnings("unused")
 		String expected = sut.getString(MISSING_DOCUMENT, "098A");
 	}
-	
+
+        @Test
+	public void deleteString_with_valid_input_should_return_true() throws DocumentMessageException {
+		Boolean result = sut.deleteString(KEY);
+
+		assertEquals(true, result);
+	}
+
+        @Test(expected = DocumentMessageException.class)
+        public void deleteString_with_invalid_input_should_throw_DocumentMessageException() throws DocumentMessageException {
+                @SuppressWarnings("unused")
+                Boolean result = sut.deleteString(REDIS_CONNECTION_FAILURE_EXCEPTION);
+        }
+
 }

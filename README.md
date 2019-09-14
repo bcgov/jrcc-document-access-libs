@@ -118,7 +118,9 @@ server.port=5050
 
 #### Description
 
-Using this plugin you can receive JSON format messages from a specified rabbitMq queue(in our program, it is test-doc.0s.x0.q). 
+Using this plugin you can receive JSON format messages from a specified rabbitMq queue(in our program, it is test-doc.0s.x0.q).
+To publish, visit the RabbitMQ Management console (accessible on port 15672), navigate to the `Queues` tab and scroll down to the `Publish message` section.
+
 The message Payload should be like following:
 ```properties
 {
@@ -136,7 +138,11 @@ The message Payload should be like following:
     }   
 } 
 ```
-The Properties of the published message should be : content-type = application/json .
+
+The Properties of the published message should be : content_type = application/json.
+##### Note
+Make sure this is a property and not a header
+
 The lib will try to get the content from Redis Storage with key and md5 specified in above key and md5.
 
 #### Setup
