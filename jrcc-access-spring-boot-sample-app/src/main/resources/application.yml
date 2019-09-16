@@ -1,3 +1,5 @@
+main:
+  web-application-type: none
 logging:
   level:
     ca:
@@ -9,9 +11,9 @@ logging:
 bcgov:
   access:
     input:
-      sender: shreyas
+      sender: test-sender
       document-type: test-doc
-      plugin: http
+      plugin: console
     output:
       document-type: test-doc
       plugin: console
