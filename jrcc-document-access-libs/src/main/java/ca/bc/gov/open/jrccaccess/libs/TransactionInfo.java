@@ -63,7 +63,7 @@ public class TransactionInfo {
 	
 	@Override
 	public String toString() {		
-		return	MessageFormat.format("Transaction[{3}] sent from [{0}] on [{1}], fileName [{2}]", this.sender, this.receivedOn.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), this.fileName,this.uuid.toString());
+		return	MessageFormat.format("Transaction[{3}] sent from [{0}] on [{1}], fileName [{2}]", this.sender, this.receivedOn.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), this.fileName,getUUIDStr());
 	}
 	
 }
