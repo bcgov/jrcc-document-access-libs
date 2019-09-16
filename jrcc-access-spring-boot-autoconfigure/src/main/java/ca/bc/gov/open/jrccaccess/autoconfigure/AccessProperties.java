@@ -31,6 +31,24 @@ public class AccessProperties {
 		private String documentType;
 		
 		private String plugin;
+
+		private String sender;
+
+		/**
+		 * Gets the sender type
+		 * @return
+		 */
+		public String getSender() {
+			return sender;
+		}
+
+		/**
+		 * Sets the sender type
+		 * @param sender
+		 */
+		public void setSender(String sender) {
+			this.sender = sender;
+		}
 		
 		/**
 		 * Gets the plugin type

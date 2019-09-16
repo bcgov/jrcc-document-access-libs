@@ -3,6 +3,7 @@ package ca.bc.gov.open.jrccaccess.libs;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.springframework.beans.factory.annotation.Value;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,8 +18,9 @@ public class TransactionInfo {
 	/**
 	 * the original sender (organization_
 	 */
+	@Value("${bcgov.access.sender}")
 	private String sender;
-	
+
 	/**
 	 * the original fileName
 	 */
