@@ -24,7 +24,7 @@ public class SftpDocumentInputTests {
     private DocumentReadyHandler documentReadyHandlerMock;
 
     @Mock
-private AccessProperties accessProperties;
+    private AccessProperties accessProperties;
 
     @Mock
     private PluginConfig pluginConfig;
