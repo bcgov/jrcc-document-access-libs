@@ -1,5 +1,6 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.http;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.api.DocumentApi;
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
 import ca.bc.gov.open.api.model.Error;
@@ -37,15 +38,16 @@ import java.util.UUID;
 public class DocumentController implements DocumentApi {
 	
 	private DocumentReadyHandler documentReadyHandler;
+	private AccessProperties accessProperties;
 	
 	/**
 	 * Creates a new document controller
 	 * @param documentReadyHandler the service that will handle the document
 	 */
-	public DocumentController(DocumentReadyHandler documentReadyHandler) {
+	public DocumentController(DocumentReadyHandler documentReadyHandler, AccessProperties accessProperties) {
 		
 		this.documentReadyHandler = documentReadyHandler;
-		
+		this.accessProperties = accessProperties;
 	}
 
 	/**

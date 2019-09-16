@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.http;
 
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
@@ -36,6 +37,9 @@ public class DocumentControllerTests {
 	private DocumentReadyHandler documentReadyHandler;
 
 	@Mock
+	private AccessProperties accessProperties;
+
+	@Mock
 	private TransactionInfo transactionInfoMock;
 	
 	@Mock
@@ -53,7 +57,7 @@ public class DocumentControllerTests {
 
 		Mockito.doReturn(FILENAME).when(this.multipartFileWithException).getOriginalFilename();
 		Mockito.when(this.multipartFileWithException.getInputStream()).thenThrow(IOException.class);
-		sut = new DocumentController(this.documentReadyHandler);
+		sut = new DocumentController(this.documentReadyHandler, this.accessProperties);
 	}
 	
 	@Test
@@ -98,7 +102,4 @@ public class DocumentControllerTests {
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), ((ca.bc.gov.open.api.model.Error)response.getBody()).getMessage());
 		assertEquals(Integer.toString(HttpStatus.INTERNAL_SERVER_ERROR.value()), ((ca.bc.gov.open.api.model.Error)response.getBody()).getCode());
 	}
-
-	//@Test
-	//public void post_with
 }

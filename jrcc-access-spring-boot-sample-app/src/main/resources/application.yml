@@ -11,6 +11,7 @@ logging:
 bcgov:
   access:
     input:
+      sender: shreyas
       document-type: test-doc
       plugin: console
     output:

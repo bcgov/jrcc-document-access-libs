@@ -1,5 +1,6 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
@@ -30,13 +31,16 @@ public class ConsoleInput implements CommandLineRunner {
 	private static final String CONSOLE_FILENAME="console.txt";
 	
 	private DocumentReadyHandler documentReadyHandler;
+	private AccessProperties accessProperties;
 
 	/**
 	 * Constructs a new ConsoleInput with the specified DocumentReadyHandler.
 	 * @param documentReadyHandler
+	 * @param accessProperties
 	 */
-	public ConsoleInput(DocumentReadyHandler documentReadyHandler) {
+	public ConsoleInput(DocumentReadyHandler documentReadyHandler, AccessProperties accessProperties) {
 		this.documentReadyHandler = documentReadyHandler;
+		this.accessProperties = accessProperties;
 	}
 	
 	/**
@@ -48,7 +52,7 @@ public class ConsoleInput implements CommandLineRunner {
 		
 		while(scanner.hasNext()) {
 			MDC.put(Constants.MDC_KEY_FILENAME, CONSOLE_FILENAME);
-			TransactionInfo transactionInfo = new TransactionInfo(CONSOLE_FILENAME,"console", LocalDateTime.now());
+			TransactionInfo transactionInfo = new TransactionInfo(CONSOLE_FILENAME, this.accessProperties.getInput().getSender(), LocalDateTime.now());
 
 			documentReadyHandler.handle(scanner.nextLine(), transactionInfo);
 		}	
