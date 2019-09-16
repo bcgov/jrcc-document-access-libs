@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 /**
  * Represents the transaction information
@@ -43,7 +44,7 @@ public class TransactionInfo {
 		this.sender = sender;
 		this.fileName = fileName;
 		this.receivedOn = receivedOn;
-		this.uuid = UUID.
+		this.uuid = UUID.randomUUID();
 	}
 	
 	public String getSender() {
@@ -57,10 +58,12 @@ public class TransactionInfo {
 	public LocalDateTime getReceivedOn() {
 		return receivedOn;
 	}
+
+	public String getUUIDStr(){return this.uuid.toString();}
 	
 	@Override
 	public String toString() {		
-		return	MessageFormat.format("Transaction sent from [{0}] on [{1}], fileName [{2}]", this.sender, this.receivedOn.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), this.fileName);
+		return	MessageFormat.format("Transaction[{3}] sent from [{0}] on [{1}], fileName [{2}]", this.sender, this.receivedOn.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), this.fileName,this.uuid.toString());
 	}
 	
 }
