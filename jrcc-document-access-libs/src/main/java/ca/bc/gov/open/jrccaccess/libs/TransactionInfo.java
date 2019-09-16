@@ -20,7 +20,7 @@ public class TransactionInfo {
 	 */
 	@Value("${bcgov.access.sender}")
 	private String sender;
-
+	
 	/**
 	 * the original fileName
 	 */
