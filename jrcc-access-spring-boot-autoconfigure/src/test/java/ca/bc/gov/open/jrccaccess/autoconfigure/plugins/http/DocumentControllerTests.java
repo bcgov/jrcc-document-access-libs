@@ -3,6 +3,7 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.http;
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
 import org.junit.Before;
@@ -40,6 +41,9 @@ public class DocumentControllerTests {
 	private AccessProperties accessProperties;
 
 	@Mock
+    private PluginConfig pluginConfig;
+
+	@Mock
 	private TransactionInfo transactionInfoMock;
 	
 	@Mock
@@ -57,6 +61,10 @@ public class DocumentControllerTests {
 
 		Mockito.doReturn(FILENAME).when(this.multipartFileWithException).getOriginalFilename();
 		Mockito.when(this.multipartFileWithException.getInputStream()).thenThrow(IOException.class);
+
+		Mockito.when(pluginConfig.getSender()).thenReturn(VALID);
+		Mockito.when(accessProperties.getInput()).thenReturn(pluginConfig);
+
 		sut = new DocumentController(this.documentReadyHandler, this.accessProperties);
 	}
 	
@@ -70,7 +78,7 @@ public class DocumentControllerTests {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ResponseEntity<DocumentReceivedResponse> response = sut.postDocument(VALID, null, null, null, null, null, multipartFile);
+		ResponseEntity<DocumentReceivedResponse> response = sut.postDocument(null, null, null, null, null, multipartFile);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertTrue(response.getBody().getAcknowledge());
 	}
@@ -81,12 +89,16 @@ public class DocumentControllerTests {
 		MultipartFile multipartFile = Mockito.mock(MultipartFile.class);
 		Mockito.doReturn(FILENAME).when(multipartFile).getOriginalFilename();
 		InputStream stream = new ByteArrayInputStream(SERVICE_UNAVAILABLE.getBytes(StandardCharsets.UTF_8));
+
+		Mockito.when(pluginConfig.getSender()).thenReturn(SERVICE_UNAVAILABLE);
+		Mockito.when(accessProperties.getInput()).thenReturn(pluginConfig);
+
 		try {
 			Mockito.doReturn(stream).when(multipartFile).getInputStream();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ResponseEntity response = sut.postDocument(SERVICE_UNAVAILABLE, null, null, null, null, null, multipartFile);
+		ResponseEntity response = sut.postDocument(null, null, null, null, null, multipartFile);
 
 		assertEquals(HttpStatus.SERVICE_UNAVAILABLE, response.getStatusCode());
 		assertEquals(SERVICE_UNAVAILABLE, ((ca.bc.gov.open.api.model.Error)response.getBody()).getMessage());
@@ -96,7 +108,7 @@ public class DocumentControllerTests {
 	@Test
 	public void post_with_io_exception_input_should_return_500_response() {
 		@SuppressWarnings("rawtypes")
-		ResponseEntity response = sut.postDocument(VALID, null, null, null, null, null, this.multipartFileWithException);
+		ResponseEntity response = sut.postDocument(null, null, null, null, null, this.multipartFileWithException);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), ((ca.bc.gov.open.api.model.Error)response.getBody()).getMessage());

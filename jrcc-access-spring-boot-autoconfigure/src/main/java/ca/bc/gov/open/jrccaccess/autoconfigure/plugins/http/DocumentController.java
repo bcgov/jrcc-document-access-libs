@@ -51,12 +51,10 @@ public class DocumentController implements DocumentApi {
 	}
 
 	/**
-	 * POST /document?sender={sender}
+	 * POST /document
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	@Override
-	public ResponseEntity<DocumentReceivedResponse> postDocument(@NotNull @Valid String sender,
-																 UUID xRequestID,
+	public ResponseEntity<DocumentReceivedResponse> postDocument(UUID xRequestID,
 																 UUID xB3TraceId,
 																 UUID xB3ParentSpanId,
 																 UUID xB3SpanId,
@@ -67,7 +65,7 @@ public class DocumentController implements DocumentApi {
 		response.setAcknowledge(true);
 
 		try {
-			TransactionInfo transactionInfo = new TransactionInfo(fileInfo.getOriginalFilename(), sender, LocalDateTime.now());
+			TransactionInfo transactionInfo = new TransactionInfo(fileInfo.getOriginalFilename(), this.accessProperties.getInput().getSender(), LocalDateTime.now());
 			documentReadyHandler.handle(getContent(fileInfo.getInputStream()), transactionInfo);
 		} catch (ServiceUnavailableException e) {
 			Error error = new Error();
