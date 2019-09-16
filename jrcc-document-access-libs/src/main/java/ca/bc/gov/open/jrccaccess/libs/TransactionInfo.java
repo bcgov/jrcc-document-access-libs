@@ -18,7 +18,7 @@ public class TransactionInfo {
 	 * the original sender (organization_
 	 */
 	private String sender;
-
+	
 	/**
 	 * the original fileName
 	 */

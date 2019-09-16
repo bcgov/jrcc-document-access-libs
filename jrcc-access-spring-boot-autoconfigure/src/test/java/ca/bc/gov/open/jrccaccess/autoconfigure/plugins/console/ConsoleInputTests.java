@@ -38,7 +38,7 @@ public class ConsoleInputTests {
         }
         
         Mockito.when(pluginConfig.getSender()).thenReturn("console");
-	    Mockito.when(accessProperties.getInput()).thenReturn(pluginConfig);
+	Mockito.when(accessProperties.getInput()).thenReturn(pluginConfig);
         
         consoleInput = new ConsoleInput(documentReadyHandlerMock, accessProperties);
     }
