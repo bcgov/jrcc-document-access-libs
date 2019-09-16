@@ -21,7 +21,6 @@ paths:
         - $ref: '#/components/parameters/X-B3-ParentSpanId'
         - $ref: '#/components/parameters/X-B3-SpanId'
         - $ref: '#/components/parameters/X-B3-Sampled'
-        - name: sender
           in: query
           description: Entity that sends the file
           required: true

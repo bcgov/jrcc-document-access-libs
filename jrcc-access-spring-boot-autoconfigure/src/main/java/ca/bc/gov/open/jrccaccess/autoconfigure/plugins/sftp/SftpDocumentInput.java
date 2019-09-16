@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentFilenameMissingException;
@@ -31,9 +32,11 @@ public class SftpDocumentInput implements MessageHandler {
     private Logger logger = LoggerFactory.getLogger(SftpDocumentInput.class);
 
     private DocumentReadyHandler documentReadyHandler;
+    private AccessProperties accessProperties;
 
-    public SftpDocumentInput(DocumentReadyHandler documentReadyHandler) {
+    public SftpDocumentInput(DocumentReadyHandler documentReadyHandler, AccessProperties accessProperties) {
         this.documentReadyHandler = documentReadyHandler;
+        this.accessProperties = accessProperties;
     }
 
 
@@ -49,7 +52,7 @@ public class SftpDocumentInput implements MessageHandler {
             String fileName = getFilename(message);
             logger.info("Successfully get file name.");
             MDC.put(Constants.MDC_KEY_FILENAME, fileName);
-            TransactionInfo transactionInfo = new TransactionInfo(fileName,"sftp", LocalDateTime.now());
+            TransactionInfo transactionInfo = new TransactionInfo(fileName, this.accessProperties.getInput().getSender(), LocalDateTime.now());
             logger.debug("Attempting to handler document content");
             this.documentReadyHandler.handle(content, transactionInfo);
             logger.info("successfully handled incoming document.");
