@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class TransactionInfo {
 
+	private UUID uuid;
 	/**
 	 * the original sender (organization_
 	 */
@@ -42,7 +43,7 @@ public class TransactionInfo {
 		this.sender = sender;
 		this.fileName = fileName;
 		this.receivedOn = receivedOn;
-
+		this.uuid = UUID.
 	}
 	
 	public String getSender() {
