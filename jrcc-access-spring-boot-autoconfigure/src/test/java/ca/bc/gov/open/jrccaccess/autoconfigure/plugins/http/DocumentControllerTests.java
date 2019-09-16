@@ -41,7 +41,7 @@ public class DocumentControllerTests {
 	private AccessProperties accessProperties;
 
 	@Mock
-    private PluginConfig pluginConfig;
+    	private PluginConfig pluginConfig;
 
 	@Mock
 	private TransactionInfo transactionInfoMock;

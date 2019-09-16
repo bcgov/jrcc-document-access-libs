@@ -24,10 +24,10 @@ public class SftpDocumentInputTests {
     private DocumentReadyHandler documentReadyHandlerMock;
 
     @Mock
-	private AccessProperties accessProperties;
+private AccessProperties accessProperties;
 
-@Mock
-        private PluginConfig pluginConfig;
+    @Mock
+    private PluginConfig pluginConfig;
 
     @Mock
     private DocumentReadyHandler documentReadyHandlerMockException;
@@ -60,7 +60,7 @@ public class SftpDocumentInputTests {
         Mockito.when(messageException.getHeaders()).thenReturn(exceptionheaders);
 
         Mockito.when(pluginConfig.getSender()).thenReturn("sftp");
-Mockito.when(accessProperties.getInput()).thenReturn(pluginConfig);
+        Mockito.when(accessProperties.getInput()).thenReturn(pluginConfig);
 
         sut = new SftpDocumentInput(documentReadyHandlerMock, accessProperties);
     }
