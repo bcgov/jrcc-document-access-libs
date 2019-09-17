@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure;
 
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.InputConfigMissingException;
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.InvalidConfigException;
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.OutputConfigMissingException;
@@ -8,6 +9,7 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqOutputPr
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,6 +39,11 @@ public class AccessAutoConfiguration {
 		logger.info("Bootstraping Access Library");
 		logger.info("Input plugin: {}", accessProperties.getInput().getPlugin());
 		logger.info("Output plugin: {}", accessProperties.getOutput().getPlugin());
+	}
+
+	@Bean(name="inputConfig")
+	public PluginConfig inputConfig() {
+		return accessProperties.getInput();
 	}
 	
 }

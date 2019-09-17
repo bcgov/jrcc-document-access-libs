@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentFilenameMissingException;
@@ -11,6 +12,8 @@ import org.slf4j.MDC;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.websocket.MessageHandler;
 import java.io.BufferedReader;
@@ -31,15 +34,21 @@ public class SftpDocumentInput implements MessageHandler {
     private Logger logger = LoggerFactory.getLogger(SftpDocumentInput.class);
 
     private DocumentReadyHandler documentReadyHandler;
+    private PluginConfig inputConfig;
 
-    public SftpDocumentInput(DocumentReadyHandler documentReadyHandler) {
+    public SftpDocumentInput(DocumentReadyHandler documentReadyHandler, @Qualifier("inputConfig") PluginConfig inputConfig) {
         this.documentReadyHandler = documentReadyHandler;
+        this.inputConfig = inputConfig;
     }
 
 
     public void handleMessage(Message<InputStream> message) throws DocumentMessageException {
 
         if(message == null) throw new IllegalArgumentException("Message is required.");
+
+        if (StringUtils.isBlank(inputConfig.getSender())) {
+            logger.warn("Sender not specified in application.yml, using default value.");
+        }
 
         try {
             logger.debug("Attempting to read downloaded file.");
@@ -49,7 +58,7 @@ public class SftpDocumentInput implements MessageHandler {
             String fileName = getFilename(message);
             logger.info("Successfully get file name.");
             MDC.put(Constants.MDC_KEY_FILENAME, fileName);
-            TransactionInfo transactionInfo = new TransactionInfo(fileName,"sftp", LocalDateTime.now());
+            TransactionInfo transactionInfo = new TransactionInfo(fileName, inputConfig.getSender(), LocalDateTime.now());
             logger.debug("Attempting to handler document content");
             this.documentReadyHandler.handle(content, transactionInfo);
             logger.info("successfully handled incoming document.");

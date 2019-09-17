@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import org.junit.Before;
@@ -20,6 +21,9 @@ public class SftpDocumentInputTests {
 
     @Mock
     private DocumentReadyHandler documentReadyHandlerMock;
+
+    @Mock
+    private PluginConfig pluginConfig;
 
     @Mock
     private DocumentReadyHandler documentReadyHandlerMockException;
@@ -50,7 +54,10 @@ public class SftpDocumentInputTests {
         Map exceptionMap = Mockito.mock(Map.class);
         MessageHeaders exceptionheaders = new MessageHeaders(exceptionMap);
         Mockito.when(messageException.getHeaders()).thenReturn(exceptionheaders);
-        sut = new SftpDocumentInput(documentReadyHandlerMock);
+
+        Mockito.when(pluginConfig.getSender()).thenReturn("test-sender-sftp");
+
+        sut = new SftpDocumentInput(documentReadyHandlerMock, pluginConfig);
     }
 
     @Test(expected = Test.None.class )
@@ -63,13 +70,13 @@ public class SftpDocumentInputTests {
     @Test(expected = IllegalArgumentException.class)
     public void with_message_null_throw_a_IllegalArgumentException() throws DocumentMessageException {
 
-        SftpDocumentInput sftpDocumentInput = new SftpDocumentInput(documentReadyHandlerMock);
+        SftpDocumentInput sftpDocumentInput = new SftpDocumentInput(documentReadyHandlerMock, pluginConfig);
         sftpDocumentInput.handleMessage(null);
     }
 
     @Test(expected = DocumentMessageException.class)
     public void with_filename_null_in_messageHeaders_throw_a_DocumentMessageException() throws DocumentMessageException {
-        SftpDocumentInput sftpDocumentInput = new SftpDocumentInput(documentReadyHandlerMock);
+        SftpDocumentInput sftpDocumentInput = new SftpDocumentInput(documentReadyHandlerMock, pluginConfig);
         sftpDocumentInput.handleMessage(messageException);
     }
 }

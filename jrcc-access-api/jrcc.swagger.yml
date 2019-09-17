@@ -24,7 +24,7 @@ paths:
         - name: sender
           in: query
           description: Entity that sends the file
-          required: true
+          required: false
           schema:
             type: string
       requestBody:
