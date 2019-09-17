@@ -427,7 +427,7 @@ logging:
 bcgov:
   access:
     input:
-      sender: test-sender
+      sender: bcgov
       document-type: test-doc
       plugin: http
     output:
@@ -462,7 +462,7 @@ update the [application.yml](jrcc-access-spring-boot-sample-app/src/main/resourc
 bcgov:
   access:
     input: http
-      sender: test-sender
+      sender: bcgov
     output:
       document-type: test-doc
       plugin: rabbitmq
@@ -510,7 +510,7 @@ logging:
 bcgov:
   access:
     input:
-      sender: test-sender
+      sender: bcgov
       document-type: test-doc
       plugin: sftp
       sftp:

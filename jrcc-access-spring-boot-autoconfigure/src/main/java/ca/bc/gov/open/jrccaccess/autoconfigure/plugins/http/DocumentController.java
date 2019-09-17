@@ -1,6 +1,5 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.http;
 
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.api.DocumentApi;
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
@@ -13,19 +12,16 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Qualifier;
 

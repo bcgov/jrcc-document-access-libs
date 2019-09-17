@@ -1,7 +1,6 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
@@ -13,6 +12,8 @@ import org.slf4j.MDC;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.websocket.MessageHandler;
 import java.io.BufferedReader;
@@ -33,11 +34,11 @@ public class SftpDocumentInput implements MessageHandler {
     private Logger logger = LoggerFactory.getLogger(SftpDocumentInput.class);
 
     private DocumentReadyHandler documentReadyHandler;
-    private AccessProperties accessProperties;
+    private PluginConfig inputConfig;
 
-    public SftpDocumentInput(DocumentReadyHandler documentReadyHandler, AccessProperties accessProperties) {
+    public SftpDocumentInput(DocumentReadyHandler documentReadyHandler, @Qualifier("inputConfig") PluginConfig inputConfig) {
         this.documentReadyHandler = documentReadyHandler;
-        this.accessProperties = accessProperties;
+        this.inputConfig = inputConfig;
     }
 
 
@@ -45,15 +46,10 @@ public class SftpDocumentInput implements MessageHandler {
 
         if(message == null) throw new IllegalArgumentException("Message is required.");
 
-        PluginConfig inputConfig = new PluginConfig();
-
-		inputConfig = this.accessProperties.getInput();
-
-		if (inputConfig == null){
-			throw new DocumentMessageException("Input config not present.");
+        if (StringUtils.isBlank(inputConfig.getSender())) {
+			//logger.warn
+			inputConfig.setSender("unknown");
 		}
-
-		if (inputConfig.getSender() == null) inputConfig.setSender("sftp");
 
         try {
             logger.debug("Attempting to read downloaded file.");

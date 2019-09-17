@@ -1,7 +1,6 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
@@ -20,9 +19,6 @@ public class ConsoleInputTests {
     private DocumentReadyHandler documentReadyHandlerMock;
 
     @Mock
-    private AccessProperties accessProperties;
-
-    @Mock
     private PluginConfig pluginConfig;
 
     @Mock
@@ -37,10 +33,9 @@ public class ConsoleInputTests {
             e.printStackTrace();
         }
         
-        Mockito.when(pluginConfig.getSender()).thenReturn("console");
-	Mockito.when(accessProperties.getInput()).thenReturn(pluginConfig);
-        
-        consoleInput = new ConsoleInput(documentReadyHandlerMock, accessProperties);
+        Mockito.when(pluginConfig.getSender()).thenReturn("test-sender-console");
+
+        consoleInput = new ConsoleInput(documentReadyHandlerMock, pluginConfig);
     }
 
     @Test(expected = Test.None.class /* no exception expected */)

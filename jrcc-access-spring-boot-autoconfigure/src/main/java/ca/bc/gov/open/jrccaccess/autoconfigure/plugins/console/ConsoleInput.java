@@ -1,6 +1,5 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
@@ -10,9 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * The console input reads message from standard input
@@ -32,16 +33,16 @@ public class ConsoleInput implements CommandLineRunner {
 	private static final String CONSOLE_FILENAME="console.txt";
 	
 	private DocumentReadyHandler documentReadyHandler;
-	private AccessProperties accessProperties;
+	private PluginConfig inputConfig;
 
 	/**
 	 * Constructs a new ConsoleInput with the specified DocumentReadyHandler.
 	 * @param documentReadyHandler
 	 * @param accessProperties
 	 */
-	public ConsoleInput(DocumentReadyHandler documentReadyHandler, AccessProperties accessProperties) {
+	public ConsoleInput(DocumentReadyHandler documentReadyHandler, @Qualifier("inputConfig") PluginConfig inputConfig) {
 		this.documentReadyHandler = documentReadyHandler;
-		this.accessProperties = accessProperties;
+		this.inputConfig = inputConfig;
 	}
 	
 	/**
@@ -51,15 +52,10 @@ public class ConsoleInput implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
 
-		PluginConfig inputConfig = new PluginConfig();
-
-		inputConfig = this.accessProperties.getInput();
-
-		if (inputConfig == null){
-			throw new Exception("Input config not present");
+		if (StringUtils.isBlank(inputConfig.getSender())) {
+			//logger.warn
+			inputConfig.setSender("unknown");
 		}
-
-		if (inputConfig.getSender() == null) inputConfig.setSender("console");
 		
 		while(scanner.hasNext()) {
 			MDC.put(Constants.MDC_KEY_FILENAME, CONSOLE_FILENAME);
