@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
@@ -49,10 +50,20 @@ public class ConsoleInput implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
+
+		PluginConfig inputConfig = new PluginConfig();
+
+		inputConfig = this.accessProperties.getInput();
+
+		if (inputConfig == null){
+			throw new Exception("Input config not present");
+		}
+
+		if (inputConfig.getSender() == null) inputConfig.setSender("console");
 		
 		while(scanner.hasNext()) {
 			MDC.put(Constants.MDC_KEY_FILENAME, CONSOLE_FILENAME);
-			TransactionInfo transactionInfo = new TransactionInfo(CONSOLE_FILENAME, this.accessProperties.getInput().getSender(), LocalDateTime.now());
+			TransactionInfo transactionInfo = new TransactionInfo(CONSOLE_FILENAME, inputConfig.getSender(), LocalDateTime.now());
 
 			documentReadyHandler.handle(scanner.nextLine(), transactionInfo);
 		}	

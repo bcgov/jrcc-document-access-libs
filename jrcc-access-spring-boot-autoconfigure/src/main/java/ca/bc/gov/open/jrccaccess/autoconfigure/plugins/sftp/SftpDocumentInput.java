@@ -2,6 +2,7 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentFilenameMissingException;
@@ -44,6 +45,16 @@ public class SftpDocumentInput implements MessageHandler {
 
         if(message == null) throw new IllegalArgumentException("Message is required.");
 
+        PluginConfig inputConfig = new PluginConfig();
+
+		inputConfig = this.accessProperties.getInput();
+
+		if (inputConfig == null){
+			throw new DocumentMessageException("Input config not present.");
+		}
+
+		if (inputConfig.getSender() == null) inputConfig.setSender("sftp");
+
         try {
             logger.debug("Attempting to read downloaded file.");
             String content = getContent(message);
@@ -52,7 +63,7 @@ public class SftpDocumentInput implements MessageHandler {
             String fileName = getFilename(message);
             logger.info("Successfully get file name.");
             MDC.put(Constants.MDC_KEY_FILENAME, fileName);
-            TransactionInfo transactionInfo = new TransactionInfo(fileName, this.accessProperties.getInput().getSender(), LocalDateTime.now());
+            TransactionInfo transactionInfo = new TransactionInfo(fileName, inputConfig.getSender(), LocalDateTime.now());
             logger.debug("Attempting to handler document content");
             this.documentReadyHandler.handle(content, transactionInfo);
             logger.info("successfully handled incoming document.");

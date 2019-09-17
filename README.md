@@ -462,7 +462,7 @@ update the [application.yml](jrcc-access-spring-boot-sample-app/src/main/resourc
 bcgov:
   access:
     input: http
-    sender: test-sender
+      sender: test-sender
     output:
       document-type: test-doc
       plugin: rabbitmq

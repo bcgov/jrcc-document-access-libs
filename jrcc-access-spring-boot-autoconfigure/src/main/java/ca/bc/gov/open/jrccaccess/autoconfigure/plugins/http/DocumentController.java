@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.http;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.api.DocumentApi;
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
 import ca.bc.gov.open.api.model.Error;
@@ -54,6 +55,7 @@ public class DocumentController implements DocumentApi {
 	 * POST /document
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
+	@Override
 	public ResponseEntity<DocumentReceivedResponse> postDocument(UUID xRequestID,
 																 UUID xB3TraceId,
 																 UUID xB3ParentSpanId,
@@ -64,8 +66,21 @@ public class DocumentController implements DocumentApi {
 		DocumentReceivedResponse response = new DocumentReceivedResponse();
 		response.setAcknowledge(true);
 
+		PluginConfig inputConfig = new PluginConfig();
+
+		inputConfig = this.accessProperties.getInput();
+
+		if (inputConfig == null) {
+			Error error = new Error();
+			error.setCode(Integer.toString(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+			error.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+			return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		if (inputConfig.getSender() == null) inputConfig.setSender("http");
+
 		try {
-			TransactionInfo transactionInfo = new TransactionInfo(fileInfo.getOriginalFilename(), this.accessProperties.getInput().getSender(), LocalDateTime.now());
+			TransactionInfo transactionInfo = new TransactionInfo(fileInfo.getOriginalFilename(), inputConfig.getSender(), LocalDateTime.now());
 			documentReadyHandler.handle(getContent(fileInfo.getInputStream()), transactionInfo);
 		} catch (ServiceUnavailableException e) {
 			Error error = new Error();

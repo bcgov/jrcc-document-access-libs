@@ -21,11 +21,6 @@ paths:
         - $ref: '#/components/parameters/X-B3-ParentSpanId'
         - $ref: '#/components/parameters/X-B3-SpanId'
         - $ref: '#/components/parameters/X-B3-Sampled'
-          in: query
-          description: Entity that sends the file
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           multipart/form-data:
