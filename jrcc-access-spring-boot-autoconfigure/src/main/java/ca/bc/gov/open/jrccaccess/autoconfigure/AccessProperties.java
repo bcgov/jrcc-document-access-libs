@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents the custom configuration for the document flow lib
@@ -39,7 +40,7 @@ public class AccessProperties {
 		 * @return
 		 */
 		public String getSender() {
-			return sender;
+			return StringUtils.isBlank(sender) ? "unknown" : sender;
 		}
 
 		/**

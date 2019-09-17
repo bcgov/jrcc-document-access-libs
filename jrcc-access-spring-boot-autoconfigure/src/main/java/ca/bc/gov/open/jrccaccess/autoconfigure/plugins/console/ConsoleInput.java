@@ -58,7 +58,6 @@ public class ConsoleInput implements CommandLineRunner {
 
 		if (StringUtils.isBlank(inputConfig.getSender())) {
 			logger.warn("Sender not specified in application.yml, using default value.");
-			inputConfig.setSender("unknown");
 		}
 		
 		while(scanner.hasNext()) {

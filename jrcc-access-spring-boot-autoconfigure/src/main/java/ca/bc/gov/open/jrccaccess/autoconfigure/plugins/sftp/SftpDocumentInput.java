@@ -48,7 +48,6 @@ public class SftpDocumentInput implements MessageHandler {
 
         if (StringUtils.isBlank(inputConfig.getSender())) {
             logger.warn("Sender not specified in application.yml, using default value.");
-            inputConfig.setSender("unknown");
         }
 
         try {
