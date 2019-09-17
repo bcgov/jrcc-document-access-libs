@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public class DocumentReadyHandlerTests {
 
@@ -23,22 +24,19 @@ public class DocumentReadyHandlerTests {
 	
 	@Mock
 	private TransactionInfo transactionInfoMock;
-	
-	
-	
+
 	@Before
 	public void init() throws Exception {
 		
 		MockitoAnnotations.initMocks(this);
 		Mockito.doNothing().when(this.documentOutput).send(Mockito.anyString(), Mockito.any());
 		Mockito.when(documentProcessor.processDocument(Mockito.anyString(), Mockito.any())).thenReturn("processed");
-
+		Mockito.when(transactionInfoMock.getID()).thenReturn(UUID.randomUUID());
 	}
 	
 	
 	@Test(expected = Test.None.class )
 	public void when_with_valid_input_no_processor_should_process() throws Exception {
-
 		Optional<DocumentProcessor> documentProcessorOptional = Optional.empty();
 		sut = new DocumentReadyHandler(documentOutput, documentProcessorOptional);
 		sut.handle("awesome content", transactionInfoMock);

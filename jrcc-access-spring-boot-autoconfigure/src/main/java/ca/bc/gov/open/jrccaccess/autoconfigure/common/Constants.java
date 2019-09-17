@@ -9,6 +9,7 @@ public class Constants {
      * Represents Java Logging MDC KEY - filename
      */
     public static final String MDC_KEY_FILENAME="transaction.filename";
+    public static final String MDC_KEY_TRANSACTION_ID="transaction.id";
 
     private Constants() {
         throw new IllegalStateException("Constants class");
