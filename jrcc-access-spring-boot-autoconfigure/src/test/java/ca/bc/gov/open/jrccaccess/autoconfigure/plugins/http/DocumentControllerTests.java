@@ -79,27 +79,27 @@ public class DocumentControllerTests {
 		assertTrue(response.getBody().getAcknowledge());
 	}
 
-	// @Test
-	// public void post_with_missing_sender_in_query_string_should_use_config_sender() {
-	// 	@SuppressWarnings("rawtypes")
-	// 	MultipartFile multipartFile = Mockito.mock(MultipartFile.class);
-	// 	Mockito.doReturn(FILENAME).when(multipartFile).getOriginalFilename();
-	// 	InputStream stream = new ByteArrayInputStream("awesome_content".getBytes(StandardCharsets.UTF_8));
+	@Test
+	public void post_with_missing_sender_in_query_string_should_use_config_sender() {
+		@SuppressWarnings("rawtypes")
+		MultipartFile multipartFile = Mockito.mock(MultipartFile.class);
+		Mockito.doReturn(FILENAME).when(multipartFile).getOriginalFilename();
+		InputStream stream = new ByteArrayInputStream("awesome_content".getBytes(StandardCharsets.UTF_8));
 
-	// 	Mockito.when(pluginConfig.getSender()).thenReturn(null);
-	// 	Mockito.when(accessProperties.getInput()).thenReturn(pluginConfig);
+		Mockito.when(this.transactionInfoMock.getSender()).thenReturn(SERVICE_UNAVAILABLE);
+		Mockito.when(pluginConfig.getSender()).thenReturn("test-sender-http");
 
-	// 	try {
-	// 		Mockito.doReturn(stream).when(multipartFile).getInputStream();
-	// 	} catch (IOException e) {
-	// 		e.printStackTrace();
-	// 	}
+		try {
+			Mockito.doReturn(stream).when(multipartFile).getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-	// 	ResponseEntity<DocumentReceivedResponse> response = sut.postDocument(null, null, null, null, null, multipartFile);
-	// 	assertEquals(HttpStatus.OK, response.getStatusCode());
-	// 	assertTrue(response.getBody().getAcknowledge());
-	// 	assertEquals(pluginConfig.getSender(), "http");
-	// }
+		ResponseEntity<DocumentReceivedResponse> response = sut.postDocument(null, null, null, null, null, SERVICE_UNAVAILABLE, multipartFile);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertTrue(response.getBody().getAcknowledge());
+		assertEquals(pluginConfig.getSender(), "test-sender-http");
+	}
 
 	@Test
 	public void post_with_sevice_unavailable_input_should_return_503_response() {

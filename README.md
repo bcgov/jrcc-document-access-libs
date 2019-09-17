@@ -44,6 +44,7 @@ logging.pattern.console property only works if we use Logback logging implementa
 | --- | --- | --- |
 | [bcgov.access.input.document-type](#bcgovaccessinputdocument-type) | String | No |
 | [bcgov.access.input.plugin](#bcgovaccessinputplugin) | String | Yes |
+| [bcgov.access.input.sender](#bcgovaccessinputsender) | String | No |
 
 #### bcgov.access.input.document-type
 
@@ -57,6 +58,12 @@ Sets the document type to be manipulated
 * Value type is String
 
 Sets the plugin type
+
+#### bcgov.access.input.sender
+
+* Value type is String
+
+Sets the sender of the request
 
 ## Input Plugins
 
