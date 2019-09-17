@@ -67,8 +67,8 @@ public class DocumentController implements DocumentApi {
 		DocumentReceivedResponse response = new DocumentReceivedResponse();
 		response.setAcknowledge(true);
 
-		if (StringUtils.isBlank(sender) && StringUtils.isBlank(inputConfig.getSender())) {
-			logger.warn("Sender not specified in application.yml, using default value.");
+		if (StringUtils.isBlank(sender) && inputConfig.getSender().equals("unknown")) {
+			logger.warn("Sender not specified in application.yml, using default value of unknown.");
 		}
 
 		try {

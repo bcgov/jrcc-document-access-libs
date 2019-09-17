@@ -12,7 +12,6 @@ import org.slf4j.MDC;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.websocket.MessageHandler;
@@ -46,8 +45,8 @@ public class SftpDocumentInput implements MessageHandler {
 
         if(message == null) throw new IllegalArgumentException("Message is required.");
 
-        if (StringUtils.isBlank(inputConfig.getSender())) {
-            logger.warn("Sender not specified in application.yml, using default value.");
+        if (inputConfig.getSender().equals("unknown")) {
+            logger.warn("Sender not specified in application.yml, using default value of unknown.");
         }
 
         try {
