@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,8 +55,8 @@ public class ConsoleInput implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
 
-		if (StringUtils.isBlank(inputConfig.getSender())) {
-			logger.warn("Sender not specified in application.yml, using default value.");
+		if (inputConfig.getSender().equals("unknown")) {
+			logger.warn("Sender not specified in application.yml, using default value of unknown.");
 		}
 		
 		while(scanner.hasNext()) {
