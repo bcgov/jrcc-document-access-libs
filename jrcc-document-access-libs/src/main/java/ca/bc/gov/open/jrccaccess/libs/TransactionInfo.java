@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 public class TransactionInfo {
 
-	private UUID uuid;
+	private UUID id;
 	/**
 	 * the original sender (organization_
 	 */
@@ -36,7 +36,9 @@ public class TransactionInfo {
 			@JsonProperty("fileName")String fileName, 
 			@JsonProperty("sender")String sender, 
 			@JsonProperty("receivedOn")LocalDateTime receivedOn) {
-		
+
+		this.id = UUID.randomUUID();
+
 		if(sender == null || sender.isEmpty()) throw new IllegalArgumentException("sender");
 		if(fileName == null || fileName.isEmpty()) throw new IllegalArgumentException("fileName");	
 		if(receivedOn == null) throw new IllegalArgumentException("receivedOn");
@@ -44,7 +46,6 @@ public class TransactionInfo {
 		this.sender = sender;
 		this.fileName = fileName;
 		this.receivedOn = receivedOn;
-		this.uuid = UUID.randomUUID();
 	}
 	
 	public String getSender() {
@@ -59,11 +60,11 @@ public class TransactionInfo {
 		return receivedOn;
 	}
 
-	public String getUUIDStr(){return this.uuid.toString();}
+	public UUID getID() { return this.id; }
 	
 	@Override
 	public String toString() {		
-		return	MessageFormat.format("Transaction[{3}] sent from [{0}] on [{1}], fileName [{2}]", this.sender, this.receivedOn.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), this.fileName,getUUIDStr());
+		return	MessageFormat.format("Transaction[{3}] sent from [{0}] on [{1}], fileName [{2}]", this.sender, this.receivedOn.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), this.fileName,this.id);
 	}
 	
 }
