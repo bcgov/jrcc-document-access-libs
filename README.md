@@ -25,11 +25,12 @@ Add settings into the `application.settings` or `application.yml` file.
  ```properties
  logging.level.root = INFO  
  logging.level.ca.gov.bc = DEBUG
- logging.pattern.console = "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} %X{transaction.filename} - %msg%n"
+ logging.pattern.console = "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} %X{transaction.filename} %X{transaction.id}- %msg%n"
  ```
 logging.pattern.console property only works if we use Logback logging implementation (the default). The pattern which is needed to be specified also follows the [Logback layout rules](https://logback.qos.ch/manual/layouts.html#ClassicPatternLayout)
 
 %X{transaction.filename} is the java logging MDC key for transaction filename supported in jrcc-document-access-libs.
+%X{transaction.id} is java logging MDC key for transaction id supported in jrcc-document-access-libs.
 
  
  ##### Change settings for input/output plugins - using the following configuration guide for Plugin.

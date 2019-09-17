@@ -1,11 +1,13 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.services;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.libs.DocumentOutput;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.processing.DocumentProcessor;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -47,6 +49,7 @@ public class DocumentReadyHandler {
 
 		if(transactionInfo == null)
 			throw new IllegalArgumentException("TransactionInfo is required.");
+		MDC.put(Constants.MDC_KEY_TRANSACTION_ID, transactionInfo.getID().toString());
 
 		logger.debug("New document in {}", this.getClass().getName());
 
