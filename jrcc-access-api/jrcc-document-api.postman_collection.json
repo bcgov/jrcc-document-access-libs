@@ -24,7 +24,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/document",
+					"raw": "http://localhost:8080/document?sender=bcgov",
 					"protocol": "http",
 					"host": [
 						"localhost"

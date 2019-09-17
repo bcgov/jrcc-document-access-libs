@@ -13,7 +13,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -23,7 +25,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * The document controller provides an endpoint to submit a document.
@@ -39,45 +43,36 @@ import java.util.UUID;
 public class DocumentController implements DocumentApi {
 	
 	private DocumentReadyHandler documentReadyHandler;
-	private AccessProperties accessProperties;
+	private PluginConfig inputConfig;
 	
 	/**
 	 * Creates a new document controller
 	 * @param documentReadyHandler the service that will handle the document
 	 */
-	public DocumentController(DocumentReadyHandler documentReadyHandler, AccessProperties accessProperties) {
+	public DocumentController(DocumentReadyHandler documentReadyHandler, @Qualifier("inputConfig") PluginConfig inputConfig) {
 		
 		this.documentReadyHandler = documentReadyHandler;
-		this.accessProperties = accessProperties;
+		this.inputConfig = inputConfig;
 	}
 
-	/**
-	 * POST /document
-	 */
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
 	public ResponseEntity<DocumentReceivedResponse> postDocument(UUID xRequestID,
 																 UUID xB3TraceId,
 																 UUID xB3ParentSpanId,
 																 UUID xB3SpanId,
 																 String xB3Sampled,
+																 @Valid String sender,
 																 @Valid MultipartFile fileInfo) {
 
 		DocumentReceivedResponse response = new DocumentReceivedResponse();
 		response.setAcknowledge(true);
 
-		PluginConfig inputConfig = new PluginConfig();
-
-		inputConfig = this.accessProperties.getInput();
-
-		if (inputConfig == null) {
-			Error error = new Error();
-			error.setCode(Integer.toString(HttpStatus.INTERNAL_SERVER_ERROR.value()));
-			error.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-			return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+		if (StringUtils.isBlank(sender)) {
+			if (StringUtils.isBlank(inputConfig.getSender())) {
+				//logger.warn
+				inputConfig.setSender("unknown");
+			}
 		}
-
-		if (inputConfig.getSender() == null) inputConfig.setSender("http");
 
 		try {
 			TransactionInfo transactionInfo = new TransactionInfo(fileInfo.getOriginalFilename(), inputConfig.getSender(), LocalDateTime.now());
