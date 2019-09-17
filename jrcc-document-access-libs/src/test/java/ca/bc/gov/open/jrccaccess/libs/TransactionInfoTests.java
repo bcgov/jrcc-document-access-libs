@@ -57,11 +57,8 @@ public class TransactionInfoTests {
 	
 	@Test
 	public void with_valid_input_toString_should_print_valid_message() {
-		
 		TransactionInfo sut = new TransactionInfo("myfile.txt", "me", LocalDateTime.of(2019, Month.FEBRUARY, 1, 10,10,10));
-	
-		assertEquals("Transaction sent from [me] on [2019-02-01T10:10:10], fileName [myfile.txt]", sut.toString());
-		
+		assertEquals("Transaction["+sut.getID()+"] sent from [me] on [2019-02-01T10:10:10], fileName [myfile.txt]",sut.toString());
 	}
 	
 	
