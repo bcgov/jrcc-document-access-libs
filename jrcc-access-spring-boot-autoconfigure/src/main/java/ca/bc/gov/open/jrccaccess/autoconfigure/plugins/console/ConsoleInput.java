@@ -10,6 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
@@ -35,6 +37,8 @@ public class ConsoleInput implements CommandLineRunner {
 	private DocumentReadyHandler documentReadyHandler;
 	private PluginConfig inputConfig;
 
+	private Logger logger = LoggerFactory.getLogger(ConsoleInput.class);
+
 	/**
 	 * Constructs a new ConsoleInput with the specified DocumentReadyHandler.
 	 * @param documentReadyHandler
@@ -53,7 +57,7 @@ public class ConsoleInput implements CommandLineRunner {
 		Scanner scanner = new Scanner(System.in);
 
 		if (StringUtils.isBlank(inputConfig.getSender())) {
-			//logger.warn
+			logger.warn("Sender not specified in application.yml, using default value.");
 			inputConfig.setSender("unknown");
 		}
 		

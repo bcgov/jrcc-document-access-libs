@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
 import java.io.BufferedReader;
@@ -40,6 +42,8 @@ public class DocumentController implements DocumentApi {
 	
 	private DocumentReadyHandler documentReadyHandler;
 	private PluginConfig inputConfig;
+
+	private Logger logger = LoggerFactory.getLogger(DocumentController.class);
 	
 	/**
 	 * Creates a new document controller
@@ -65,7 +69,7 @@ public class DocumentController implements DocumentApi {
 
 		if (StringUtils.isBlank(sender)) {
 			if (StringUtils.isBlank(inputConfig.getSender())) {
-				//logger.warn
+				logger.warn("Sender not specified in application.yml, using default value.");
 				inputConfig.setSender("unknown");
 			}
 		}
