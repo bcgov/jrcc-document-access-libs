@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import java.text.MessageFormat;
 
 import javax.validation.constraints.Min;
 
@@ -41,19 +40,6 @@ public class SftpInputProperties {
 	private boolean allowUnknownKeys;
 
 	private String knownHostFile;
-
-	public String formatPublicFields() {
-		return MessageFormat.format(
-			"Host: {0}\n" +
-			"Port: {1}\n" +
-			"Username: {2}\n" +
-			"Remote Directory: {3}\n" +
-			"Filter Pattern: {4}\n" +
-			"Cron: {5}\n" +
-			"Max Message per Poll: {6}\n" +
-			"Known Host File: {7}\n",
-			this.getHost(), this.getPort(), this.getUsername(), this.getRemoteDirectory(), this.getFilterPattern(), this.getCron(), this.getMaxMessagePerPoll(), this.getKnownHostFile());
-	}
 
 	public String getRemoteDirectory() {
 		return remoteDirectory;

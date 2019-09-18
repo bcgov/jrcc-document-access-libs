@@ -42,8 +42,14 @@ public class AutoConfiguration {
     public AutoConfiguration(SftpInputProperties sftpInputProperties) {
         this.properties = sftpInputProperties;
 
-        logger.debug("SFTP Configuration:\n");
-        logger.debug(this.properties.formatPublicFields());
+        logger.debug("SFTP Configuration: Host => [{}]", this.properties.getHost());
+        logger.debug("SFTP Configuration: Port => [{}]", this.properties.getPort());
+        logger.debug("SFTP Configuration: Username => [{}]", this.properties.getUsername());
+        logger.debug("SFTP Configuration: Remote Directory => [{}]", this.properties.getRemoteDirectory());
+        logger.debug("SFTP Configuration: Filter Pattern => [{}]", this.properties.getFilterPattern());
+        logger.debug("SFTP Configuration: Cron => [{}]", this.properties.getCron());
+        logger.debug("SFTP Configuration: Max Message Per Poll => [{}]", this.properties.getMaxMessagePerPoll());
+        logger.debug("SFTP Configuration: Known Host File => [{}]", this.properties.getKnownHostFile());
 
     }
 
