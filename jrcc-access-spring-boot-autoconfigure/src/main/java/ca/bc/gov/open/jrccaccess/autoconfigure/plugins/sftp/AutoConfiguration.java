@@ -42,8 +42,8 @@ public class AutoConfiguration {
     public AutoConfiguration(SftpInputProperties sftpInputProperties) {
         this.properties = sftpInputProperties;
 
-        logger.debug("SFTP Configuration: Host => [{}]", this.properties.getHost());
-        logger.debug("SFTP Configuration: Port => [{}]", this.properties.getPort());
+        logger.debug("SFTP Configuration:\n");
+        logger.debug(this.properties.formatPublicFields());
 
     }
 
