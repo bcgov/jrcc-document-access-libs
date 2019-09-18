@@ -101,7 +101,7 @@ public class RedisStorageService implements StorageService {
 	public Boolean deleteString(String key) throws DocumentMessageException {
 
 		try {
-                        this.cacheManager.getCache(accessProperties.getInput().getDocumentType()).evict(key);
+			this.cacheManager.getCache(accessProperties.getInput().getDocumentType()).evict(key);
 			return true;
 		} catch (RedisConnectionFailureException e) {
 			throw new DocumentMessageException(serviceUnavailableMessage, e.getCause());

@@ -67,6 +67,7 @@ public class RabbitMqDocumentInput {
         this.redisStorageService.deleteString(storageProperties.getKey());
 
         logger.info("document successfully deleted from redis storage");
+
 		logger.info("message successfully acknowledged");
 		MDC.clear();
 	}

@@ -15,8 +15,11 @@ import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.core.MessageSource;
+import org.springframework.integration.file.filters.ChainFileListFilter;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
+import org.springframework.integration.metadata.ConcurrentMetadataStore;
+import org.springframework.integration.sftp.filters.SftpPersistentAcceptOnceFileListFilter;
 import org.springframework.integration.sftp.filters.SftpRegexPatternFileListFilter;
 import org.springframework.integration.sftp.inbound.SftpStreamingMessageSource;
 import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
@@ -38,10 +41,10 @@ public class AutoConfiguration {
     private Logger logger = LoggerFactory.getLogger(AutoConfiguration.class);
 
     private SftpInputProperties properties;
+    private ConcurrentMetadataStore metadataStore;
 
     public AutoConfiguration(SftpInputProperties sftpInputProperties) {
         this.properties = sftpInputProperties;
-
         logger.debug("SFTP Configuration: Host => [{}]", this.properties.getHost());
         logger.debug("SFTP Configuration: Port => [{}]", this.properties.getPort());
         logger.debug("SFTP Configuration: Username => [{}]", this.properties.getUsername());
@@ -50,9 +53,7 @@ public class AutoConfiguration {
         logger.debug("SFTP Configuration: Cron => [{}]", this.properties.getCron());
         logger.debug("SFTP Configuration: Max Message Per Poll => [{}]", this.properties.getMaxMessagePerPoll());
         logger.debug("SFTP Configuration: Known Host File => [{}]", this.properties.getKnownHostFile());
-
     }
-
 
     @Bean
     public SessionFactory<ChannelSftp.LsEntry> sftpSessionFactory() throws InvalidConfigException {
@@ -97,10 +98,17 @@ public class AutoConfiguration {
     @Bean
     @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}", maxMessagesPerPoll = "${bcgov.access.input.sftp.max-message-per-poll}"))
     public MessageSource<InputStream> sftpMessageSource() {
+
+        ChainFileListFilter<ChannelSftp.LsEntry> filterChain = new ChainFileListFilter<>();
+        filterChain.addFilter( new SftpRegexPatternFileListFilter(properties.getFilterPattern()) );
+        filterChain.addFilter( new SftpPersistentAcceptOnceFileListFilter(metadataStore, "sftpSource/"));
+
         SftpStreamingMessageSource messageSource = new SftpStreamingMessageSource(template());
         messageSource.setRemoteDirectory(properties.getRemoteDirectory());
-        if(properties.getFilterPattern() != null && !"".equals(properties.getFilterPattern()))
-            messageSource.setFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));
+        if(properties.getFilterPattern() != null && !"".equals(properties.getFilterPattern())) {
+//            messageSource.setFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));
+            messageSource.setFilter(filterChain);
+        }
         return messageSource;
     }
 
