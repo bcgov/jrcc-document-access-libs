@@ -15,11 +15,11 @@ import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.integration.redis.metadata.RedisMetadataStore;
+
 import javax.naming.OperationNotSupportedException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Redis configuration properties
@@ -27,7 +27,7 @@ import java.util.List;
  * @since 0.4.0
  */
 @Configuration
-@ConditionalOnExpression("'${bcgov.access.input.plugin}' == 'rabbitmq' || '${bcgov.access.output.plugin}' == 'rabbitmq'")
+@ConditionalOnExpression("'${bcgov.access.input.plugin}' == 'rabbitmq' || '${bcgov.access.output.plugin}' == 'rabbitmq' || '${bcgov.access.input.plugin}' == 'sftp'")
 public class RedisConfiguration {
 
 	/**

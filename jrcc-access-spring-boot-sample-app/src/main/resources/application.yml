@@ -6,14 +6,24 @@ logging:
       gov:
         bc: DEBUG
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} %X{transaction.filename} %X{transaction.id} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} %X{transaction.filename} %X{transaction.id} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} %X{transaction.filename} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} %X{transaction.filename} - %msg%n"
 bcgov:
   access:
     input:
       sender: bcgov
       document-type: test-doc
-      plugin: console
+      plugin: sftp
+      sftp:
+        host: localhost
+        port: 7777
+        username: foo
+        password: pass
+        remote-directory: /upload
+        max-message-per-poll: 5
+        cron: 0/5 * * * * *
+        allow-unknown-keys: true
+        known-host-file: C:\Users\user\.ssh\known_hosts
     output:
       document-type: test-doc
-      plugin: console
+      plugin: rabbitmq

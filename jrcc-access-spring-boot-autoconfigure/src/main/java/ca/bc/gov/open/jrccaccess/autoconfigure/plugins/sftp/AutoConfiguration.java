@@ -19,6 +19,7 @@ import org.springframework.integration.file.filters.ChainFileListFilter;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.integration.metadata.ConcurrentMetadataStore;
+import org.springframework.integration.metadata.PropertiesPersistingMetadataStore;
 import org.springframework.integration.sftp.filters.SftpPersistentAcceptOnceFileListFilter;
 import org.springframework.integration.sftp.filters.SftpRegexPatternFileListFilter;
 import org.springframework.integration.sftp.inbound.SftpStreamingMessageSource;
@@ -43,8 +44,9 @@ public class AutoConfiguration {
     private SftpInputProperties properties;
     private ConcurrentMetadataStore metadataStore;
 
-    public AutoConfiguration(SftpInputProperties sftpInputProperties) {
+    public AutoConfiguration(SftpInputProperties sftpInputProperties, ConcurrentMetadataStore redisMetadataStore) {
         this.properties = sftpInputProperties;
+        this.metadataStore = redisMetadataStore;
         logger.debug("SFTP Configuration: Host => [{}]", this.properties.getHost());
         logger.debug("SFTP Configuration: Port => [{}]", this.properties.getPort());
         logger.debug("SFTP Configuration: Username => [{}]", this.properties.getUsername());
@@ -101,12 +103,12 @@ public class AutoConfiguration {
 
         ChainFileListFilter<ChannelSftp.LsEntry> filterChain = new ChainFileListFilter<>();
         filterChain.addFilter( new SftpRegexPatternFileListFilter(properties.getFilterPattern()) );
-        filterChain.addFilter( new SftpPersistentAcceptOnceFileListFilter(metadataStore, "sftpSource/"));
+        this.metadataStore = new PropertiesPersistingMetadataStore();
+        filterChain.addFilter( new SftpPersistentAcceptOnceFileListFilter(metadataStore, "peggysftpSource"));
 
         SftpStreamingMessageSource messageSource = new SftpStreamingMessageSource(template());
         messageSource.setRemoteDirectory(properties.getRemoteDirectory());
         if(properties.getFilterPattern() != null && !"".equals(properties.getFilterPattern())) {
-//            messageSource.setFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));
             messageSource.setFilter(filterChain);
         }
         return messageSource;
