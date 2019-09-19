@@ -187,7 +187,9 @@ Sets the maximum attempt to reprocess a message in the queue.
 
 #### Description
 
-Using this plugin you can receive messages from a specified Sftp server.
+Using this plugin you can receive messages from a specified Sftp server when there is a new file.
+This Sftp plugin will only retrieve file once, it uses the server's file timestamp to detect if we've already 'processed' this file.
+It needs redis data structure store as Metadata Store.
 
 #### Setup
 
@@ -489,6 +491,10 @@ To view the message in a queue, login to [rabbitmq management console](http://lo
 
 #### If you want to run the sample app using sftp do the following:
 
+step 0. Create a redis container 
+```bash
+docker run --name some-redis -p 6379:6379 -d redis
+```
 step 1. Create a sftp server container (from WindowsPowerShell or GitBash)
 ```bash
 docker run -p 22:22 -d atmoz/sftp myname:pass:::upload
