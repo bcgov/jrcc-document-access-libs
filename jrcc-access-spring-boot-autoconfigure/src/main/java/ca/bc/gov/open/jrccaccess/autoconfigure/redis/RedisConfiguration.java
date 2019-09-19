@@ -1,11 +1,13 @@
-package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
+package ca.bc.gov.open.jrccaccess.autoconfigure.redis;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq.RabbitMqOutputProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Sentinel;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -27,7 +29,7 @@ import java.util.List;
  * @since 0.4.0
  */
 @Configuration
-@ConditionalOnExpression("'${bcgov.access.input.plugin}' == 'rabbitmq' || '${bcgov.access.output.plugin}' == 'rabbitmq' || '${bcgov.access.input.plugin}' == 'sftp'")
+@ComponentScan
 public class RedisConfiguration {
 
 	/**
@@ -38,9 +40,9 @@ public class RedisConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean(JedisConnectionFactory.class)
+	@ConditionalOnExpression("'${bcgov.access.input.plugin}' == 'rabbitmq' || '${bcgov.access.output.plugin}' == 'rabbitmq' || '${bcgov.access.input.plugin}' == 'sftp'")
 	public JedisConnectionFactory jedisConnectionFactory(RedisProperties properties) {
-		
-		
+
 		if(properties.getCluster() != null) {
 			RedisClusterConfiguration redisClusterConfiguration = new RedisClusterConfiguration(properties.getCluster().getNodes());
 			redisClusterConfiguration.setPassword(properties.getPassword());
@@ -65,8 +67,7 @@ public class RedisConfiguration {
 		redisStandaloneConfiguration.setPassword(properties.getPassword());
 		return new JedisConnectionFactory(redisStandaloneConfiguration);
 	}
-	
-	
+
 	private List<RedisNode> createSentinels(Sentinel sentinel) {
         List<RedisNode> nodes = new ArrayList<>();
         for (String node : sentinel.getNodes()) {
@@ -90,6 +91,7 @@ public class RedisConfiguration {
 	 */
 	@Bean(name = "Document")
 	@ConditionalOnMissingBean(CacheManager.class)
+	@ConditionalOnExpression("'${bcgov.access.input.plugin}' == 'rabbitmq' || '${bcgov.access.output.plugin}' == 'rabbitmq'")
     public CacheManager cacheManager(JedisConnectionFactory jedisConnectionFactory, RabbitMqOutputProperties rabbitMqOutputProperties) {
 
 		RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
@@ -102,6 +104,7 @@ public class RedisConfiguration {
     }
 
     @Bean
+	@ConditionalOnExpression("'${bcgov.access.input.plugin}' == 'sftp'")
 	public RedisMetadataStore redisMetadataStore(JedisConnectionFactory jedisConnectionFactory){
 		return new RedisMetadataStore(jedisConnectionFactory);
 	}

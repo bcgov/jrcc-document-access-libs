@@ -19,7 +19,7 @@ import org.springframework.integration.file.filters.ChainFileListFilter;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.integration.metadata.ConcurrentMetadataStore;
-import org.springframework.integration.metadata.PropertiesPersistingMetadataStore;
+import org.springframework.integration.redis.metadata.RedisMetadataStore;
 import org.springframework.integration.sftp.filters.SftpPersistentAcceptOnceFileListFilter;
 import org.springframework.integration.sftp.filters.SftpRegexPatternFileListFilter;
 import org.springframework.integration.sftp.inbound.SftpStreamingMessageSource;
@@ -34,7 +34,7 @@ import java.io.InputStream;
 @ComponentScan
 @EnableConfigurationProperties(SftpInputProperties.class)
 @ConditionalOnProperty(
-        value="bcgov.access.input.plugin",
+        value = "bcgov.access.input.plugin",
         havingValue = "sftp"
 )
 public class AutoConfiguration {
@@ -42,11 +42,9 @@ public class AutoConfiguration {
     private Logger logger = LoggerFactory.getLogger(AutoConfiguration.class);
 
     private SftpInputProperties properties;
-    private ConcurrentMetadataStore metadataStore;
 
     public AutoConfiguration(SftpInputProperties sftpInputProperties, ConcurrentMetadataStore redisMetadataStore) {
         this.properties = sftpInputProperties;
-        this.metadataStore = redisMetadataStore;
         logger.debug("SFTP Configuration: Host => [{}]", this.properties.getHost());
         logger.debug("SFTP Configuration: Port => [{}]", this.properties.getPort());
         logger.debug("SFTP Configuration: Username => [{}]", this.properties.getUsername());
@@ -71,13 +69,13 @@ public class AutoConfiguration {
         }
         boolean isAllowUnknownKeys = properties.isAllowUnknownKeys();
         factory.setAllowUnknownKeys(isAllowUnknownKeys);
-        if(!isAllowUnknownKeys){
+        if (!isAllowUnknownKeys) {
             String knownHostFileStr = properties.getKnownHostFile();
-            if(knownHostFileStr == null || knownHostFileStr.equals("") )
+            if (knownHostFileStr == null || knownHostFileStr.equals(""))
                 throw new KnownHostFileNotDefinedException("Must define known_hosts file when allow-unknown-keys is false. ");
 
             File knownHostFile = new File(knownHostFileStr);
-            if( ! knownHostFile.exists() )
+            if (!knownHostFile.exists())
                 throw new KnownHostFileNotFoundException("Cannot find known_hosts file when allow-unknown-keys is false.");
 
             factory.setKnownHosts(properties.getKnownHostFile());
@@ -90,8 +88,7 @@ public class AutoConfiguration {
     public SftpRemoteFileTemplate template() {
         try {
             return new SftpRemoteFileTemplate(sftpSessionFactory());
-        }catch(InvalidConfigException ex)
-        {
+        } catch (InvalidConfigException ex) {
             logger.error(ex.getMessage());
         }
         return null;
@@ -99,18 +96,15 @@ public class AutoConfiguration {
 
     @Bean
     @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}", maxMessagesPerPoll = "${bcgov.access.input.sftp.max-message-per-poll}"))
-    public MessageSource<InputStream> sftpMessageSource() {
-
+    public MessageSource<InputStream> sftpMessageSource(RedisMetadataStore redisMetadataStore) {
         ChainFileListFilter<ChannelSftp.LsEntry> filterChain = new ChainFileListFilter<>();
-        filterChain.addFilter( new SftpRegexPatternFileListFilter(properties.getFilterPattern()) );
-        this.metadataStore = new PropertiesPersistingMetadataStore();
-        filterChain.addFilter( new SftpPersistentAcceptOnceFileListFilter(metadataStore, "peggysftpSource"));
-
+        if (properties.getFilterPattern() != null && !"".equals(properties.getFilterPattern()))
+            filterChain.addFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));
+        filterChain.addFilter(new SftpPersistentAcceptOnceFileListFilter(redisMetadataStore, "sftpSource"));
         SftpStreamingMessageSource messageSource = new SftpStreamingMessageSource(template());
         messageSource.setRemoteDirectory(properties.getRemoteDirectory());
-        if(properties.getFilterPattern() != null && !"".equals(properties.getFilterPattern())) {
-            messageSource.setFilter(filterChain);
-        }
+        messageSource.setFilter(filterChain);
+
         return messageSource;
     }
 
