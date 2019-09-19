@@ -32,7 +32,13 @@ public class RabbitMqOutputPropertiesTests {
 
 		assertEquals(ttl, sut.getTtl().toString());
 	}
-	
+
+	@Test
+	public void with_null_ttl_should_return_default_ttl() {
+		String ttl = "1";
+		RabbitMqOutputProperties sut = new RabbitMqOutputProperties();
+		assertEquals(ttl, sut.getTtl().toString());
+	}
 	
 	@Test
 	public void with_ttl_out_of_range_down_should_throw_validation_exception() {
