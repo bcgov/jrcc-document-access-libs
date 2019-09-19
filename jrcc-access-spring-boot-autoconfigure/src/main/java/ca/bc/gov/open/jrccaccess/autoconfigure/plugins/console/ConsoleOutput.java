@@ -34,7 +34,7 @@ public class ConsoleOutput implements DocumentOutput {
 	public void send(String content, TransactionInfo transactionInfo) {
 		logger.info("transactionInfo: {}", transactionInfo);
 		String result = this.prettifier.prettify(content);
-		System.out.println(result);
+		logger.info("Content: " + result);
 	}
 
 }
