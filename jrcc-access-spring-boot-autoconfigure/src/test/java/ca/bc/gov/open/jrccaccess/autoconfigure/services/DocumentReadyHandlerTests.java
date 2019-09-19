@@ -49,7 +49,13 @@ public class DocumentReadyHandlerTests {
 		sut = new DocumentReadyHandler(documentOutput, documentProcessorOptional);
 		sut.handle("awesome content", transactionInfoMock);
 	}
-	
-	
+
+	@Test(expected = IllegalArgumentException.class)
+	public void when_transaction_info_null_should_throw_illegal_argument_exception() throws Exception {
+
+		Optional<DocumentProcessor> documentProcessorOptional = Optional.of(documentProcessor);
+		sut = new DocumentReadyHandler(documentOutput, documentProcessorOptional);
+		sut.handle("awesome content", null);
+	}
 	
 }
