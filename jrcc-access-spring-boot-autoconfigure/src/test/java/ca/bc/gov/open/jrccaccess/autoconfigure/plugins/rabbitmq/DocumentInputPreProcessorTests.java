@@ -100,7 +100,7 @@ public class DocumentInputPreProcessorTests {
 		Mockito.when(messageMock.getBody()).thenReturn("test".getBytes());
 
 		Message actual = sut.postProcessMessage(messageMock);
-		
+
 		assertEquals("test", new String(actual.getBody()));
 	}
 
@@ -113,7 +113,21 @@ public class DocumentInputPreProcessorTests {
 		Mockito.when(messageMock.getBody()).thenReturn("test".getBytes());
 
 		Message actual = sut.postProcessMessage(messageMock);
-		
+
+		assertEquals("test", new String(actual.getBody()));
+	}
+
+	@Test
+	public void with_xdeath_null_should_return_the_message() {
+
+		Mockito.doReturn(null).when(xDeathCollection).get(0);
+		Mockito.when(xDeathCollection.isEmpty()).thenReturn(false);
+		Mockito.when(messageProperties.getXDeathHeader()).thenReturn(xDeathCollection);
+		Mockito.when(messageMock.getMessageProperties()).thenReturn(messageProperties);
+		Mockito.when(messageMock.getBody()).thenReturn("test".getBytes());
+
+		Message actual = sut.postProcessMessage(messageMock);
+
 		assertEquals("test", new String(actual.getBody()));
 	}
 	
