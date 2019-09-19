@@ -10,6 +10,7 @@ public class Constants {
      */
     public static final String MDC_KEY_FILENAME="transaction.filename";
     public static final String MDC_KEY_TRANSACTION_ID="transaction.id";
+    public static final String UNKNOWN_SENDER="unknown";
 
     private Constants() {
         throw new IllegalStateException("Constants class");

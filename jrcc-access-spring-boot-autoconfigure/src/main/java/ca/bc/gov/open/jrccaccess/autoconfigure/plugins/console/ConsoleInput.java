@@ -4,17 +4,17 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * The console input reads message from standard input
@@ -55,7 +55,7 @@ public class ConsoleInput implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
 
-		if (inputConfig.getSender().equals("unknown")) {
+		if (inputConfig.getSender().equals(Constants.UNKNOWN_SENDER)) {
 			logger.warn("Sender not specified in application.yml, using default value of unknown.");
 		}
 		

@@ -1,21 +1,23 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.http;
 
-import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.api.DocumentApi;
 import ca.bc.gov.open.api.model.DocumentReceivedResponse;
 import ca.bc.gov.open.api.model.Error;
+import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
+import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
 import java.io.BufferedReader;
@@ -25,7 +27,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * The document controller provides an endpoint to submit a document.
@@ -67,7 +68,7 @@ public class DocumentController implements DocumentApi {
 		DocumentReceivedResponse response = new DocumentReceivedResponse();
 		response.setAcknowledge(true);
 
-		if (StringUtils.isBlank(sender) && inputConfig.getSender().equals("unknown")) {
+		if (StringUtils.isBlank(sender) && inputConfig.getSender().equals(Constants.UNKNOWN_SENDER)) {
 			logger.warn("Sender not specified in application.yml, using default value of unknown.");
 		}
 
