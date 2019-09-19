@@ -67,6 +67,13 @@ public class RabbitMqInputPropertiesTests {
 		RabbitMqInputProperties sut = new RabbitMqInputProperties();
 		assertEquals(countString, sut.getRetryCount().toString());
 	}
+
+	@Test
+	public void with_null_RetryDelay_should_return_default_RetryDelay() {
+		String countString = "0";
+		RabbitMqInputProperties sut = new RabbitMqInputProperties();
+		assertEquals(countString, sut.getRetryDelay().toString());
+	}
 	
 	
 	@Test
