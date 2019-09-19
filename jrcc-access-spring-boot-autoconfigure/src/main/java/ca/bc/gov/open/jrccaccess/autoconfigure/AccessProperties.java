@@ -1,5 +1,6 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure;
 
+import ca.bc.gov.open.jrccaccess.autoconfigure.common.Constants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,7 +41,7 @@ public class AccessProperties {
 		 * @return
 		 */
 		public String getSender() {
-			return StringUtils.isBlank(sender) ? "unknown" : sender;
+			return StringUtils.isBlank(sender) ? Constants.UNKNOWN_SENDER : sender;
 		}
 
 		/**

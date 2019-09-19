@@ -45,7 +45,7 @@ public class SftpDocumentInput implements MessageHandler {
 
         if(message == null) throw new IllegalArgumentException("Message is required.");
 
-        if (inputConfig.getSender().equals("unknown")) {
+        if (inputConfig.getSender().equals(Constants.UNKNOWN_SENDER)) {
             logger.warn("Sender not specified in application.yml, using default value of unknown.");
         }
 
