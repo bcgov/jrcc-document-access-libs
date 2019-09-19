@@ -30,6 +30,7 @@ public class RedisStorageService implements StorageService {
 
 	private final CacheManager cacheManager;
 	private final AccessProperties accessProperties;
+	private static final String serviceUnavailableMessage = "redis service unavailable";
 
 	/**
 	 * Default constructor
@@ -55,7 +56,7 @@ public class RedisStorageService implements StorageService {
 			this.cacheManager.getCache(accessProperties.getOutput().getDocumentType()).put(key, content);
 			return new DocumentStorageProperties(key, md5Hash);
 		} catch (RedisConnectionFailureException e) {
-			throw new ServiceUnavailableException("redis service unavailable", e.getCause());
+			throw new ServiceUnavailableException(serviceUnavailableMessage, e.getCause());
 		}
 
 	}
@@ -87,7 +88,7 @@ public class RedisStorageService implements StorageService {
             return content;
 
 		} catch (RedisConnectionFailureException e) {
-			throw new ServiceUnavailableException("redis service unavailable", e.getCause());
+			throw new ServiceUnavailableException(serviceUnavailableMessage, e.getCause());
 		}
 
 	}
@@ -103,7 +104,7 @@ public class RedisStorageService implements StorageService {
                         this.cacheManager.getCache(accessProperties.getInput().getDocumentType()).evict(key);
 			return true;
 		} catch (RedisConnectionFailureException e) {
-			throw new DocumentMessageException("redis service unavailable", e.getCause());
+			throw new DocumentMessageException(serviceUnavailableMessage, e.getCause());
 		}
 
 	}
