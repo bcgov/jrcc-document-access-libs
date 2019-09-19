@@ -18,6 +18,68 @@ public class SftpInputPropertiesTests {
         Assert.assertNotNull(sut.getSshPrivateKey());
     }
 
+    @Test
+    public void with_remote_directory_should_return_remote_directory() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setRemoteDirectory("/upload");
+        Assert.assertEquals(sut.getRemoteDirectory(), "/upload");
+    }
+
+    @Test
+    public void with_host_should_return_host() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setHost("localhost");
+        Assert.assertEquals(sut.getHost(), "localhost");
+    }
+
+    @Test
+    public void with_port_should_return_integer_value_of_port() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setPort("22");
+        Assert.assertEquals(sut.getPort(), Integer.valueOf("22"));
+    }
+
+    @Test
+    public void with_username_should_return_username() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setUsername("user");
+        Assert.assertEquals(sut.getUsername(), "user");
+    }
+
+    @Test
+    public void with_password_should_return_password() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setPassword("pass");
+        Assert.assertEquals(sut.getPassword(), "pass");
+    }
+
+    @Test
+    public void with_cron_should_return_cron() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setCron("0/5 * * * * *");
+        Assert.assertEquals(sut.getCron(), "0/5 * * * * *");
+    }
+
+    @Test
+    public void with_filter_pattern_should_return_filter_pattern() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setFilterPattern("filter-pattern");
+        Assert.assertEquals(sut.getFilterPattern(), "filter-pattern");
+    }
+
+    @Test
+    public void with_max_message_per_poll_should_return_max_message_per_poll() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setMaxMessagePerPoll("5");
+        Assert.assertEquals(sut.getMaxMessagePerPoll(), "5");
+    }
+
+    @Test
+    public void with_ssh_private_passphrase_should_return_ssh_private_passphrase() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setSshPrivatePassphrase("passphrase");
+        Assert.assertEquals(sut.getSshPrivatePassphrase(), "passphrase");
+    }
 
     @Test
     public void default_allow_unknown_key_return_false() {
