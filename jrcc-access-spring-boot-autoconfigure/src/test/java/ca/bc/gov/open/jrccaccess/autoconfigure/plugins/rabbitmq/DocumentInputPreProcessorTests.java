@@ -48,7 +48,7 @@ public class DocumentInputPreProcessorTests {
 	}
 	
 	@Test
-	public void whith_no_xdeath_headers_and_no_properties_should_return_the_message() {
+	public void with_no_xdeath_headers_and_no_properties_should_return_the_message() {
 		
 		
 		Message expected = new Message("test".getBytes(), null);
@@ -61,7 +61,7 @@ public class DocumentInputPreProcessorTests {
 	
 	
 	@Test
-	public void whith_no_xdeath_headers_should_return_the_message() {
+	public void with_no_xdeath_headers_should_return_the_message() {
 		
 	
 		MessageProperties props = new MessageProperties();
@@ -76,7 +76,7 @@ public class DocumentInputPreProcessorTests {
 	}
 	
 	@Test
-	public void whith__xdeath_lower_than_limit_headers_should_return_the_message() {
+	public void with_xdeath_lower_than_limit_headers_and_xDeath_not_null_should_return_the_message() {
 		
 		Mockito.doReturn(4L).when(xDeathMock).get("count");
 		Mockito.doReturn(xDeathMock).when(xDeathCollection).get(0);
@@ -90,10 +90,36 @@ public class DocumentInputPreProcessorTests {
 		assertEquals("test", new String(actual.getBody()));
 
 	}
+
+	@Test
+	public void with_xDeath_collection_empty_should_return_the_message() {
+
+		Mockito.when(xDeathCollection.isEmpty()).thenReturn(true);
+		Mockito.when(messageProperties.getXDeathHeader()).thenReturn(xDeathCollection);
+		Mockito.when(messageMock.getMessageProperties()).thenReturn(messageProperties);
+		Mockito.when(messageMock.getBody()).thenReturn("test".getBytes());
+
+		Message actual = sut.postProcessMessage(messageMock);
+		
+		assertEquals("test", new String(actual.getBody()));
+	}
+
+	@Test
+	public void with_xDeath_collection_null_should_return_the_message() {
+
+		xDeathCollection = null;
+		Mockito.when(messageProperties.getXDeathHeader()).thenReturn(xDeathCollection);
+		Mockito.when(messageMock.getMessageProperties()).thenReturn(messageProperties);
+		Mockito.when(messageMock.getBody()).thenReturn("test".getBytes());
+
+		Message actual = sut.postProcessMessage(messageMock);
+		
+		assertEquals("test", new String(actual.getBody()));
+	}
 	
 	
 	@Test(expected = ImmediateAcknowledgeAmqpException.class)
-	public void whith__xdeath_higher_than_limit_headers_should_throw_an_ImmediateAcknowledgeAmqpException() {
+	public void with_xdeath_higher_than_limit_headers_should_throw_an_ImmediateAcknowledgeAmqpException() {
 		
 		Mockito.doReturn(10L).when(xDeathMock).get("count");
 		Mockito.doReturn(xDeathMock).when(xDeathCollection).get(0);
