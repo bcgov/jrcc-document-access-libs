@@ -2,7 +2,7 @@
 
 # save the file as <git_directory>/.git/hooks/pre-commit
 
-echo "Running Maven clean installl for build errors"
+echo "Running Maven clean install for build errors"
 # retrieving current working directory
 CWD=`pwd`
 MAIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
