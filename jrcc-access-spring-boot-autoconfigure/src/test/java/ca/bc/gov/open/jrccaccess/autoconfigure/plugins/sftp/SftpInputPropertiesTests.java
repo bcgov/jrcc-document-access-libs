@@ -101,6 +101,24 @@ public class SftpInputPropertiesTests {
     }
 
     @Test
+    public void default_get_host_returns_localhost() {
+        SftpInputProperties sut = new SftpInputProperties();
+        Assert.assertEquals(sut.getHost(), "localhost");
+    }
+
+    @Test
+    public void default_get_port_returns_22() {
+        SftpInputProperties sut = new SftpInputProperties();
+        Assert.assertEquals(sut.getPort(), Integer.valueOf("22"));
+    }
+
+    @Test
+    public void default_get_filter_pattern_returns_empty_string() {
+        SftpInputProperties sut = new SftpInputProperties();
+        Assert.assertEquals(sut.getFilterPattern(), "");
+    }
+
+    @Test
     public void set_known_hosts_should_succeed() {
         SftpInputProperties sut = new SftpInputProperties();
         sut.setKnownHostFile("c://test//known_hosts");
