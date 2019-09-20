@@ -4,6 +4,7 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.InvalidConfigEx
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.KnownHostFileNotDefinedException;
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.KnownHostFileNotFoundException;
 import com.jcraft.jsch.ChannelSftp;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -70,7 +71,7 @@ public class AutoConfiguration {
         factory.setAllowUnknownKeys(isAllowUnknownKeys);
         if (!isAllowUnknownKeys) {
             String knownHostFileStr = properties.getKnownHostFile();
-            if (knownHostFileStr == null || knownHostFileStr.equals(""))
+            if (StringUtils.isBlank(knownHostFileStr))
                 throw new KnownHostFileNotDefinedException("Must define known_hosts file when allow-unknown-keys is false. ");
 
             File knownHostFile = new File(knownHostFileStr);
