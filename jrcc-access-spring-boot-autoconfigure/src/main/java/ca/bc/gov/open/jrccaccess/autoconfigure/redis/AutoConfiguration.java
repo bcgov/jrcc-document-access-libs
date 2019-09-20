@@ -16,6 +16,7 @@ import org.springframework.data.redis.connection.RedisNode;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.integration.metadata.ConcurrentMetadataStore;
 import org.springframework.integration.redis.metadata.RedisMetadataStore;
 
 import javax.naming.OperationNotSupportedException;
@@ -104,8 +105,9 @@ public class AutoConfiguration {
     }
 
     @Bean
+	@ConditionalOnMissingBean(ConcurrentMetadataStore.class)
 	@ConditionalOnExpression("'${bcgov.access.input.plugin}' == 'sftp'")
-	public RedisMetadataStore redisMetadataStore(JedisConnectionFactory jedisConnectionFactory){
+	public ConcurrentMetadataStore redisMetadataStore(JedisConnectionFactory jedisConnectionFactory){
 		return new RedisMetadataStore(jedisConnectionFactory);
 	}
 }
