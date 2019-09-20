@@ -98,7 +98,7 @@ public class DocumentControllerTests {
 		ResponseEntity<DocumentReceivedResponse> response = sut.postDocument(null, null, null, null, null, SERVICE_UNAVAILABLE, multipartFile);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertTrue(response.getBody().getAcknowledge());
-		assertEquals(pluginConfig.getSender(), "test-sender-http");
+		assertEquals("test-sender-http", pluginConfig.getSender());
 	}
 
 	@Test
