@@ -6,6 +6,7 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.OutputConfigMis
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 
 public class AccessAutoConfigurationTests {
@@ -34,5 +35,14 @@ public class AccessAutoConfigurationTests {
         properties.setInput(new AccessProperties.PluginConfig());
         properties.setOutput(null);
         aac = new AccessAutoConfiguration(properties);
+    }
+
+    @Test
+    public void input_config_returns_valid_input_plugin_config() throws InvalidConfigException {
+        AccessProperties properties = new AccessProperties();
+        properties.setInput(new AccessProperties.PluginConfig());
+        properties.setOutput(new AccessProperties.PluginConfig());
+        aac = new AccessAutoConfiguration(properties);
+        assertEquals(aac.inputConfig(), properties.getInput());
     }
 }
