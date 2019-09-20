@@ -14,17 +14,7 @@ bcgov:
     input:
       sender: bcgov
       document-type: test-doc
-      plugin: sftp
-      sftp:
-        host: localhost
-        port: 7777
-        username: foo
-        password: pass
-        remote-directory: /upload
-        max-message-per-poll: 5
-        cron: 0/5 * * * * *
-        allow-unknown-keys: true
-        known-host-file: C:\Users\user\.ssh\known_hosts
+      plugin: console
     output:
       document-type: test-doc
       plugin: console

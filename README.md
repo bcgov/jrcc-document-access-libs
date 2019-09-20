@@ -188,7 +188,7 @@ Sets the maximum attempt to reprocess a message in the queue.
 #### Description
 
 Using this plugin you can receive messages from a specified Sftp server when there is a new file.
-This Sftp plugin will only retrieve file once, it uses the server's file timestamp to detect if we've already 'processed' this file.
+This Sftp plugin will only receive a file once, it uses the server's file timestamp to detect if we've already 'processed' this file.
 It needs redis data structure store as Metadata Store.
 
 #### Setup

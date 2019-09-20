@@ -19,7 +19,6 @@ import org.springframework.integration.file.filters.ChainFileListFilter;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.integration.metadata.ConcurrentMetadataStore;
-import org.springframework.integration.redis.metadata.RedisMetadataStore;
 import org.springframework.integration.sftp.filters.SftpPersistentAcceptOnceFileListFilter;
 import org.springframework.integration.sftp.filters.SftpRegexPatternFileListFilter;
 import org.springframework.integration.sftp.inbound.SftpStreamingMessageSource;
@@ -43,7 +42,7 @@ public class AutoConfiguration {
 
     private SftpInputProperties properties;
 
-    public AutoConfiguration(SftpInputProperties sftpInputProperties, ConcurrentMetadataStore redisMetadataStore) {
+    public AutoConfiguration(SftpInputProperties sftpInputProperties) {
         this.properties = sftpInputProperties;
         logger.debug("SFTP Configuration: Host => [{}]", this.properties.getHost());
         logger.debug("SFTP Configuration: Port => [{}]", this.properties.getPort());
@@ -96,7 +95,7 @@ public class AutoConfiguration {
 
     @Bean
     @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}", maxMessagesPerPoll = "${bcgov.access.input.sftp.max-message-per-poll}"))
-    public MessageSource<InputStream> sftpMessageSource(RedisMetadataStore redisMetadataStore) {
+    public MessageSource<InputStream> sftpMessageSource(ConcurrentMetadataStore redisMetadataStore) {
         ChainFileListFilter<ChannelSftp.LsEntry> filterChain = new ChainFileListFilter<>();
         if (properties.getFilterPattern() != null && !"".equals(properties.getFilterPattern()))
             filterChain.addFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));

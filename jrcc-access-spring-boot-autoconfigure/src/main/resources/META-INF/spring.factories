@@ -1,6 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 ca.bc.gov.open.jrccaccess.autoconfigure.AccessAutoConfiguration,\
-ca.bc.gov.open.jrccaccess.autoconfigure.redis.RedisConfiguration,\
+ca.bc.gov.open.jrccaccess.autoconfigure.redis.AutoConfiguration,\
 ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq.AutoConfiguration,\
 ca.bc.gov.open.jrccaccess.autoconfigure.plugins.console.AutoConfiguration,\
 ca.bc.gov.open.jrccaccess.autoconfigure.plugins.http.AutoConfiguration, \

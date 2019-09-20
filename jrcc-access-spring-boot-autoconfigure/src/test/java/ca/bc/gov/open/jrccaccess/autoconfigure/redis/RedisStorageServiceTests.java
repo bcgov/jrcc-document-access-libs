@@ -1,8 +1,7 @@
-package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
+package ca.bc.gov.open.jrccaccess.autoconfigure.redis;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
-import ca.bc.gov.open.jrccaccess.autoconfigure.redis.RedisStorageService;
 import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFailedException;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;

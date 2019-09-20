@@ -30,7 +30,7 @@ import java.util.List;
  */
 @Configuration
 @ComponentScan
-public class RedisConfiguration {
+public class AutoConfiguration {
 
 	/**
 	 * Configure the JedisConnectionFactory
