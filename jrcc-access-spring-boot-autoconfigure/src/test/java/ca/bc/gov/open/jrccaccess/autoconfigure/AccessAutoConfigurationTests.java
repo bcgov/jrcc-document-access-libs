@@ -10,15 +10,15 @@ import static org.junit.Assert.assertEquals;
 
 
 public class AccessAutoConfigurationTests {
-    private AccessAutoConfiguration aac;
+    private AccessAutoConfiguration sut;
 
     @Test
     public void constructor_with_valid_property_should_create_object() throws Exception{
         AccessProperties properties = new AccessProperties();
         properties.setInput(new AccessProperties.PluginConfig());
         properties.setOutput(new AccessProperties.PluginConfig());
-        aac = new AccessAutoConfiguration(properties);
-        assertNotNull(aac );
+        sut = new AccessAutoConfiguration(properties);
+        assertNotNull(sut );
     }
 
     @Test(expected = InputConfigMissingException.class)
@@ -26,7 +26,7 @@ public class AccessAutoConfigurationTests {
         AccessProperties properties = new AccessProperties();
         properties.setOutput(new AccessProperties.PluginConfig());
         properties.setInput(null);
-        aac = new AccessAutoConfiguration(properties);
+        sut = new AccessAutoConfiguration(properties);
     }
 
     @Test(expected = OutputConfigMissingException.class)
@@ -34,7 +34,7 @@ public class AccessAutoConfigurationTests {
         AccessProperties properties = new AccessProperties();
         properties.setInput(new AccessProperties.PluginConfig());
         properties.setOutput(null);
-        aac = new AccessAutoConfiguration(properties);
+        sut = new AccessAutoConfiguration(properties);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class AccessAutoConfigurationTests {
         AccessProperties properties = new AccessProperties();
         properties.setInput(new AccessProperties.PluginConfig());
         properties.setOutput(new AccessProperties.PluginConfig());
-        aac = new AccessAutoConfiguration(properties);
-        assertEquals(aac.inputConfig(), properties.getInput());
+        sut = new AccessAutoConfiguration(properties);
+        assertEquals(sut.inputConfig(), properties.getInput());
     }
 }
