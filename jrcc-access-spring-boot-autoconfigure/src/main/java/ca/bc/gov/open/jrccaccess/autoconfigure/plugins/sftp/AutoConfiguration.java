@@ -95,11 +95,11 @@ public class AutoConfiguration {
 
     @Bean
     @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}", maxMessagesPerPoll = "${bcgov.access.input.sftp.max-message-per-poll}"))
-    public MessageSource<InputStream> sftpMessageSource(ConcurrentMetadataStore redisMetadataStore) {
+    public MessageSource<InputStream> sftpMessageSource(ConcurrentMetadataStore concurrentMetadataStore) {
         ChainFileListFilter<ChannelSftp.LsEntry> filterChain = new ChainFileListFilter<>();
         if (properties.getFilterPattern() != null && !"".equals(properties.getFilterPattern()))
             filterChain.addFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));
-        filterChain.addFilter(new SftpPersistentAcceptOnceFileListFilter(redisMetadataStore, "sftpSource"));
+        filterChain.addFilter(new SftpPersistentAcceptOnceFileListFilter(concurrentMetadataStore, "sftpSource"));
         SftpStreamingMessageSource messageSource = new SftpStreamingMessageSource(template());
         messageSource.setRemoteDirectory(properties.getRemoteDirectory());
         messageSource.setFilter(filterChain);
