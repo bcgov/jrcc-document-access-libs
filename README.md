@@ -554,3 +554,13 @@ mvn versions:set -DartifactId=*  -DgroupId=*
 it will prompt you for the new version
 
 do a pull request against dev
+
+### Contributing to the repository
+
+To contribute to the repo, please fork the repository and submit a pull request to the team. We will look into it accordingly.
+
+This project has been configured to use git hooks; specifically the precommit hook. Thus, on every commit the `mvn clean install` command will be executed which will run all your tests and ensure that your code successfully builds and compiles. This helps to ensure bug-free development and deployment.
+
+To set up the hooks to work, please run the following command from the root of the repo:
+
+`bash ./scripts/install-hooks.bash`
