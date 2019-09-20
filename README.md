@@ -564,3 +564,5 @@ This project has been configured to use git hooks; specifically the precommit ho
 To set up the hooks to work, please run the following command from the root of the repo:
 
 `bash ./scripts/install-hooks.bash`
+
+Note: Make sure git cmd folder is added to the environment variable path. For GitKraken user, make sure "Path to sh.exe" is set in GitKraken. (File=>Preference=>General=>Path to sh.exe)
