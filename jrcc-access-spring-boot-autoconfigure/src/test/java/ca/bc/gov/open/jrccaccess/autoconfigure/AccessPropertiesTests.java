@@ -30,7 +30,7 @@ public class AccessPropertiesTests {
         properties.setInput(new AccessProperties.PluginConfig());
         PluginConfig pluginConfig = properties.getInput();
 
-        assertEquals(pluginConfig.getSender(), Constants.UNKNOWN_SENDER);
+        assertEquals(Constants.UNKNOWN_SENDER, pluginConfig.getSender());
     }
 
     @Test
