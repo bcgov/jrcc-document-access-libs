@@ -2,6 +2,7 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.helpers.RandomHelper;
+import ca.bc.gov.open.jrccaccess.autoconfigure.redis.RedisStorageService;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;

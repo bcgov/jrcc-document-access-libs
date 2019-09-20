@@ -1,6 +1,7 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
+import ca.bc.gov.open.jrccaccess.autoconfigure.redis.RedisStorageService;
 import ca.bc.gov.open.jrccaccess.libs.*;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import org.slf4j.Logger;

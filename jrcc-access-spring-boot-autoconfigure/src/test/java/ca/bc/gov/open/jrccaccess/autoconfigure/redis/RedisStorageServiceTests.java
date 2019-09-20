@@ -1,4 +1,4 @@
-package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
+package ca.bc.gov.open.jrccaccess.autoconfigure.redis;
 
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
