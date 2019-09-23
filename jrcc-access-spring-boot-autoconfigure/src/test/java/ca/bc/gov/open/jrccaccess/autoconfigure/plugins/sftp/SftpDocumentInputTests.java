@@ -26,9 +26,6 @@ public class SftpDocumentInputTests {
     private PluginConfig pluginConfig;
 
     @Mock
-    private DocumentReadyHandler documentReadyHandlerMockException;
-
-    @Mock
     private Message message;
 
     @Mock
