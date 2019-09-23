@@ -215,6 +215,7 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.ssh-private-passphrase](#bcgovaccessinputsftpssh-private-passphrase) | String | No |
 | [bcgov.access.input.sftp.allow-unknown-keys](#bcgovaccessinputsftpallow-unknown-keys) | boolean | No |
 | [bcgov.access.input.sftp.known-host-file](#bcgovaccessinputsftpknown-host-file) | String | Yes (if allow-unknown-key is false) |
+| [bcgov.access.input.sftp.server-alive-interval](#bcgovaccessinputsftpserver-alive-interval) | String | No |
 
 
 ##### bcgov.access.input.sftp.host
@@ -295,6 +296,12 @@ When no UserInfo has been provided, set to true to unconditionally allow connect
 Specifies the filename that will be used for a host key repository. The file has the same format as OpenSSH's known_hosts file.
 If allow-unknown-key is false, this property must be set correctly, or KnownHostFileNotDefinedException or KnownHostFileNotFoundException will be thrown.
 If allow-unknown-key is true, this property will be ignored.
+
+##### bcgov.access.input.sftp.server-alive-interval
+
+* Value type is Integer
+
+Sets the timeout interval (in milliseconds) before a server-alive message is sent, in case no message is received from the server.
 
 ## Output Plugins
 

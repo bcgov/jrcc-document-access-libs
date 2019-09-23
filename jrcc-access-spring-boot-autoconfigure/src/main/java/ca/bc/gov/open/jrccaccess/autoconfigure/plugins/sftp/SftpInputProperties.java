@@ -6,6 +6,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
 import javax.validation.constraints.Min;
+import java.util.Optional;
 
 /**
  * Represents the rabbitmq input plugin properties
@@ -40,6 +41,8 @@ public class SftpInputProperties {
 	private boolean allowUnknownKeys;
 
 	private String knownHostFile;
+
+	private Integer serverAliveInterval;
 
 	public String getRemoteDirectory() {
 		return remoteDirectory;
@@ -152,5 +155,15 @@ public class SftpInputProperties {
 	 */
 	public void setKnownHostFile(String knownHostFile) {
 		this.knownHostFile = knownHostFile;
+	}
+
+
+	public Optional<Integer> getServerAliveInterval() {
+		if(this.serverAliveInterval == null) return Optional.empty();
+		return Optional.of(this.serverAliveInterval);
+	}
+
+	public void setServerAliveInterval(String serverAliveInterval) {
+		this.serverAliveInterval = Integer.valueOf(serverAliveInterval);
 	}
 }
