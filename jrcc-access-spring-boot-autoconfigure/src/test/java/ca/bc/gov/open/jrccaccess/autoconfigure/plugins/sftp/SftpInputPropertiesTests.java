@@ -124,4 +124,18 @@ public class SftpInputPropertiesTests {
         sut.setKnownHostFile("c://test//known_hosts");
         Assert.assertEquals("c://test//known_hosts", sut.getKnownHostFile());
     }
+
+
+    @Test
+    public void set_server_alive_interval_should_succeed() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setServerAliveInterval("10");
+        Assert.assertEquals(10, sut.getServerAliveInterval().get().intValue());
+    }
+
+    @Test
+    public void not_set_server_alive_interval_should_succeed() {
+        SftpInputProperties sut = new SftpInputProperties();
+        Assert.assertFalse(sut.getServerAliveInterval().isPresent());
+    }
 }

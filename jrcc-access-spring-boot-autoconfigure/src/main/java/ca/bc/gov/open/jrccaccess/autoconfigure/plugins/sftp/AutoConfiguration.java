@@ -81,6 +81,8 @@ public class AutoConfiguration {
             factory.setKnownHosts(properties.getKnownHostFile());
         }
 
+        properties.getServerAliveInterval().ifPresent(serverAliveInterval -> factory.setServerAliveInterval(serverAliveInterval));
+
         return new CachingSessionFactory<>(factory);
     }
 
