@@ -15,7 +15,7 @@ Add `jrcc-access-spring-boot-starter` to your project (See jrcc-access-spring-bo
 <dependency>
     <groupId>ca.bc.gov.open</groupId>
     <artifactId>jrcc-access-spring-boot-starter</artifactId>
-    <version>0.8.0</version>
+    <version>0.9.0</version>
 </dependency>
 ```
 
