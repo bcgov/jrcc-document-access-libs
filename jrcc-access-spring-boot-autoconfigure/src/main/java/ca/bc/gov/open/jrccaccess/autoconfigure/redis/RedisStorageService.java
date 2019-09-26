@@ -98,6 +98,7 @@ public class RedisStorageService implements StorageService {
 	 * @param key
 	 * @return
 	 */
+	@Override
 	public Boolean deleteString(String key) throws DocumentMessageException {
 
 		try {

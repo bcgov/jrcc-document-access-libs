@@ -24,5 +24,11 @@ public interface StorageService {
 	 */
 	public String getString(String key, String digest) throws DocumentMessageException;
 
-
+	/**
+	 * Delete a document from storage based on the key
+	 * @param key
+	 * @return bool
+	 * @throws DocumentMessageException
+	 */
+	public Boolean deleteString(String key) throws DocumentMessageException;
 }
