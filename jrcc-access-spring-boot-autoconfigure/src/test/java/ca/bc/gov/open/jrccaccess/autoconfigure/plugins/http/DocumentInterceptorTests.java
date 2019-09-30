@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.verify;
 
 public class DocumentInterceptorTests {
 
@@ -41,6 +42,7 @@ public class DocumentInterceptorTests {
         MultipartHttpServletRequest badRequest = Mockito.mock(MultipartHttpServletRequest.class);
         Mockito.when(badRequest.getFile("file")).thenReturn(null);
         assertFalse(interceptor.preHandle(badRequest, response, o ) );
+        verify(response).sendError(HttpServletResponse.SC_BAD_REQUEST,"Expecting file in the request." );
     }
 
     @Test
