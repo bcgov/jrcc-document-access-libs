@@ -6,6 +6,7 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.redis.RedisStorageService;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.StorageService;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentDigestMatchFailedException;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
@@ -41,7 +42,7 @@ public class RabbitMqDocumentInputTests {
 	private TransactionInfo transactionInfoMock;
 	
 	@Mock
-	private RedisStorageService storageService;
+	private StorageService storageService;
 
 	@Before
 	public void init() throws Exception {
@@ -129,8 +130,6 @@ public class RabbitMqDocumentInputTests {
 		Mockito.when(this.transactionInfoMock.getSender()).thenReturn("bcgov");
 		Mockito.when(this.message.getTransactionInfo()).thenReturn(transactionInfoMock);
 		Mockito.when(this.message.getDocumentStorageProperties()).thenReturn(storageProperties);
-
-
 		
 		TransactionInfo transactionInfo = new TransactionInfo("testfile.txt", "me", LocalDateTime.now());
 

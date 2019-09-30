@@ -5,6 +5,7 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.redis.RedisStorageService;
 import ca.bc.gov.open.jrccaccess.autoconfigure.services.DocumentReadyHandler;
 import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.StorageService;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.DocumentMessageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,16 +28,16 @@ public class RabbitMqDocumentInput {
 
 	private DocumentReadyHandler documentReadyHandler;
 
-	private final RedisStorageService redisStorageService;
+	private final StorageService storageService;
 
 	/**
 	 * Creates a RabbitMqDocumentInput.
 	 * 
 	 * @param documentReadyHandler - A document ready handler.
 	 */
-	public RabbitMqDocumentInput(DocumentReadyHandler documentReadyHandler, RedisStorageService redisStorageService) {
+	public RabbitMqDocumentInput(DocumentReadyHandler documentReadyHandler, StorageService storageService) {
 		this.documentReadyHandler = documentReadyHandler;
-		this.redisStorageService = redisStorageService;
+		this.storageService = storageService;
 	}
 
 	/**
@@ -54,7 +55,7 @@ public class RabbitMqDocumentInput {
 
 		DocumentStorageProperties storageProperties = documentReadyMessage.getDocumentStorageProperties();
 		
-		String content = this.redisStorageService.getString(storageProperties.getKey(), storageProperties.getDigest());
+		String content = this.storageService.getString(storageProperties.getKey(), storageProperties.getDigest());
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug(content);
@@ -65,7 +66,7 @@ public class RabbitMqDocumentInput {
         logger.debug("attempting to delete the document from redis storage");
 
         //when successfully processed, delete the document from redis storage
-        this.redisStorageService.deleteString(storageProperties.getKey());
+        this.storageService.deleteString(storageProperties.getKey());
 
         logger.info("document successfully deleted from redis storage");
 		logger.info("message successfully acknowledged");

@@ -21,17 +21,17 @@ public class RabbitMqDocumentOutput implements DocumentOutput {
 
 	private Logger logger = LoggerFactory.getLogger(RabbitMqDocumentOutput.class);
 	
-	private final RedisStorageService redisStorageService;
+	private final StorageService storageService;
 	private final RabbitMqDocumentReadyService rabbitMqDocumentReadyService;
 	private final AccessProperties accessProperties;
 	
 	/**
 	 * Constructs a rabbitMq Document Output Service.
-	 * @param redisStorageService	A {@link RedisStorageService}
+	 * @param storageService	A {@link StorageService}
 	 * @param rabbitMqDocumentReadyService	A {@link RabbitMqDocumentReadyService}
 	 */
-	public RabbitMqDocumentOutput(RedisStorageService redisStorageService, RabbitMqDocumentReadyService rabbitMqDocumentReadyService, AccessProperties accessProperties) {
-		this.redisStorageService = redisStorageService;
+	public RabbitMqDocumentOutput(StorageService storageService, RabbitMqDocumentReadyService rabbitMqDocumentReadyService, AccessProperties accessProperties) {
+		this.storageService = storageService;
 		this.rabbitMqDocumentReadyService = rabbitMqDocumentReadyService;
 		this.accessProperties = accessProperties;
 	}
@@ -47,7 +47,7 @@ public class RabbitMqDocumentOutput implements DocumentOutput {
 		logger.info("Attempting to publish [{}].", documentInfo);
 
 		logger.debug("Attempting to store [{}] to redis.", documentInfo);
-		DocumentStorageProperties documentStorageProperties = this.redisStorageService.putString(content);
+		DocumentStorageProperties documentStorageProperties = this.storageService.putString(content);
 		logger.info("[{}] successfully stored to redis key [{}].", documentInfo, documentStorageProperties.getKey());
 		
 		logger.debug("Creating new document ready message.");

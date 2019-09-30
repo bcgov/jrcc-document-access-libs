@@ -4,6 +4,7 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties.PluginConfig;
 import ca.bc.gov.open.jrccaccess.autoconfigure.redis.RedisStorageService;
 import ca.bc.gov.open.jrccaccess.libs.DocumentStorageProperties;
+import ca.bc.gov.open.jrccaccess.libs.StorageService;
 import ca.bc.gov.open.jrccaccess.libs.TransactionInfo;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class RabbitMqDocumentOutputTests {
 	private RabbitMqDocumentReadyService documentReadyService;
 	
 	@Mock
-	private RedisStorageService storageService;
+	private StorageService storageService;
 	
 	@Before
 	public void init() throws Exception {
