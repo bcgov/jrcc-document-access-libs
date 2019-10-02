@@ -22,7 +22,7 @@ public interface StorageService {
 	 * @param digest MD5 Digest
 	 * @return Content from storage
 	 */
-	public String getString(String key, String digest) throws DocumentMessageException;
+	String getString(String key, String digest) throws DocumentMessageException;
 
 	/**
 	 * Delete a document from storage based on the key
@@ -30,5 +30,5 @@ public interface StorageService {
 	 * @return bool
 	 * @throws DocumentMessageException
 	 */
-	public Boolean deleteString(String key) throws DocumentMessageException;
+	Boolean deleteString(String key) throws DocumentMessageException;
 }
