@@ -216,6 +216,8 @@ It support the [Common Options](#CommonOptions) and the following options:
 | [bcgov.access.input.sftp.allow-unknown-keys](#bcgovaccessinputsftpallow-unknown-keys) | boolean | No |
 | [bcgov.access.input.sftp.known-host-file](#bcgovaccessinputsftpknown-host-file) | String | Yes (if allow-unknown-key is false) |
 | [bcgov.access.input.sftp.server-alive-interval](#bcgovaccessinputsftpserver-alive-interval) | String | No |
+| [bcgov.access.input.sftp.caching-session-wait-timeout](#bcgovaccessinputsftpcaching-session-wait-timeout) | Int | No |
+| [bcgov.access.input.sftp.caching-session-max-pool-size](#bcgovaccessinputsft[caching-session-max-pool-size) | Int | No |
 
 
 ##### bcgov.access.input.sftp.host
@@ -302,6 +304,18 @@ If allow-unknown-key is true, this property will be ignored.
 * Value type is Integer
 
 Sets the timeout interval (in milliseconds) before a server-alive message is sent, in case no message is received from the server.
+
+##### bcgov.access.input.sftp.caching-session-wait-timeout
+
+* Value type is Integer
+
+Sets the limit of how long to wait for a session to become available.
+
+##### bcgov.access.input.sftp.caching-session-max-pool-size
+
+* Value type is Integer
+
+Modify the target session pool size; the actual pool size will adjust up/down to this size as and when sessions are requested or retrieved.
 
 ## Output Plugins
 
