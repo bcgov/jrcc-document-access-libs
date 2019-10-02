@@ -138,4 +138,31 @@ public class SftpInputPropertiesTests {
         SftpInputProperties sut = new SftpInputProperties();
         Assert.assertFalse(sut.getServerAliveInterval().isPresent());
     }
+
+    @Test
+    public void set_session_timeout_should_succeed() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setCachingSessionWaitTimeout("20");
+        Assert.assertEquals("20", sut.getCachingSessionWaitTimeout().get().toString());
+    }
+
+    @Test
+    public void session_timeout_not_set_should_succeed() {
+        SftpInputProperties sut = new SftpInputProperties();
+        Assert.assertFalse(sut.getCachingSessionWaitTimeout().isPresent());
+    }
+
+    @Test
+    public void set_session_pool_size_should_succeed() {
+        SftpInputProperties sut = new SftpInputProperties();
+        sut.setCachingSessionMaxPoolSize("20");
+        Assert.assertEquals("20", sut.getCachingSessionMaxPoolSize().get().toString());
+    }
+
+    @Test
+    public void session_pool_size_not_set_should_succeed() {
+        SftpInputProperties sut = new SftpInputProperties();
+        Assert.assertFalse(sut.getCachingSessionMaxPoolSize().isPresent());
+    }
+
 }

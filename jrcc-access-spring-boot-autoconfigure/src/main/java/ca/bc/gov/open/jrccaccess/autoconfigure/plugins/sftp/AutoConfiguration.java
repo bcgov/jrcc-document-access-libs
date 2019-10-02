@@ -83,7 +83,13 @@ public class AutoConfiguration {
 
         properties.getServerAliveInterval().ifPresent(serverAliveInterval -> factory.setServerAliveInterval(serverAliveInterval));
 
-        return new CachingSessionFactory<>(factory);
+
+        CachingSessionFactory cachingSessionFactory = new CachingSessionFactory<>(factory);
+
+        this.properties.getCachingSessionMaxPoolSize().ifPresent(poolSize -> cachingSessionFactory.setPoolSize(poolSize));
+        this.properties.getCachingSessionWaitTimeout().ifPresent(timeout -> cachingSessionFactory.setSessionWaitTimeout(timeout));
+
+        return cachingSessionFactory;
     }
 
     @Bean

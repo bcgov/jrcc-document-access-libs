@@ -10,160 +10,187 @@ import java.util.Optional;
 
 /**
  * Represents the rabbitmq input plugin properties
+ *
  * @author alexjoybc
  * @since 0.6.0
- *
  */
 @ConfigurationProperties(prefix = "bcgov.access.input.sftp")
 public class SftpInputProperties {
 
-	private String host;
+    private String host;
 
-	@Min(0)
-	private Integer port;
+    @Min(0)
+    private Integer port;
 
-	private String username;
+    private String username;
 
-	private String password;
+    private String password;
 
-	private String remoteDirectory;
+    private String remoteDirectory;
 
-	private String filterPattern;
+    private String filterPattern;
 
-	private String cron;
+    private String cron;
 
-	private String maxMessagePerPoll;
+    private String maxMessagePerPoll;
 
-	private String sshPrivateKey;
+    private String sshPrivateKey;
 
-	private String sshPrivatePassphrase;
+    private String sshPrivatePassphrase;
 
-	private boolean allowUnknownKeys;
+    private boolean allowUnknownKeys;
 
-	private String knownHostFile;
+    private String knownHostFile;
 
-	private Integer serverAliveInterval;
+    private Integer serverAliveInterval;
 
-	public String getRemoteDirectory() {
-		return remoteDirectory;
-	}
+    private Integer cachingSessionWaitTimeout;
 
-	public void setRemoteDirectory(String remoteDirectory) {
-		this.remoteDirectory = remoteDirectory;
-	}
+    private Integer cachingSessionMaxPoolSize;
 
-	public String getHost() {
-		return host == null ? "localhost" : host;
-	}
+    public String getRemoteDirectory() {
+        return remoteDirectory;
+    }
 
-	public void setHost(String host) {
-		this.host = host;
-	}
+    public void setRemoteDirectory(String remoteDirectory) {
+        this.remoteDirectory = remoteDirectory;
+    }
 
-	public Integer getPort() {
-		return port == null ? 22 : port;
-	}
+    public String getHost() {
+        return host == null ? "localhost" : host;
+    }
 
-	public void setPort(String port) {
-		this.port = Integer.valueOf(port);
-	}
+    public void setHost(String host) {
+        this.host = host;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public Integer getPort() {
+        return port == null ? 22 : port;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setPort(String port) {
+        this.port = Integer.valueOf(port);
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getCron() {
-		return cron;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setCron(String cron) {
-		this.cron = cron;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getFilterPattern() {
-		return filterPattern == null ? "" : filterPattern ;
-	}
+    public String getCron() {
+        return cron;
+    }
 
-	public void setFilterPattern(String filterPattern) {
-		this.filterPattern = filterPattern;
-	}
+    public void setCron(String cron) {
+        this.cron = cron;
+    }
 
-	public String getMaxMessagePerPoll() {
-		return maxMessagePerPoll;
-	}
+    public String getFilterPattern() {
+        return filterPattern == null ? "" : filterPattern;
+    }
 
-	public void setMaxMessagePerPoll(String maxMessagePerPoll) {
-		this.maxMessagePerPoll = maxMessagePerPoll;
-	}
+    public void setFilterPattern(String filterPattern) {
+        this.filterPattern = filterPattern;
+    }
 
-	public Resource getSshPrivateKey() {
+    public String getMaxMessagePerPoll() {
+        return maxMessagePerPoll;
+    }
 
-		if(StringUtils.isBlank(this.sshPrivateKey)) return null;
-		return new ByteArrayResource(this.sshPrivateKey.getBytes());
-	}
+    public void setMaxMessagePerPoll(String maxMessagePerPoll) {
+        this.maxMessagePerPoll = maxMessagePerPoll;
+    }
 
-	public void setSshPrivateKey(String sshPrivateKey) {
-		this.sshPrivateKey = sshPrivateKey;
-	}
+    public Resource getSshPrivateKey() {
 
-	public String getSshPrivatePassphrase() {
-		return sshPrivatePassphrase;
-	}
+        if (StringUtils.isBlank(this.sshPrivateKey)) return null;
+        return new ByteArrayResource(this.sshPrivateKey.getBytes());
+    }
 
-	public void setSshPrivatePassphrase(String sshPrivatePassphrase) {
-		this.sshPrivatePassphrase = sshPrivatePassphrase;
-	}
+    public void setSshPrivateKey(String sshPrivateKey) {
+        this.sshPrivateKey = sshPrivateKey;
+    }
 
-	/**
-	 * @return if allow Unknown Keys
-	 */
-	public boolean isAllowUnknownKeys() {
-		return this.allowUnknownKeys;
-	}
+    public String getSshPrivatePassphrase() {
+        return sshPrivatePassphrase;
+    }
 
-	/**
-	 * Set to true to unconditionally allow connecting to an unknown host or when a host's key has changed (see knownHosts).
-	 * Default false. Set to true if a knownHosts file is not provided.
-	 * @param allowUnknowKeys : true or false
-	 */
-	public void setAllowUnknownKeys(boolean allowUnknowKeys) {
-		this.allowUnknownKeys = allowUnknowKeys;
-	}
+    public void setSshPrivatePassphrase(String sshPrivatePassphrase) {
+        this.sshPrivatePassphrase = sshPrivatePassphrase;
+    }
 
-	/**
-	 * @return the filename that will be used for a host key repository. The file has the same format as OpenSSH's known_hosts file.
-	 */
-	public String getKnownHostFile() {
-		return this.knownHostFile;
-	}
+    /**
+     * @return if allow Unknown Keys
+     */
+    public boolean isAllowUnknownKeys() {
+        return this.allowUnknownKeys;
+    }
 
-	/**
-	 * set the known_hosts file name, including path
-	 * @param knownHostFile
-	 */
-	public void setKnownHostFile(String knownHostFile) {
-		this.knownHostFile = knownHostFile;
-	}
+    /**
+     * Set to true to unconditionally allow connecting to an unknown host or when a host's key has changed (see knownHosts).
+     * Default false. Set to true if a knownHosts file is not provided.
+     *
+     * @param allowUnknowKeys : true or false
+     */
+    public void setAllowUnknownKeys(boolean allowUnknowKeys) {
+        this.allowUnknownKeys = allowUnknowKeys;
+    }
+
+    /**
+     * @return the filename that will be used for a host key repository. The file has the same format as OpenSSH's known_hosts file.
+     */
+    public String getKnownHostFile() {
+        return this.knownHostFile;
+    }
+
+    /**
+     * set the known_hosts file name, including path
+     *
+     * @param knownHostFile
+     */
+    public void setKnownHostFile(String knownHostFile) {
+        this.knownHostFile = knownHostFile;
+    }
 
 
-	public Optional<Integer> getServerAliveInterval() {
-		if(this.serverAliveInterval == null) return Optional.empty();
-		return Optional.of(this.serverAliveInterval);
-	}
+    public Optional<Integer> getServerAliveInterval() {
+        if (this.serverAliveInterval == null) return Optional.empty();
+        return Optional.of(this.serverAliveInterval);
+    }
 
-	public void setServerAliveInterval(String serverAliveInterval) {
-		this.serverAliveInterval = Integer.valueOf(serverAliveInterval);
-	}
+    public void setServerAliveInterval(String serverAliveInterval) {
+        this.serverAliveInterval = Integer.valueOf(serverAliveInterval);
+    }
+
+    public Optional<Integer> getCachingSessionWaitTimeout() {
+        return this.cachingSessionWaitTimeout == null ?
+                Optional.empty() :
+                Optional.of(this.cachingSessionWaitTimeout);
+    }
+
+    public void setCachingSessionWaitTimeout(String CachingSessionWaitTimeout) {
+        this.cachingSessionWaitTimeout = Integer.valueOf(CachingSessionWaitTimeout);
+    }
+
+    public Optional<Integer> getCachingSessionMaxPoolSize() {
+        return this.cachingSessionMaxPoolSize == null ?
+                Optional.empty() :
+                Optional.of(this.cachingSessionMaxPoolSize);
+    }
+
+    public void setCachingSessionMaxPoolSize(String cachingSessionMaxPoolSize) {
+        this.cachingSessionMaxPoolSize = Integer.valueOf(cachingSessionMaxPoolSize);
+    }
+
 }
