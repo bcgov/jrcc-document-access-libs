@@ -155,7 +155,7 @@ public class SftpInputPropertiesTests {
     @Test
     public void set_session_pool_size_should_succeed() {
         SftpInputProperties sut = new SftpInputProperties();
-        sut.setCachingSessionWaitTimeout("20");
+        sut.setCachingSessionMaxPoolSize("20");
         Assert.assertEquals("20", sut.getCachingSessionMaxPoolSize().get().toString());
     }
 
