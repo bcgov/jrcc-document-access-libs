@@ -16,15 +16,20 @@ import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.core.MessageSource;
+import org.springframework.integration.file.filters.AcceptOnceFileListFilter;
 import org.springframework.integration.file.filters.ChainFileListFilter;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.integration.metadata.ConcurrentMetadataStore;
 import org.springframework.integration.sftp.filters.SftpPersistentAcceptOnceFileListFilter;
 import org.springframework.integration.sftp.filters.SftpRegexPatternFileListFilter;
+import org.springframework.integration.sftp.inbound.SftpInboundFileSynchronizer;
+import org.springframework.integration.sftp.inbound.SftpInboundFileSynchronizingMessageSource;
 import org.springframework.integration.sftp.inbound.SftpStreamingMessageSource;
 import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
 import org.springframework.integration.sftp.session.SftpRemoteFileTemplate;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessagingException;
 
 import javax.websocket.MessageHandler;
 import java.io.File;
@@ -92,35 +97,63 @@ public class AutoConfiguration {
         return cachingSessionFactory;
     }
 
+//    @Bean
+//    public SftpRemoteFileTemplate template() {
+//        try {
+//            return new SftpRemoteFileTemplate(sftpSessionFactory());
+//        } catch (InvalidConfigException ex) {
+//            logger.error(ex.getMessage());
+//        }
+//        return null;
+//    }
+//
+//    @Bean
+//    @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}", maxMessagesPerPoll = "${bcgov.access.input.sftp.max-message-per-poll}"))
+//    public MessageSource<InputStream> sftpMessageSource(ConcurrentMetadataStore concurrentMetadataStore) {
+//        ChainFileListFilter<ChannelSftp.LsEntry> filterChain = new ChainFileListFilter<>();
+//        if (properties.getFilterPattern() != null && !"".equals(properties.getFilterPattern()))
+//            filterChain.addFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));
+//        filterChain.addFilter(new SftpPersistentAcceptOnceFileListFilter(concurrentMetadataStore, "sftpSource"));
+//        SftpStreamingMessageSource messageSource = new SftpStreamingMessageSource(template());
+//        messageSource.setRemoteDirectory(properties.getRemoteDirectory());
+//        messageSource.setFilter(filterChain);
+//
+//        return messageSource;
+//    }
+//
+//    @Bean
+//    @ServiceActivator(inputChannel = "sftpChannel")
+//    public MessageHandler handler(SftpDocumentInput sftpDocumentInput) {
+//        return sftpDocumentInput;
+//    }
+
     @Bean
-    public SftpRemoteFileTemplate template() {
-        try {
-            return new SftpRemoteFileTemplate(sftpSessionFactory());
-        } catch (InvalidConfigException ex) {
-            logger.error(ex.getMessage());
-        }
-        return null;
+    public SftpInboundFileSynchronizer sftpInboundFileSynchronizer() throws InvalidConfigException {
+        SftpInboundFileSynchronizer fileSynchronizer = new SftpInboundFileSynchronizer(sftpSessionFactory());
+        fileSynchronizer.setDeleteRemoteFiles(false);
+        fileSynchronizer.setRemoteDirectory("upload");
+        return fileSynchronizer;
     }
 
     @Bean
-    @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}", maxMessagesPerPoll = "${bcgov.access.input.sftp.max-message-per-poll}"))
-    public MessageSource<InputStream> sftpMessageSource(ConcurrentMetadataStore concurrentMetadataStore) {
-        ChainFileListFilter<ChannelSftp.LsEntry> filterChain = new ChainFileListFilter<>();
-        if (properties.getFilterPattern() != null && !"".equals(properties.getFilterPattern()))
-            filterChain.addFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));
-        filterChain.addFilter(new SftpPersistentAcceptOnceFileListFilter(concurrentMetadataStore, "sftpSource"));
-        SftpStreamingMessageSource messageSource = new SftpStreamingMessageSource(template());
-        messageSource.setRemoteDirectory(properties.getRemoteDirectory());
-        messageSource.setFilter(filterChain);
-
-        return messageSource;
+    @InboundChannelAdapter(channel = "sftpFileChannel", poller = @Poller(fixedDelay = "10000", maxMessagesPerPoll = "10"))
+    public MessageSource<File> sftpMessageSource(ConcurrentMetadataStore concurrentMetadataStore, SessionFactory<ChannelSftp.LsEntry> sftpSessionFactory) throws InvalidConfigException {
+        SftpInboundFileSynchronizingMessageSource source=new SftpInboundFileSynchronizingMessageSource(sftpInboundFileSynchronizer());
+        source.setLocalDirectory(new File("C:\\peggy\\sftp-inbound"));
+        source.setAutoCreateLocalDirectory(true);
+        source.setLocalFilter(new AcceptOnceFileListFilter<File>());
+        source.setMaxFetchSize(10);
+        return source;
     }
 
     @Bean
-    @ServiceActivator(inputChannel = "sftpChannel")
-    public MessageHandler handler(SftpDocumentInput sftpDocumentInput) {
-        return sftpDocumentInput;
+    @ServiceActivator(inputChannel = "sftpFileChannel")
+    public MessageHandler handler() {
+        return new MessageHandler() {
+            public void handleMessage(Message<?> message) throws MessagingException {
+                System.out.println(message.getPayload());
+            }
+
+        };
     }
-
-
 }
