@@ -57,7 +57,7 @@ public class AutoConfiguration {
 
     @Bean
     public SessionFactory<ChannelSftp.LsEntry> sftpSessionFactory() throws InvalidConfigException {
-        DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(true);
+        DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(false);
         factory.setHost(properties.getHost());
         factory.setPort(properties.getPort());
         factory.setUser(properties.getUsername());
