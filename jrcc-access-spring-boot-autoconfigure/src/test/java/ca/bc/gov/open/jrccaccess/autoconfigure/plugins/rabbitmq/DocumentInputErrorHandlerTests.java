@@ -6,7 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.ImmediateAcknowledgeAmqpException;
-import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFailedException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.support.ListenerExecutionFailedException;
 
 public class DocumentInputErrorHandlerTests {
 
@@ -21,17 +22,13 @@ public class DocumentInputErrorHandlerTests {
 	
 	@Test(expected = AmqpRejectAndDontRequeueException.class)
 	public void with_serviceUnavailable_should_throw_AmqpRejectAndDontRequeueException() {
-		
-		
-		sut.handleError(new ListenerExecutionFailedException("test", new ServiceUnavailableException("test"), null));
-		
-		
+		sut.handleError(new ListenerExecutionFailedException("test", new ServiceUnavailableException("test"), new Message("test".getBytes(), null)));
 	}
 	
 	@Test(expected = ImmediateAcknowledgeAmqpException.class)
 	public void with_otherException_should_throw_ImmediateAcknowledgeAmqpException() {
 		
-		sut.handleError(new ListenerExecutionFailedException("test", new Exception("test"), null));
+		sut.handleError(new ListenerExecutionFailedException("test", new Exception("test"), new Message("test".getBytes(), null)));
 		
 	}
 	
