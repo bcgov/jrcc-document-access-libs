@@ -29,3 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### POM BACKUP FILES ####
+pom.xml.versionsBackup
