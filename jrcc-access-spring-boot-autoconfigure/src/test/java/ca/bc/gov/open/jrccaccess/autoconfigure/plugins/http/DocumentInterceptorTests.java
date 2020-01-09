@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.verify;
 
 public class DocumentInterceptorTests {
 
@@ -35,6 +35,14 @@ public class DocumentInterceptorTests {
         interceptor = new DocumentInterceptor();
         Mockito.doReturn("filename").when(multipartFile).getOriginalFilename();
         Mockito.when(request.getFile("file")).thenReturn(multipartFile);
+    }
+
+    @Test
+    public void http_request_no_file_should_reture_bad_request() throws  Exception{
+        MultipartHttpServletRequest badRequest = Mockito.mock(MultipartHttpServletRequest.class);
+        Mockito.when(badRequest.getFile("file")).thenReturn(null);
+        assertFalse(interceptor.preHandle(badRequest, response, o ) );
+        verify(response).sendError(HttpServletResponse.SC_BAD_REQUEST,"Expecting file in the request." );
     }
 
     @Test
