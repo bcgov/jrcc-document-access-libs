@@ -118,6 +118,7 @@ public class InputConfiguration {
 		factory.setMessageConverter(messageConverter);
 		factory.setAfterReceivePostProcessors(documentInputPreProcessor);
 		factory.setErrorHandler(documentInputErrorHandler);
+		factory.setMissingQueuesFatal(false);
 		return factory;
 	}
 
