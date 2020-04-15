@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+
+  #############################################################################################
+  ###                             SFTP SERVER                                               ###
+  #############################################################################################
+  dps-sftp:
+    image: atmoz/sftp
+    ports:
+    - "22:22"
+    command: admin:admin:::upload
+    networks:
+    - doc-access
+
+
+  #############################################################################################
+  ###                                 REDIS SERVER                                          ###
+  #############################################################################################
+  dps-redis:
+    container_name: redis
+    image: redis
+    command: redis-server --requirepass admin
+    ports:
+    - "6379:6379"
+    volumes:
+    - data-redis:/data
+    restart: always
+    networks:
+    - doc-access
+
+volumes:
+  data-redis:
+
+networks:
+  doc-access:
+    driver: "bridge"
