@@ -19,4 +19,4 @@ configure the following environment variables on your environment:
 | Name | Value |
 | --- | --- |
 | KNOWN_HOSTS | ~/.ssh/known_hosts |
-| spring_active_profiles | sftp |
+| spring_profiles_active | sftp |
