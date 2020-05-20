@@ -57,6 +57,7 @@ public class AutoConfiguration {
 
     @Bean
     public SessionFactory<ChannelSftp.LsEntry> sftpSessionFactory() throws InvalidConfigException {
+
         DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(true);
         factory.setHost(properties.getHost());
         factory.setPort(properties.getPort());
@@ -83,13 +84,11 @@ public class AutoConfiguration {
 
         properties.getServerAliveInterval().ifPresent(serverAliveInterval -> factory.setServerAliveInterval(serverAliveInterval));
 
+        this.properties.getCachingSessionMaxPoolSize().ifPresent(poolSize -> factory.setServerAliveCountMax(poolSize));
+        this.properties.getCachingSessionWaitTimeout().ifPresent(timeout -> factory.setServerAliveInterval(timeout));
 
-        CachingSessionFactory cachingSessionFactory = new CachingSessionFactory<>(factory);
+        return factory;
 
-        this.properties.getCachingSessionMaxPoolSize().ifPresent(poolSize -> cachingSessionFactory.setPoolSize(poolSize));
-        this.properties.getCachingSessionWaitTimeout().ifPresent(timeout -> cachingSessionFactory.setSessionWaitTimeout(timeout));
-
-        return cachingSessionFactory;
     }
 
     @Bean
