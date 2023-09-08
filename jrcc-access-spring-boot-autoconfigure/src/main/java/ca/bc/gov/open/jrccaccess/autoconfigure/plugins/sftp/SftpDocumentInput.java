@@ -14,7 +14,7 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.websocket.MessageHandler;
+import jakarta.websocket.MessageHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

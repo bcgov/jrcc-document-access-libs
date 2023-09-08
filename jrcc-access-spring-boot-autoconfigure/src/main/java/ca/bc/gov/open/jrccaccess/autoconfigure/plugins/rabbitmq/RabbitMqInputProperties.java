@@ -2,7 +2,7 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.rabbitmq;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 
 /**
  * Represents the rabbitmq output plugin properties
