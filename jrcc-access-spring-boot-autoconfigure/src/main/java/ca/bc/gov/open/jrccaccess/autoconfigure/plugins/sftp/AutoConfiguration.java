@@ -26,7 +26,7 @@ import org.springframework.integration.sftp.inbound.SftpStreamingMessageSource;
 import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
 import org.springframework.integration.sftp.session.SftpRemoteFileTemplate;
 
-import javax.websocket.MessageHandler;
+import jakarta.websocket.MessageHandler;
 import java.io.File;
 import java.io.InputStream;
 

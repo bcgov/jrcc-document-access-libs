@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 import java.util.Optional;
 
 /**
