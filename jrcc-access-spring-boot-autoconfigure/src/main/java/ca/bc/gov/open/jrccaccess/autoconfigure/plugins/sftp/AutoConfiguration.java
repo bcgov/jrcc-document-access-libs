@@ -63,9 +63,11 @@ public class AutoConfiguration {
         factory.setPort(properties.getPort());
         factory.setUser(properties.getUsername());
         if (properties.getSshPrivateKey() != null) {
+            logger.info("SFTP Configuration: setPrivateKey");
             factory.setPrivateKey(properties.getSshPrivateKey());
             factory.setPrivateKeyPassphrase(properties.getSshPrivatePassphrase());
         } else {
+            logger.info("SFTP Configuration: setPassword");
             factory.setPassword(properties.getPassword());
         }
         boolean isAllowUnknownKeys = properties.isAllowUnknownKeys();
