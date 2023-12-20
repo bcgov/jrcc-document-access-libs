@@ -1,6 +1,8 @@
 package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -16,6 +18,8 @@ import java.util.Optional;
  */
 @ConfigurationProperties(prefix = "bcgov.access.input.sftp")
 public class SftpInputProperties {
+
+    private Logger logger = LoggerFactory.getLogger(SftpInputProperties.class);
 
     private String host;
 
@@ -113,8 +117,9 @@ public class SftpInputProperties {
     }
 
     public Resource getSshPrivateKey() {
-
-        if (StringUtils.isBlank(this.sshPrivateKey)) return null;
+        logger.info("getSshPrivateKey sshPrivateKey = {}", this.sshPrivateKey);
+        if (StringUtils.isBlank(this.sshPrivateKey)) { logger.info("getSshPrivateKey return null"); return null;}
+        logger.info("getSshPrivateKey return not null {}", this.sshPrivateKey.getBytes());
         return new ByteArrayResource(this.sshPrivateKey.getBytes());
     }
 
