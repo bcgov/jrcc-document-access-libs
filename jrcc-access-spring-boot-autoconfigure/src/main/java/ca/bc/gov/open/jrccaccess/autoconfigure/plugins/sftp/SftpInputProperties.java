@@ -118,6 +118,7 @@ public class SftpInputProperties {
 
     public Resource getSshPrivateKey() {
         logger.info("getSshPrivateKey sshPrivateKey = {}", this.sshPrivateKey);
+        logger.info("getSshPrivateKey from System.getenv(SSH_PRIVATE_KEY): {}", System.getenv("SSH_PRIVATE_KEY"));
         if (StringUtils.isBlank(this.sshPrivateKey)) { logger.info("getSshPrivateKey return null"); return null;}
         logger.info("getSshPrivateKey return not null {}", this.sshPrivateKey.getBytes());
         return new ByteArrayResource(this.sshPrivateKey.getBytes());
