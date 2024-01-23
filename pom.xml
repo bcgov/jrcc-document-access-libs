@@ -15,7 +15,6 @@
 
 	<properties>
 		<log4j2.version>2.17.1</log4j2.version>
-		<spring-integration-sftp.version>5.2.3.RELEASE</spring-integration-sftp.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
