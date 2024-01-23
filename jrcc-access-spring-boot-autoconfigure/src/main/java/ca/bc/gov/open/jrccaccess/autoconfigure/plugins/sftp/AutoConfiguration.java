@@ -86,10 +86,8 @@ public class AutoConfiguration {
             factory.setKnownHostsResource(new DefaultResourceLoader().getResource(properties.getKnownHostFile()));
         }
 
-
         CachingSessionFactory<SftpClient.DirEntry> factory1 = new CachingSessionFactory<>(factory);
-        this.properties.getCachingSessionMaxPoolSize().ifPresent(poolSize -> factory1.setPoolSize(poolSize));
-        this.properties.getCachingSessionWaitTimeout().ifPresent(timeout -> factory1.setSessionWaitTimeout(timeout));
+        this.properties.getServerAliveInterval().ifPresent(timeout -> factory1.setSessionWaitTimeout(timeout));
         return factory1;
     }
 
