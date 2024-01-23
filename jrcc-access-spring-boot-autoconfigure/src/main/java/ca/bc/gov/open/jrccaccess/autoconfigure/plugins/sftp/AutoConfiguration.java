@@ -5,6 +5,7 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.KnownHostFileNo
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.KnownHostFileNotFoundException;
 import com.jcraft.jsch.ChannelSftp;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.sshd.sftp.client.SftpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -12,6 +13,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -56,7 +58,7 @@ public class AutoConfiguration {
     }
 
     @Bean
-    public SessionFactory<ChannelSftp.LsEntry> sftpSessionFactory() throws InvalidConfigException {
+    public SessionFactory<SftpClient.DirEntry> sftpSessionFactory() throws InvalidConfigException {
 
         DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(true);
         factory.setHost(properties.getHost());
@@ -81,16 +83,14 @@ public class AutoConfiguration {
             if (!knownHostFile.exists())
                 throw new KnownHostFileNotFoundException("Cannot find known_hosts file when allow-unknown-keys is false.");
 
-            factory.setKnownHosts(properties.getKnownHostFile());
+            factory.setKnownHostsResource(new DefaultResourceLoader().getResource(properties.getKnownHostFile()));
         }
 
-        properties.getServerAliveInterval().ifPresent(serverAliveInterval -> factory.setServerAliveInterval(serverAliveInterval));
 
-        this.properties.getCachingSessionMaxPoolSize().ifPresent(poolSize -> factory.setServerAliveCountMax(poolSize));
-        this.properties.getCachingSessionWaitTimeout().ifPresent(timeout -> factory.setServerAliveInterval(timeout));
-
-        return factory;
-
+        CachingSessionFactory<SftpClient.DirEntry> factory1 = new CachingSessionFactory<>(factory);
+        this.properties.getCachingSessionMaxPoolSize().ifPresent(poolSize -> factory1.setPoolSize(poolSize));
+        this.properties.getCachingSessionWaitTimeout().ifPresent(timeout -> factory1.setSessionWaitTimeout(timeout));
+        return factory1;
     }
 
     @Bean
@@ -106,7 +106,8 @@ public class AutoConfiguration {
     @Bean
     @InboundChannelAdapter(channel = "sftpChannel", poller = @Poller(cron = "${bcgov.access.input.sftp.cron}", maxMessagesPerPoll = "${bcgov.access.input.sftp.max-message-per-poll}"))
     public MessageSource<InputStream> sftpMessageSource(ConcurrentMetadataStore concurrentMetadataStore) {
-        ChainFileListFilter<ChannelSftp.LsEntry> filterChain = new ChainFileListFilter<>();
+        logger.info("InboundChannelAdapter started...");
+        ChainFileListFilter<SftpClient.DirEntry> filterChain = new ChainFileListFilter<>();
         if (properties.getFilterPattern() != null && !"".equals(properties.getFilterPattern()))
             filterChain.addFilter(new SftpRegexPatternFileListFilter(properties.getFilterPattern()));
         filterChain.addFilter(new SftpPersistentAcceptOnceFileListFilter(concurrentMetadataStore, "sftpSource"));
