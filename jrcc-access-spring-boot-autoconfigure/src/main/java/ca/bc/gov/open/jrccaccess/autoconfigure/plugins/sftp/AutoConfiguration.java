@@ -3,7 +3,6 @@ package ca.bc.gov.open.jrccaccess.autoconfigure.plugins.sftp;
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.InvalidConfigException;
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.KnownHostFileNotDefinedException;
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.KnownHostFileNotFoundException;
-import com.jcraft.jsch.ChannelSftp;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sshd.sftp.client.SftpClient;
 import org.slf4j.Logger;
@@ -66,7 +65,7 @@ public class AutoConfiguration {
         factory.setUser(properties.getUsername());
         if (properties.getSshPrivateKey() != null) {
             logger.info("SFTP Configuration: setPrivateKey");
-            factory.setPrivateKey(properties.getSshPrivateKey());
+            factory.setPrivateKey(new DefaultResourceLoader().getResource(properties.getSshPrivateKey()));
             factory.setPrivateKeyPassphrase(properties.getSshPrivatePassphrase());
         } else {
             logger.info("SFTP Configuration: setPassword");
@@ -121,6 +120,5 @@ public class AutoConfiguration {
     public MessageHandler handler(SftpDocumentInput sftpDocumentInput) {
         return sftpDocumentInput;
     }
-
 
 }
