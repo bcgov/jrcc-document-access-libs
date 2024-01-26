@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -29,7 +30,9 @@ import org.springframework.integration.sftp.session.SftpRemoteFileTemplate;
 
 import jakarta.websocket.MessageHandler;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
 @Configuration
 @ComponentScan
@@ -57,7 +60,7 @@ public class AutoConfiguration {
     }
 
     @Bean
-    public SessionFactory<SftpClient.DirEntry> sftpSessionFactory() throws InvalidConfigException {
+    public SessionFactory<SftpClient.DirEntry> sftpSessionFactory() throws InvalidConfigException, IOException {
 
         DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(true);
         factory.setHost(properties.getHost());
@@ -65,7 +68,10 @@ public class AutoConfiguration {
         factory.setUser(properties.getUsername());
         if (properties.getSshPrivateKey() != null) {
             logger.info("SFTP Configuration: setPrivateKey");
-            factory.setPrivateKey(properties.getSshPrivateKey());
+            Resource resource = new DefaultResourceLoader().getResource(properties.getSshPrivateKey());
+            logger.info("SFTP Configuration: privateKey length {}", resource.contentLength());
+            logger.info("SFTP Configuration: privateKey {}", resource.getContentAsString(Charset.defaultCharset()));
+            factory.setPrivateKey(resource);
             factory.setPrivateKeyPassphrase(properties.getSshPrivatePassphrase());
         } else {
             logger.info("SFTP Configuration: setPassword");
@@ -96,6 +102,8 @@ public class AutoConfiguration {
             return new SftpRemoteFileTemplate(sftpSessionFactory());
         } catch (InvalidConfigException ex) {
             logger.error(ex.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }
