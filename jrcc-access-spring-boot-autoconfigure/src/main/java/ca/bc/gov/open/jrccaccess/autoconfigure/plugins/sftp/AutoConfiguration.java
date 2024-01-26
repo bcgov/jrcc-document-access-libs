@@ -65,7 +65,7 @@ public class AutoConfiguration {
         factory.setUser(properties.getUsername());
         if (properties.getSshPrivateKey() != null) {
             logger.info("SFTP Configuration: setPrivateKey");
-            factory.setPrivateKey(new DefaultResourceLoader().getResource(properties.getSshPrivateKey()));
+            factory.setPrivateKey(properties.getSshPrivateKey());
             factory.setPrivateKeyPassphrase(properties.getSshPrivatePassphrase());
         } else {
             logger.info("SFTP Configuration: setPassword");
