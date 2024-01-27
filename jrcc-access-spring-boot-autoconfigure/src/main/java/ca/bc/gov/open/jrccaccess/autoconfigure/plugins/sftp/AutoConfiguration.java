@@ -7,13 +7,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.sshd.sftp.client.SftpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -44,6 +45,8 @@ import java.nio.charset.Charset;
 public class AutoConfiguration {
 
     private Logger logger = LoggerFactory.getLogger(AutoConfiguration.class);
+    @Autowired
+    ResourceLoader resourceLoader;
 
     private SftpInputProperties properties;
 
@@ -67,11 +70,15 @@ public class AutoConfiguration {
         factory.setPort(properties.getPort());
         factory.setUser(properties.getUsername());
         if (properties.getSshPrivateKey() != null) {
+            if(!(new File(properties.getSshPrivateKey()).exists()))
+                throw new KnownHostFileNotDefinedException("Cannot find known_hosts file private key file. ");
+
             logger.info("SFTP Configuration: setPrivateKey");
-            Resource resource = new DefaultResourceLoader().getResource(properties.getSshPrivateKey());
-            logger.info("SFTP Configuration: privateKey length {}", resource.contentLength());
-            logger.info("SFTP Configuration: privateKey {}", resource.getContentAsString(Charset.defaultCharset()));
+            Resource resource = resourceLoader.getResource("file:"+properties.getSshPrivateKey());;
+            logger.info("SFTP Configuration: privateKey - length {}", resource.contentLength());
+            logger.info("SFTP Configuration: privateKey - content {}", resource.getContentAsString(Charset.defaultCharset()));
             factory.setPrivateKey(resource);
+
             factory.setPrivateKeyPassphrase(properties.getSshPrivatePassphrase());
         } else {
             logger.info("SFTP Configuration: setPassword");
@@ -88,7 +95,11 @@ public class AutoConfiguration {
             if (!knownHostFile.exists())
                 throw new KnownHostFileNotFoundException("Cannot find known_hosts file when allow-unknown-keys is false.");
 
-            factory.setKnownHostsResource(new DefaultResourceLoader().getResource(properties.getKnownHostFile()));
+            logger.info("SFTP Known Hosts");
+            Resource resource = resourceLoader.getResource("file:"+properties.getKnownHostFile());
+            logger.info("SFTP Known Hosts: length = {}", resource.contentLength());
+            logger.info("SFTP Known Hosts: content = {}", resource.getContentAsString(Charset.defaultCharset()));
+            factory.setPrivateKey(resource);
         }
 
         CachingSessionFactory<SftpClient.DirEntry> cachingSessionFactory = new CachingSessionFactory<>(factory);
