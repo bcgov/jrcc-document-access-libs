@@ -99,7 +99,7 @@ public class AutoConfiguration {
             Resource resource = resourceLoader.getResource("file:"+properties.getKnownHostFile());
             logger.info("SFTP Known Hosts: length = {}", resource.contentLength());
             logger.info("SFTP Known Hosts: content = {}", resource.getContentAsString(Charset.defaultCharset()));
-            factory.setPrivateKey(resource);
+            factory.setKnownHostsResource(resource);
         }
 
         CachingSessionFactory<SftpClient.DirEntry> cachingSessionFactory = new CachingSessionFactory<>(factory);
