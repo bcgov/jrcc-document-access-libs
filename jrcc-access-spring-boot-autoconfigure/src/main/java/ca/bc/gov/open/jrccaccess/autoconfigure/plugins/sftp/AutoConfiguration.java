@@ -6,9 +6,18 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.KnownHostFileNo
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sshd.client.ClientBuilder;
 import org.apache.sshd.client.SshClient;
+import org.apache.sshd.client.auth.password.PasswordIdentityProvider;
+import org.apache.sshd.client.keyverifier.AcceptAllServerKeyVerifier;
+import org.apache.sshd.client.keyverifier.RejectAllServerKeyVerifier;
+import org.apache.sshd.client.keyverifier.ServerKeyVerifier;
 import org.apache.sshd.common.NamedFactory;
+import org.apache.sshd.common.config.keys.FilePasswordProvider;
 import org.apache.sshd.common.kex.BuiltinDHFactories;
+import org.apache.sshd.common.keyprovider.KeyIdentityProvider;
 import org.apache.sshd.common.signature.BuiltinSignatures;
+import org.apache.sshd.common.util.io.resource.AbstractIoResource;
+import org.apache.sshd.common.util.io.resource.IoResource;
+import org.apache.sshd.common.util.security.SecurityUtils;
 import org.apache.sshd.sftp.client.SftpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +41,7 @@ import org.springframework.integration.sftp.filters.SftpPersistentAcceptOnceFile
 import org.springframework.integration.sftp.filters.SftpRegexPatternFileListFilter;
 import org.springframework.integration.sftp.inbound.SftpStreamingMessageSource;
 import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
+import org.springframework.integration.sftp.session.ResourceKnownHostsServerKeyVerifier;
 import org.springframework.integration.sftp.session.SftpRemoteFileTemplate;
 
 import jakarta.websocket.MessageHandler;
@@ -39,7 +49,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.security.GeneralSecurityException;
+import java.security.KeyPair;
 import java.util.ArrayList;
+import java.util.Collection;
 
 @Configuration
 @ComponentScan
@@ -72,36 +85,20 @@ public class AutoConfiguration {
     public SessionFactory<SftpClient.DirEntry> sftpSessionFactory() throws InvalidConfigException, IOException {
 
 
-        SshClient client = SshClient.setUpDefaultClient();
-        client.setKeyExchangeFactories(NamedFactory.setUpTransformedFactories(
+        SshClient sshClient = SshClient.setUpDefaultClient();
+        sshClient.setKeyExchangeFactories(NamedFactory.setUpTransformedFactories(
                 false,
                 BuiltinDHFactories.VALUES,
                 ClientBuilder.DH2KEX
         ));
-        client.setSignatureFactories(new ArrayList<>(BuiltinSignatures.VALUES));
 
-        DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(client, true);
-
-        factory.setHost(properties.getHost());
-        factory.setPort(properties.getPort());
-        factory.setUser(properties.getUsername());
-        if (properties.getSshPrivateKey() != null) {
-            if(!(new File(properties.getSshPrivateKey()).exists()))
-                throw new KnownHostFileNotDefinedException("Cannot find known_hosts file private key file. ");
-
-            logger.info("SFTP Configuration: setPrivateKey");
-            Resource resource = resourceLoader.getResource("file:"+properties.getSshPrivateKey());;
-            logger.info("SFTP Configuration: privateKey - length {}", resource.contentLength());
-            logger.info("SFTP Configuration: privateKey - content {}", resource.getContentAsString(Charset.defaultCharset()));
-            factory.setPrivateKey(resource);
-
-            factory.setPrivateKeyPassphrase(properties.getSshPrivatePassphrase());
-        } else {
-            logger.info("SFTP Configuration: setPassword");
-            factory.setPassword(properties.getPassword());
-        }
         boolean isAllowUnknownKeys = properties.isAllowUnknownKeys();
-        factory.setAllowUnknownKeys(isAllowUnknownKeys);
+
+        sshClient.setSignatureFactories(new ArrayList<>(BuiltinSignatures.VALUES));
+
+        ServerKeyVerifier serverKeyVerifier =
+                isAllowUnknownKeys ? AcceptAllServerKeyVerifier.INSTANCE : RejectAllServerKeyVerifier.INSTANCE;
+
         if (!isAllowUnknownKeys) {
             String knownHostFileStr = properties.getKnownHostFile();
             if (StringUtils.isBlank(knownHostFileStr))
@@ -115,8 +112,48 @@ public class AutoConfiguration {
             Resource resource = resourceLoader.getResource("file:"+properties.getKnownHostFile());
             logger.info("SFTP Known Hosts: length = {}", resource.contentLength());
             logger.info("SFTP Known Hosts: content = {}", resource.getContentAsString(Charset.defaultCharset()));
-            factory.setKnownHostsResource(resource);
+
+            serverKeyVerifier = new ResourceKnownHostsServerKeyVerifier(resource);
         }
+
+        sshClient.setServerKeyVerifier(serverKeyVerifier);
+        sshClient.setPasswordIdentityProvider(PasswordIdentityProvider.wrapPasswords(properties.getPassword()));
+
+        if (properties.getSshPrivateKey() != null) {
+            if(!(new File(properties.getSshPrivateKey()).exists()))
+                throw new KnownHostFileNotDefinedException("Cannot find known_hosts file private key file. ");
+
+            logger.info("SFTP Configuration: setPrivateKey");
+            Resource resource = resourceLoader.getResource("file:"+properties.getSshPrivateKey());;
+            logger.info("SFTP Configuration: privateKey - length {}", resource.contentLength());
+            logger.info("SFTP Configuration: privateKey - content {}", resource.getContentAsString(Charset.defaultCharset()));
+
+            IoResource<Resource> privateKeyResource =
+                    new AbstractIoResource<>(Resource.class, resource) {
+
+                        @Override
+                        public InputStream openInputStream() throws IOException {
+                            return getResourceValue().getInputStream();
+                        }
+
+                    };
+            try {
+                Collection<KeyPair> keys =
+                        SecurityUtils.getKeyPairResourceParser()
+                                .loadKeyPairs(null, privateKeyResource,
+                                        FilePasswordProvider.of(properties.getSshPrivatePassphrase()));
+                sshClient.setKeyIdentityProvider(KeyIdentityProvider.wrapKeyPairs(keys));
+            }
+            catch (GeneralSecurityException ex) {
+                throw new IOException("Cannot load private key: " + resource.getFilename(), ex);
+            }
+        }
+
+        DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(sshClient, true);
+
+        factory.setHost(properties.getHost());
+        factory.setPort(properties.getPort());
+        factory.setUser(properties.getUsername());
 
         CachingSessionFactory<SftpClient.DirEntry> cachingSessionFactory = new CachingSessionFactory<>(factory);
         this.properties.getServerAliveInterval().ifPresent(timeout -> cachingSessionFactory.setSessionWaitTimeout(timeout));
