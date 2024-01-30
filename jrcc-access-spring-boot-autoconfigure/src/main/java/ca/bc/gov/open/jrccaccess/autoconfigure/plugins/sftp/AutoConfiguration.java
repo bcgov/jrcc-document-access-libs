@@ -4,6 +4,11 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.InvalidConfigEx
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.KnownHostFileNotDefinedException;
 import ca.bc.gov.open.jrccaccess.autoconfigure.config.exceptions.KnownHostFileNotFoundException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.sshd.client.ClientBuilder;
+import org.apache.sshd.client.SshClient;
+import org.apache.sshd.common.NamedFactory;
+import org.apache.sshd.common.kex.BuiltinDHFactories;
+import org.apache.sshd.common.signature.BuiltinSignatures;
 import org.apache.sshd.sftp.client.SftpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 
 @Configuration
 @ComponentScan
@@ -65,7 +71,17 @@ public class AutoConfiguration {
     @Bean
     public SessionFactory<SftpClient.DirEntry> sftpSessionFactory() throws InvalidConfigException, IOException {
 
-        DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(true);
+
+        SshClient client = SshClient.setUpDefaultClient();
+        client.setKeyExchangeFactories(NamedFactory.setUpTransformedFactories(
+                false,
+                BuiltinDHFactories.VALUES,
+                ClientBuilder.DH2KEX
+        ));
+        client.setSignatureFactories(new ArrayList<>(BuiltinSignatures.VALUES));
+
+        DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory(client, true);
+
         factory.setHost(properties.getHost());
         factory.setPort(properties.getPort());
         factory.setUser(properties.getUsername());
