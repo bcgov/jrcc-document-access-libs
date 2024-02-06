@@ -71,19 +71,18 @@ public class AutoConfiguration {
 
     public AutoConfiguration(SftpInputProperties sftpInputProperties) {
         this.properties = sftpInputProperties;
-        logger.info("SFTP Configuration: Host => [{}]", this.properties.getHost());
-        logger.info("SFTP Configuration: Port => [{}]", this.properties.getPort());
-        logger.info("SFTP Configuration: Username => [{}]", this.properties.getUsername());
-        logger.info("SFTP Configuration: Remote Directory => [{}]", this.properties.getRemoteDirectory());
-        logger.info("SFTP Configuration: Filter Pattern => [{}]", this.properties.getFilterPattern());
-        logger.info("SFTP Configuration: Cron => [{}]", this.properties.getCron());
-        logger.info("SFTP Configuration: Max Message Per Poll => [{}]", this.properties.getMaxMessagePerPoll());
-        logger.info("SFTP Configuration: Known Host File => [{}]", this.properties.getKnownHostFile());
+        logger.debug("SFTP Configuration: Host => [{}]", this.properties.getHost());
+        logger.debug("SFTP Configuration: Port => [{}]", this.properties.getPort());
+        logger.debug("SFTP Configuration: Username => [{}]", this.properties.getUsername());
+        logger.debug("SFTP Configuration: Remote Directory => [{}]", this.properties.getRemoteDirectory());
+        logger.debug("SFTP Configuration: Filter Pattern => [{}]", this.properties.getFilterPattern());
+        logger.debug("SFTP Configuration: Cron => [{}]", this.properties.getCron());
+        logger.debug("SFTP Configuration: Max Message Per Poll => [{}]", this.properties.getMaxMessagePerPoll());
+        logger.debug("SFTP Configuration: Known Host File => [{}]", this.properties.getKnownHostFile());
     }
 
     @Bean
     public SessionFactory<SftpClient.DirEntry> sftpSessionFactory() throws InvalidConfigException, IOException {
-
 
         SshClient sshClient = SshClient.setUpDefaultClient();
         sshClient.setKeyExchangeFactories(NamedFactory.setUpTransformedFactories(
@@ -91,11 +90,9 @@ public class AutoConfiguration {
                 BuiltinDHFactories.VALUES,
                 ClientBuilder.DH2KEX
         ));
-
-        boolean isAllowUnknownKeys = properties.isAllowUnknownKeys();
-
         sshClient.setSignatureFactories(new ArrayList<>(BuiltinSignatures.VALUES));
 
+        boolean isAllowUnknownKeys = properties.isAllowUnknownKeys();
         ServerKeyVerifier serverKeyVerifier =
                 isAllowUnknownKeys ? AcceptAllServerKeyVerifier.INSTANCE : RejectAllServerKeyVerifier.INSTANCE;
 
@@ -108,11 +105,7 @@ public class AutoConfiguration {
             if (!knownHostFile.exists())
                 throw new KnownHostFileNotFoundException("Cannot find known_hosts file when allow-unknown-keys is false.");
 
-            logger.info("SFTP Known Hosts");
             Resource resource = resourceLoader.getResource("file:"+properties.getKnownHostFile());
-            logger.info("SFTP Known Hosts: length = {}", resource.contentLength());
-            logger.info("SFTP Known Hosts: content = {}", resource.getContentAsString(Charset.defaultCharset()));
-
             serverKeyVerifier = new ResourceKnownHostsServerKeyVerifier(resource);
         }
 
@@ -123,10 +116,7 @@ public class AutoConfiguration {
             if(!(new File(properties.getSshPrivateKey()).exists()))
                 throw new KnownHostFileNotDefinedException("Cannot find known_hosts file private key file. ");
 
-            logger.info("SFTP Configuration: setPrivateKey");
             Resource resource = resourceLoader.getResource("file:"+properties.getSshPrivateKey());;
-            logger.info("SFTP Configuration: privateKey - length {}", resource.contentLength());
-            logger.info("SFTP Configuration: privateKey - content {}", resource.getContentAsString(Charset.defaultCharset()));
 
             IoResource<Resource> privateKeyResource =
                     new AbstractIoResource<>(Resource.class, resource) {
@@ -155,9 +145,7 @@ public class AutoConfiguration {
         factory.setPort(properties.getPort());
         factory.setUser(properties.getUsername());
 
-        CachingSessionFactory<SftpClient.DirEntry> cachingSessionFactory = new CachingSessionFactory<>(factory);
-        this.properties.getServerAliveInterval().ifPresent(timeout -> cachingSessionFactory.setSessionWaitTimeout(timeout));
-        return cachingSessionFactory;
+        return factory;
     }
 
     @Bean
