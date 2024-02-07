@@ -6,7 +6,7 @@
 
 	<groupId>ca.bc.gov.open</groupId>
 	<artifactId>document-access</artifactId>
-	<version>1.3.2</version>
+	<version>1.3.3</version>
 
 	<name>document-access</name>
 	<packaging>pom</packaging>
