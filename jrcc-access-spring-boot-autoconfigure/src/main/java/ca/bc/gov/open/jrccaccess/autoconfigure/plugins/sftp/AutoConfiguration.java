@@ -71,7 +71,7 @@ public class AutoConfiguration {
 
     public AutoConfiguration(SftpInputProperties sftpInputProperties) {
         this.properties = sftpInputProperties;
-        logger.debug("SFTP Configuration: Host => [{}]", this.properties.getHost());
+        logger.info("SFTP Configuration: Host => [{}]", this.properties.getHost());
         logger.debug("SFTP Configuration: Port => [{}]", this.properties.getPort());
         logger.debug("SFTP Configuration: Username => [{}]", this.properties.getUsername());
         logger.debug("SFTP Configuration: Remote Directory => [{}]", this.properties.getRemoteDirectory());
@@ -145,7 +145,9 @@ public class AutoConfiguration {
         factory.setPort(properties.getPort());
         factory.setUser(properties.getUsername());
 
-        return factory;
+        CachingSessionFactory<SftpClient.DirEntry> cachingSessionFactory = new CachingSessionFactory<>(factory);
+        this.properties.getServerAliveInterval().ifPresent(timeout -> cachingSessionFactory.setTestSession(false));
+        return cachingSessionFactory;
     }
 
     @Bean
