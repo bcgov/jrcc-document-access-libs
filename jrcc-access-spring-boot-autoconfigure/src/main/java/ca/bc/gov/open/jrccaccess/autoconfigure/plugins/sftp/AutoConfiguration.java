@@ -146,7 +146,6 @@ public class AutoConfiguration {
         factory.setUser(properties.getUsername());
 
         CachingSessionFactory<SftpClient.DirEntry> cachingSessionFactory = new CachingSessionFactory<>(factory);
-        this.properties.getServerAliveInterval().ifPresent(timeout -> cachingSessionFactory.setSessionWaitTimeout(timeout));
         cachingSessionFactory.setTestSession(false);
         return cachingSessionFactory;
     }
