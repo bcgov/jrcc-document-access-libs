@@ -145,7 +145,9 @@ public class AutoConfiguration {
         factory.setPort(properties.getPort());
         factory.setUser(properties.getUsername());
 
-        return factory;
+        CachingSessionFactory<SftpClient.DirEntry> cachingSessionFactory = new CachingSessionFactory<>(factory);
+        cachingSessionFactory.setTestSession(false);
+        return cachingSessionFactory;
     }
 
     @Bean
