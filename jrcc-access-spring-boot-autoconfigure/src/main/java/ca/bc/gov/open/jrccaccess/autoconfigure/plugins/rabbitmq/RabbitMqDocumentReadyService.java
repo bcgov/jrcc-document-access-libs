@@ -4,8 +4,6 @@ import ca.bc.gov.open.jrccaccess.autoconfigure.AccessProperties;
 import ca.bc.gov.open.jrccaccess.libs.DocumentReadyMessage;
 import ca.bc.gov.open.jrccaccess.libs.DocumentReadyService;
 import ca.bc.gov.open.jrccaccess.libs.services.exceptions.ServiceUnavailableException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpConnectException;
 import org.springframework.amqp.AmqpIOException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -24,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Service
 @ConditionalOnProperty(name = "bcgov.access.output.plugin", havingValue = "rabbitmq")
 public class RabbitMqDocumentReadyService implements DocumentReadyService {
-	private Logger logger = LoggerFactory.getLogger(RabbitMqDocumentReadyService.class);
+
 	@Qualifier("documentReadyTopicTemplate")
 	@Autowired
 	private RabbitTemplate documentReadyTopicTemplate;
@@ -43,8 +41,6 @@ public class RabbitMqDocumentReadyService implements DocumentReadyService {
 			documentReadyTopicTemplate.convertAndSend(message, m -> {
 				m.getMessageProperties().getHeaders().put(RabbitMqParam.X_DEAD_LETTER_ROUTING_KEY,
 						accessProperties.getOutput().getDocumentType());
-
-				logger.info("Publish a document  to RabbitMQ");
 				return m;
 			});
 
