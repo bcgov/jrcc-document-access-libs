@@ -61,8 +61,8 @@ public class RabbitMqDocumentInput {
 			logger.debug(content);
 		}
 
-		logger.info("Receiving a transaction with [{0}] on document [{1}] with [key {2}, digest {3} and content {4} ] from RabbitMQ", documentReadyMessage.getTransactionInfo(), documentReadyMessage.getDocumentInfo(), documentReadyMessage.getDocumentStorageProperties().getKey(), documentReadyMessage.getDocumentStorageProperties().getDigest(), content );
-		
+		logger.info("Receiving a transaction content {0} ] from RabbitMQ", content );
+
 		this.documentReadyHandler.handle(content, documentReadyMessage.getTransactionInfo());
 
         logger.debug("attempting to delete the document from redis storage");
