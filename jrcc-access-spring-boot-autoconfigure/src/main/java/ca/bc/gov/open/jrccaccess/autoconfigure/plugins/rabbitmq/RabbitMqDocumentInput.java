@@ -60,6 +60,8 @@ public class RabbitMqDocumentInput {
 		if (logger.isDebugEnabled()) {
 			logger.debug(content);
 		}
+
+		logger.info("Receiving a transaction with [{0}] on document [{1}] with [key {2}, digest {3} and content {4} ] from RabbitMQ", documentReadyMessage.getTransactionInfo(), documentReadyMessage.getDocumentInfo(), documentReadyMessage.getDocumentStorageProperties().getKey(), documentReadyMessage.getDocumentStorageProperties().getDigest(), content );
 		
 		this.documentReadyHandler.handle(content, documentReadyMessage.getTransactionInfo());
 
