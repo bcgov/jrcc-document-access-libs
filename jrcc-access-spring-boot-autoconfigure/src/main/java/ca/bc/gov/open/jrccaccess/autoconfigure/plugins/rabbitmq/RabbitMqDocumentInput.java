@@ -14,6 +14,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
+
 /**
  * The RabbitMqDocumentInput handles document from the rabbitMq message listener
  * 
@@ -61,7 +63,7 @@ public class RabbitMqDocumentInput {
 			logger.debug(content);
 		}
 
-		logger.info("Receiving a transaction content {0} ] from RabbitMQ", content );
+		logger.info(MessageFormat.format("Receiving a transaction with [{0}] on document [{1}] with [key {2}, digest {3} and content {4} ] from RabbitMQ", documentReadyMessage.getTransactionInfo(), documentReadyMessage.getDocumentInfo(), documentReadyMessage.getDocumentStorageProperties().getKey(), documentReadyMessage.getDocumentStorageProperties().getDigest(), content ));
 
 		this.documentReadyHandler.handle(content, documentReadyMessage.getTransactionInfo());
 
