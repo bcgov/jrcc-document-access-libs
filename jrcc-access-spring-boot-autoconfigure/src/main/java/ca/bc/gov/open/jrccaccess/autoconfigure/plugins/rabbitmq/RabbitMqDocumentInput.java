@@ -14,6 +14,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
+
 /**
  * The RabbitMqDocumentInput handles document from the rabbitMq message listener
  * 
@@ -60,7 +62,8 @@ public class RabbitMqDocumentInput {
 		if (logger.isDebugEnabled()) {
 			logger.debug(content);
 		}
-		
+
+
 		this.documentReadyHandler.handle(content, documentReadyMessage.getTransactionInfo());
 
         logger.debug("attempting to delete the document from redis storage");
