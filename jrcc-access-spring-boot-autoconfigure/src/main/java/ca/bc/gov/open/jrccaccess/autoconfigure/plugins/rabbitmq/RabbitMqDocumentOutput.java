@@ -57,7 +57,7 @@ public class RabbitMqDocumentOutput implements DocumentOutput {
 		
 		logger.debug("Attempting to publish [{}] ready message to [{}] topic.", documentInfo, RabbitMqParam.DOCUMENT_READY_TOPIC);
 
-		logger.info(MessageFormat.format("Publishing a transaction with [{0}] on document [{1}] with [key {2}, digest {3} ] with to RabbitMQ", documentReadyMessage.getTransactionInfo(), documentReadyMessage.getDocumentInfo(), documentReadyMessage.getDocumentStorageProperties().getKey(), documentReadyMessage.getDocumentStorageProperties().getDigest()) );
+// TODO		logger.info(MessageFormat.format("Publishing a transaction with [{0}] on document [{1}] with [key {2}, digest {3} ] with to RabbitMQ", documentReadyMessage.getTransactionInfo(), documentReadyMessage.getDocumentInfo(), documentReadyMessage.getDocumentStorageProperties().getKey(), documentReadyMessage.getDocumentStorageProperties().getDigest()) );
 
 		this.rabbitMqDocumentReadyService.publish(documentReadyMessage);
 		logger.info("[{}] successfully published to [{}] with [{}] routing key", documentInfo, RabbitMqParam.DOCUMENT_READY_TOPIC, accessProperties.getOutput().getDocumentType());
