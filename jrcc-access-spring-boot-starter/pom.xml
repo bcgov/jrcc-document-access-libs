@@ -6,19 +6,19 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.2</version>
+		<version>3.4.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ca.bc.gov.open</groupId>
 	<artifactId>jrcc-access-spring-boot-starter</artifactId>
-	<version>1.3.3</version>
+	<version>1.3.4-SNAPSHOT</version>
 	<name>jrcc-access-spring-boot-starter</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<log4j2.version>2.17.1</log4j2.version>
+		<log4j2.version>2.24.3</log4j2.version>
 		<java.version>17</java.version>
-		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version> <!-- suppress error in eclipse https://github.com/spring-projects/spring-boot/issues/16846 -->
+		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version> <!-- suppress error in eclipse https://github.com/spring-projects/spring-boot/issues/16846 -->
 	</properties>
 
 	<dependencies>
@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>ca.bc.gov.open</groupId>
 			<artifactId>jrcc-access-spring-boot-autoconfigure</artifactId>
-			<version>1.3.3</version>
+			<version>1.3.4-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>ca.bc.gov.open</groupId>
 			<artifactId>jrcc-document-access-libs</artifactId>
-			<version>1.3.3</version>
+			<version>1.3.4-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
