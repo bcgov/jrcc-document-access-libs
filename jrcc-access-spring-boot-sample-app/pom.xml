@@ -6,18 +6,18 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.2</version>
+		<version>3.4.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ca.bc.gov.open</groupId>
 	<artifactId>jrcc-access-spring-boot-sample-app</artifactId>
-	<version>1.3.3</version>
+	<version>1.3.4</version>
 	<name>jrcc-access-spring-boot-sample-app</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>17</java.version>
-		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version> <!-- suppress error in eclipse https://github.com/spring-projects/spring-boot/issues/16846 -->
+		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version> <!-- suppress error in eclipse https://github.com/spring-projects/spring-boot/issues/16846 -->
 	</properties>
 
 	<dependencies>
@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>ca.bc.gov.open</groupId>
 			<artifactId>jrcc-access-spring-boot-starter</artifactId>
-			<version>1.3.3</version>
+			<version>1.3.4</version>
 		</dependency>
 		
 	</dependencies>
